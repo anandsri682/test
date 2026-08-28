@@ -78,6 +78,7 @@ interface TeamMember {
   role: string;
   title?: string;
   experience: string;
+  youtubeExperience?: string;
   bio: string;
   image: string;
   skills: string[];
@@ -87,6 +88,7 @@ interface TeamMember {
     youtube?: string;
     instagram?: string;
     facebook?: string;
+    
   };
    
   isHighlight?: boolean;
@@ -102,20 +104,22 @@ const PROFILE_IMAGES = {
 
   karthik: "/images/profiles/karthik.jpg",
   madhukar: "/images/profiles/madhukar.jpg",
-  anjul: "/images/profiles/anjul.png",
+  reddiswapna:"/images/profiles/Reddiswapna.png",
   shruti: "/images/profiles/shruti.png",
-  jayasimha: "/images/profiles/jayasimha.png",
+  vandana: "/images/profiles/vandana.jpeg",
   dwaraka: "/images/profiles/dwaraka.png",
+  
 
   default: "/images/profiles/default.png",
 };
 const FOUNDER_DATA: TeamMember = {
   id: "founder",
-  name: "Arekanti Anand Raju",
+  name: "Anand",
   role: "Founder & CEO",
   title: "Full Stack Developer | UI/UX Designer | YouTube Educator",
   experience: "Fresher",
-  bio: "Passionate Full Stack Developer, UI/UX Designer, and YouTube educator focused on building modern, scalable web and mobile applications. I enjoy transforming innovative ideas into high-performance digital products while sharing practical programming knowledge with thousands of learners.",
+  youtubeExperience: "2+ Years YouTube Experience",
+  bio: "Full-stack developer, designer, and tech YouTuber.",
 
   image:PROFILE_IMAGES.founder,
 
@@ -202,7 +206,7 @@ const ADDITIONAL_TEAM: TeamMember[] = [
   id: "team-1",
   name: "Sai Guru Surya Teja",
   role: "MERN Stack | Java Full Stack | DevOps Engineer",
-  experience: "Fresher | Full Stack Developer",
+  experience: "Fresher",
   bio: "Passionate Full Stack Developer specializing in MERN Stack, Java Full Stack, and DevOps. Experienced in building scalable web applications, REST APIs, cloud-native solutions, and AI-powered applications with a focus on clean code and modern development practices.",
   image:PROFILE_IMAGES.surya, // Replace with your image path or URL
 
@@ -237,7 +241,7 @@ const ADDITIONAL_TEAM: TeamMember[] = [
 
   image:PROFILE_IMAGES.karthik, // Replace with your profile image
 
-  skills: ["Java", "MySQL", "Spring Boot", "Microservices"],
+  skills: ["React.js","Next.js", "Java", "MySQL", "Spring Boot", "Microservices"],
 
   socials: {
     linkedin: "https://www.linkedin.com/in/karthik-telugu-dasari-b7a679394/",
@@ -247,6 +251,101 @@ const ADDITIONAL_TEAM: TeamMember[] = [
 
     isTeamMember:true,
   },
+  {
+  "id": "team-3",
+  "name": "Vandana",
+  "role": "Mern Full Stack Developer",
+  "experience": "Fresher",
+  "bio": "Computer Science Engineering student at G Pulla Reddy Engineering College with an interest in software development, web technologies, Python, and machine learning. Currently building projects and strengthening problem-solving and technical skills.",
+  image:PROFILE_IMAGES.vandana,
+  "skills": [
+    "Python",
+    "React",
+    "Node.js",
+    "JavaScript",
+    "Machine Learning",
+    "Web Development",
+    "DSA"
+  ],
+  "socials": {
+    "github": "https://github.com/VandanaRam",
+    "linkedin": "https://www.linkedin.com/in/karanam-vandana-454b552a2",
+    // "leetcode": "https://leetcode.com/u/FWKMpc5Wfx/"
+  },
+  isTeamMember:true,
+},
+
+{
+  "id": "team-4",
+  "name": "Bukke Reddiswapna",
+  "role": "Mern Full Stack Developer & UI/UX Designer",
+  "experience": "Fresher",
+  "bio": "Final year student and Full Stack Developer passionate about building user-friendly web applications using MERN Stack and Java. Interested in learning and growing with a startup team.",
+  image:PROFILE_IMAGES.reddiswapna,
+  "skills": ["React.js", "Node.js", "Express.js", "MongoDB", "Java", "JavaScript", "UI/UX Design", "HTML", "CSS"],
+  "socials": {
+    "github": "https://github.com/bukkereddiswapna",
+    "linkedin": "https://www.linkedin.com/in/reddiswapna-bukke-53a805374/",
+    // "leetcode": "https://leetcode.com/u/bukke_reddiswapna05/"
+  },
+  isTeamMember:true,
+},
+
+{
+  "id": "team-5",
+  "name": "Dakka Jhansi Rani",
+  "role": "Mern Full Stack Developer",
+  "experience": "Fresher",
+  "bio": "Computer Science Engineering student graduating in 2027,interested in Full-Stack Development,Web Development and DSA",
+  "image": "",
+  "skills": [
+        "C",
+        "Java",
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "React.js",
+        "Node.js",
+        "MongoDB",
+        "SQL",
+         "DSA"
+  ],
+  "socials": {
+    "github": "https://github.com/jhansirani2607",
+    "linkedin": "https://www.linkedin.com/in/dakka-jhansi-rani-7a9752378",
+  // ?"leetcode": "https://leetcode.com/u/jhansi_rani26/"
+  },
+  isTeamMember:true,
+},
+{
+  "id": "team-6",
+  "name": "Subhashini Konda",
+  "role": "Full Stack & AI/ML Developer",
+  "experience": "Fresher",
+  "bio": "Full Stack Developer specializing in the MERN stack, focused on building websites and applications that solve real problems. Has also explored AI/ML through hands-on projects during internships.",
+  "image": "",
+  "skills": [
+    "JavaScript",
+    "React.js",
+    "Node.js",
+    "Express.js",
+    "MongoDB",
+    "PHP",
+    "Python",
+    "Java",
+    "DSA",
+    "Git & GitHub",
+    "Machine Learning",
+    "REST APIs"
+  ],
+  "socials": {
+    "github": "https://github.com/KONDA-SUBHASHINI",
+    "linkedin": "https://www.linkedin.com/in/subhashini-konda-012228387/",
+    // "leetcode": "https://leetcode.com/u/KONDA_SUBHASHINI/",
+    "instagram": "https://www.instagram.com/subhashini_speaks/"
+  },
+  isTeamMember:true,
+},
   
 ];
 
@@ -530,12 +629,12 @@ const TESTIMONIALS = [
         {/* Profile Image with Zoom on Hover */}
        <div className="relative w-32 h-40 sm:w-36 sm:h-44 mb-6 group">
             {/* Glow */}
-            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-br from-purple-500 via-amber-400 to-purple-700 blur-lg opacity-30 group-hover:opacity-60 transition-all duration-500" />
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-br from-purple-300 via-amber-400 to-purple-700 blur-lg opacity-30 group-hover:opacity-60 transition-all duration-500" />
 
             {/* Frame */}
             <div className="relative w-full h-full rounded-3xl overflow-hidden border border-white/10 bg-slate-900 shadow-2xl">
                 <img
-                src={member.image}
+                src={member.image || PROFILE_IMAGES.default}
                 alt={member.name}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
@@ -558,7 +657,11 @@ const TESTIMONIALS = [
         <span className="mt-2 inline-block bg-white/5 border border-white/10 text-slate-300 text-[11px] font-medium px-2.5 py-0.5 rounded-full">
           {member.experience}
         </span>
-
+        {member.youtubeExperience && (
+          <span className="mt-2 inline-block bg-red-500/10 border border-red-500/20 text-red-300 text-[11px] font-semibold px-3 py-1 rounded-full">
+            🎥 {member.youtubeExperience}
+          </span>
+        )}
         <p className="text-slate-300 text-xs sm:text-sm mt-3 line-clamp-3 leading-relaxed">
           {member.bio}
         </p>
