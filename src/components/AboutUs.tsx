@@ -105,9 +105,9 @@ const PROFILE_IMAGES = {
   karthik: "/images/profiles/karthik.jpg",
   madhukar: "/images/profiles/madhukar.jpg",
   reddiswapna:"/images/profiles/Reddiswapna.png",
-  shruti: "/images/profiles/shruti.png",
+  janshi: "/images/profiles/janshi.jpeg",
   vandana: "/images/profiles/vandana.jpeg",
-  dwaraka: "/images/profiles/dwaraka.png",
+  subhashini: "/images/profiles/subhashini.jpeg",
   
 
   default: "/images/profiles/default.png",
@@ -297,7 +297,7 @@ const ADDITIONAL_TEAM: TeamMember[] = [
   "role": "Mern Full Stack Developer",
   "experience": "Fresher",
   "bio": "Computer Science Engineering student graduating in 2027,interested in Full-Stack Development,Web Development and DSA",
-  "image": "",
+  image:PROFILE_IMAGES.janshi ,
   "skills": [
         "C",
         "Java",
@@ -323,7 +323,7 @@ const ADDITIONAL_TEAM: TeamMember[] = [
   "role": "Full Stack & AI/ML Developer",
   "experience": "Fresher",
   "bio": "Full Stack Developer specializing in the MERN stack, focused on building websites and applications that solve real problems. Has also explored AI/ML through hands-on projects during internships.",
-  "image": "",
+  image:PROFILE_IMAGES.subhashini ,
   "skills": [
     "JavaScript",
     "React.js",
