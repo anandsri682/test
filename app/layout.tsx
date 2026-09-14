@@ -1,79 +1,69 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { COMPANY_DETAILS } from "@/data/siteData";
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#F59E0B",
+  themeColor: "#0B2A5B",
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.avmsmart.in"),
+  metadataBase: new URL(COMPANY_DETAILS.domain),
   title: {
-    default: "AVM Smart | Website & Mobile App Development Solutions",
-    template: "%s | AVM Smart",
+    default: "AVM Smart Solutions | Digital Solutions for Real Business Growth",
+    template: "%s | AVM Smart Solutions",
   },
   description:
-    "AVM Smart provides software and digital solutions including custom website development, mobile app development, web applications, UI/UX design, SEO optimization, and website maintenance.",
+    "We design, develop, and deliver digital solutions that help businesses work smarter, grow faster, and create a better tomorrow.",
   keywords: [
     "AVM Smart",
-    "AVM Smart website",
+    "AVM Smart Solutions",
     "avmsmart.in",
     "Website Development",
     "Mobile App Development",
-    "Web Application Development",
     "UI/UX Design",
-    "SEO Optimization",
-    "Logo Design",
-    "Brand Identity",
-    "Website Maintenance",
-    "Custom Software Solutions",
+    "Digital Marketing",
+    "Cloud Solutions",
+    "Business Automation",
+    "Software Agency Hyderabad",
   ],
-  authors: [{ name: "AVM Smart", url: "https://www.avmsmart.in" }],
-  creator: "AVM Smart",
-  publisher: "AVM Smart",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
+  authors: [{ name: "AVM Smart Solutions", url: COMPANY_DETAILS.domain }],
+  creator: "AVM Smart Solutions",
+  publisher: "AVM Smart Solutions",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/icon.png",
+    apple: "/logo.png",
   },
   alternates: {
-    canonical: "https://www.avmsmart.in/",
+    canonical: COMPANY_DETAILS.domain,
   },
   openGraph: {
-    title: "AVM Smart | Website & Mobile App Development Solutions",
+    title: "AVM Smart Solutions | Digital Solutions for Real Growth",
     description:
-      "High-performance websites, mobile apps, and custom software engineered for modern business growth.",
-    url: "https://www.avmsmart.in/",
-    siteName: "AVM Smart",
+      "We design, develop, and deliver digital solutions that help businesses work smarter, grow faster, and create a better tomorrow.",
+    url: COMPANY_DETAILS.domain,
+    siteName: "AVM Smart Solutions",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "https://www.avmsmart.in/images/image1.png",
+        url: `${COMPANY_DETAILS.domain}/logo.png`,
         width: 1200,
         height: 630,
-        alt: "AVM Smart - Website & Mobile App Development Solutions",
+        alt: "AVM Smart Solutions Corporate Logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AVM Smart | Website & Mobile App Development Solutions",
+    title: "AVM Smart Solutions | Technology That Moves Business Forward",
     description:
-      "High-performance websites, mobile apps, and custom software engineered for modern business growth.",
-    images: ["https://www.avmsmart.in/images/image1.png"],
+      "We design, develop, and deliver digital solutions that help businesses work smarter, grow faster, and create a better tomorrow.",
+    images: [`${COMPANY_DETAILS.domain}/logo.png`],
   },
   robots: {
     index: true,
@@ -93,26 +83,29 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://www.avmsmart.in/#organization",
-      "name": "AVM Smart",
-      "url": "https://www.avmsmart.in/",
-      "logo": "https://www.avmsmart.in/favicon.ico",
-      "description":
-        "AVM Smart provides website development, mobile app development, custom software solutions, UI/UX design, SEO optimization, and website maintenance.",
-      "email": "contact@thefreelancingmind.com",
-      "sameAs": [
-        "https://www.linkedin.com/in/arekanti-anand-raju-2615a0377/",
-        "https://github.com/anandsri682",
-        "https://youtube.com/@mr_anandtechintelugu",
-      ],
+      "@id": `${COMPANY_DETAILS.domain}/#organization`,
+      "name": COMPANY_DETAILS.name,
+      "url": COMPANY_DETAILS.domain,
+      "logo": `${COMPANY_DETAILS.domain}/logo.png`,
+      "description": COMPANY_DETAILS.subtitle,
+      "email": COMPANY_DETAILS.email,
+      "telephone": COMPANY_DETAILS.phone,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Cyber City, Hitech City",
+        "addressLocality": "Hyderabad",
+        "addressRegion": "Telangana",
+        "addressCountry": "IN"
+      },
+      "sameAs": Object.values(COMPANY_DETAILS.socials),
     },
     {
       "@type": "WebSite",
-      "@id": "https://www.avmsmart.in/#website",
-      "url": "https://www.avmsmart.in/",
-      "name": "AVM Smart",
+      "@id": `${COMPANY_DETAILS.domain}/#website`,
+      "url": COMPANY_DETAILS.domain,
+      "name": COMPANY_DETAILS.name,
       "publisher": {
-        "@id": "https://www.avmsmart.in/#organization",
+        "@id": `${COMPANY_DETAILS.domain}/#organization`,
       },
       "inLanguage": "en-US",
     },
@@ -125,17 +118,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="en" className="h-full antialiased">
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon.png" type="image/png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#F4F7FA] text-slate-900 selection:bg-[#087FF5] selection:text-white">
+        <Navbar />
+        <main className="flex-grow">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
