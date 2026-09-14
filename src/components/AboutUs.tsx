@@ -716,13 +716,19 @@ const TESTIMONIALS = [
 // ==========================================
 
 interface AboutUsProps {
-  onStartProject: () => void;
-  onContact: () => void;
+  onStartProject?: () => void;
+  onContact?: () => void;
 }
 
 export default function AboutUs({
-  onStartProject,
-  onContact,
+  onStartProject = () => {
+    const el = document.getElementById("contact");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  },
+  onContact = () => {
+    const el = document.getElementById("contact");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  },
 }: AboutUsProps) {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const contactRef = useRef<HTMLDivElement>(null);
