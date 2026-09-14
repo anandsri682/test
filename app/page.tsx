@@ -54,409 +54,446 @@ export default function HomePage() {
   return (
     <div className="w-full bg-[#F4F7FA] text-slate-900 font-sans selection:bg-[#087FF5] selection:text-white overflow-x-hidden">
       {/* ================================================================
-    1. HERO SECTION — CLEAN WHITE + CUSTOMER-FOCUSED QUOTES
+    HERO SECTION
+    WHITE BACKGROUND
+    NO IMAGE
+    NO BUTTONS
+    AUTO-ROTATING BUSINESS QUOTES
 ================================================================ */}
-<section className="relative w-full overflow-hidden bg-white text-slate-900">
+<section
+  id="hero"
+  className="relative w-full overflow-hidden bg-white text-slate-900"
+>
+  {/* ================================================================
+      QUOTE DATA
+  ================================================================ */}
+  {(() => {
+    const HERO_QUOTES = [
+      {
+        quote:
+          'Good technology should not just look impressive. It should make your business better.',
+        description:
+          'We create practical digital solutions around your business goals, customers, and everyday challenges.',
+      },
+      {
+        quote:
+          'Your business deserves technology that works as hard as you do.',
+        description:
+          'From websites to custom software, we build solutions designed to simplify work and support growth.',
+      },
+      {
+        quote:
+          'Great digital experiences turn visitors into customers and ideas into opportunities.',
+        description:
+          'We combine thoughtful design with reliable technology to help businesses move forward.',
+      },
+      {
+        quote:
+          'The right digital solution can change the way your business grows.',
+        description:
+          'We transform business ideas into simple, scalable, and customer-focused digital experiences.',
+      },
+      {
+        quote:
+          'We build technology with your business in mind — not just technology for technology’s sake.',
+        description:
+          'Every solution starts with understanding what your business actually needs.',
+      },
+    ];
 
-  {/* Subtle solid brand details */}
-  <div className="pointer-events-none absolute inset-0">
+    const [activeQuote, setActiveQuote] = React.useState(0);
 
-    <span className="absolute left-[5%] top-[24%] h-2 w-2 rounded-full bg-[#087FF5]" />
+    React.useEffect(() => {
+      const interval = setInterval(() => {
+        setActiveQuote((current) => (current + 1) % HERO_QUOTES.length);
+      }, 5000);
 
-    <span className="absolute right-[7%] top-[18%] h-2 w-2 rounded-full bg-[#13B89A]" />
+      return () => clearInterval(interval);
+    }, []);
 
-    <span className="absolute right-[10%] bottom-[20%] h-2 w-2 rounded-full bg-[#FF6A00]" />
+    return (
+      <>
+        {/* ============================================================
+            SUBTLE SOLID BRAND DETAILS
+        ============================================================ */}
+        <div className="pointer-events-none absolute inset-0">
 
-  </div>
+          <span className="absolute left-[5%] top-[22%] h-2 w-2 rounded-full bg-[#087FF5]" />
 
+          <span className="absolute right-[8%] top-[20%] h-2 w-2 rounded-full bg-[#13B89A]" />
 
-  <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-    <div className="grid min-h-[650px] grid-cols-1 items-center lg:grid-cols-12">
-
-
-      {/* ============================================================
-          LEFT — MAIN BUSINESS MESSAGE
-      ============================================================ */}
-      <motion.div
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{
-          duration: 0.75,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-        className="relative z-10 py-16 lg:col-span-7 lg:py-20"
-      >
-
-        {/* Brand label */}
-        <div className="mb-7 flex items-center gap-3">
-
-          <div className="flex items-center gap-1.5">
-            <span className="h-[3px] w-8 rounded-full bg-[#087FF5]" />
-            <span className="h-[3px] w-4 rounded-full bg-[#13B89A]" />
-            <span className="h-[3px] w-2 rounded-full bg-[#FF6A00]" />
-          </div>
-
-          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0B2A5B] sm:text-xs">
-            AVM SMART SOLUTIONS
-          </span>
-
-        </div>
-
-
-        {/* Main heading */}
-        <h1
-          className="
-            max-w-3xl
-            text-[44px]
-            font-black
-            leading-[1.04]
-            tracking-[-0.045em]
-            text-[#0B2A5B]
-            sm:text-[54px]
-            lg:text-[62px]
-            xl:text-[70px]
-          "
-        >
-
-          <span className="block">
-            Digital Solutions for
-          </span>
-
-          <span className="block text-[#087FF5]">
-            Real Business Growth
-          </span>
-
-        </h1>
-
-
-        {/* Solid brand divider */}
-        <div className="mt-5 flex items-center gap-2">
-
-          <span className="h-[3px] w-14 rounded-full bg-[#087FF5]" />
-
-          <span className="h-[3px] w-8 rounded-full bg-[#13B89A]" />
-
-          <span className="h-[3px] w-4 rounded-full bg-[#FF6A00]" />
+          <span className="absolute bottom-[18%] right-[9%] h-2 w-2 rounded-full bg-[#FF6A00]" />
 
         </div>
-
-
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.7,
-            delay: 0.2,
-          }}
-          className="
-            mt-7
-            max-w-xl
-            text-base
-            leading-7
-            text-slate-600
-            sm:text-lg
-            sm:leading-8
-          "
-        >
-          We build high-performance websites, mobile applications,
-          and custom digital solutions that help businesses work
-          smarter, reach more customers, and grow with confidence.
-        </motion.p>
 
 
         {/* ============================================================
-            CTA BUTTONS
+            MAIN HERO CONTAINER
         ============================================================ */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.7,
-            delay: 0.3,
-          }}
-          className="mt-9 flex flex-wrap items-center gap-4"
-        >
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
 
-          {/* Primary */}
-          <button
-            onClick={() => setProjectModalOpen(true)}
+          <div
             className="
-              group
-              inline-flex
+              grid
+              grid-cols-1
               items-center
-              justify-center
-              gap-2.5
-              rounded-lg
-              bg-[#087FF5]
-              px-8
-              py-4
-              text-sm
-              font-bold
-              text-white
-              shadow-[0_8px_22px_rgba(8,127,245,0.18)]
-              transition-all
-              duration-300
-              hover:-translate-y-0.5
-              hover:bg-[#066FD6]
-              hover:shadow-[0_12px_28px_rgba(8,127,245,0.24)]
+              gap-12
+              py-12
+              sm:gap-14
+              sm:py-16
+              lg:grid-cols-12
+              lg:gap-8
+              lg:py-20
+              xl:py-24
             "
           >
-            <span>Start a Project</span>
 
-            <Rocket
+            {/* ========================================================
+                LEFT SIDE — MAIN BUSINESS MESSAGE
+            ======================================================== */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                duration: 0.75,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="relative z-10 lg:col-span-7"
+            >
+
+              {/* Brand label */}
+              <div className="mb-6 flex items-center gap-3 sm:mb-7">
+
+                <div className="flex items-center gap-1.5">
+
+                  <span className="h-[3px] w-8 rounded-full bg-[#087FF5]" />
+
+                  <span className="h-[3px] w-4 rounded-full bg-[#13B89A]" />
+
+                  <span className="h-[3px] w-2 rounded-full bg-[#FF6A00]" />
+
+                </div>
+
+                <span
+                  className="
+                    text-[10px]
+                    font-bold
+                    uppercase
+                    tracking-[0.18em]
+                    text-[#0B2A5B]
+                    sm:text-xs
+                    sm:tracking-[0.2em]
+                  "
+                >
+                  AVM SMART SOLUTIONS
+                </span>
+
+              </div>
+
+
+              {/* ======================================================
+                  MAIN HEADING
+              ====================================================== */}
+              <h1
+                className="
+                  max-w-3xl
+                  text-[42px]
+                  font-black
+                  leading-[1.05]
+                  tracking-[-0.045em]
+                  text-[#0B2A5B]
+                  sm:text-[54px]
+                  lg:text-[62px]
+                  xl:text-[70px]
+                "
+              >
+
+                <span className="block">
+                  Digital Solutions for
+                </span>
+
+                <span className="block text-[#087FF5]">
+                  Real Business Growth
+                </span>
+
+              </h1>
+
+
+              {/* Solid brand line */}
+              <div className="mt-5 flex items-center gap-2">
+
+                <span className="h-[3px] w-14 rounded-full bg-[#087FF5]" />
+
+                <span className="h-[3px] w-8 rounded-full bg-[#13B89A]" />
+
+                <span className="h-[3px] w-4 rounded-full bg-[#FF6A00]" />
+
+              </div>
+
+
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.7,
+                  delay: 0.2,
+                }}
+                className="
+                  mt-6
+                  max-w-xl
+                  text-[15px]
+                  leading-7
+                  text-slate-600
+                  sm:mt-7
+                  sm:text-lg
+                  sm:leading-8
+                "
+              >
+                We build high-performance websites, mobile applications,
+                and custom digital solutions that help businesses work
+                smarter, reach more customers, and grow with confidence.
+              </motion.p>
+
+
+              {/* ======================================================
+                  SERVICES
+                  Compact on mobile
+              ====================================================== */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.35,
+                }}
+                className="
+                  mt-7
+                  flex
+                  flex-wrap
+                  items-center
+                  gap-x-4
+                  gap-y-2
+                  text-[11px]
+                  font-semibold
+                  text-slate-500
+                  sm:mt-9
+                  sm:gap-x-5
+                  sm:text-sm
+                "
+              >
+
+                <span>
+                  Web Development
+                </span>
+
+                <span className="h-1 w-1 rounded-full bg-[#087FF5]" />
+
+                <span>
+                  Mobile Applications
+                </span>
+
+                <span className="h-1 w-1 rounded-full bg-[#13B89A]" />
+
+                <span>
+                  Custom Software
+                </span>
+
+              </motion.div>
+
+            </motion.div>
+
+
+            {/* ========================================================
+                RIGHT SIDE — AUTO ROTATING QUOTES
+            ======================================================== */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                duration: 0.85,
+                delay: 0.15,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               className="
-                h-4
-                w-4
-                transition-transform
-                duration-300
-                group-hover:-translate-y-0.5
-                group-hover:translate-x-0.5
+                relative
+                flex
+                min-h-[330px]
+                items-center
+                lg:col-span-5
+                lg:min-h-[430px]
               "
-            />
-          </button>
+            >
+
+              {/* Large quote mark */}
+              <div
+                className="
+                  pointer-events-none
+                  absolute
+                  left-0
+                  top-0
+                  select-none
+                  text-[110px]
+                  font-black
+                  leading-none
+                  text-[#087FF5]/[0.08]
+                  sm:text-[150px]
+                "
+              >
+                “
+              </div>
 
 
-          {/* Secondary */}
-          <Link
-            href="/portfolio"
-            className="
-              group
-              inline-flex
-              items-center
-              justify-center
-              gap-2.5
-              rounded-lg
-              border
-              border-slate-300
-              bg-white
-              px-8
-              py-4
-              text-sm
-              font-bold
-              text-[#0B2A5B]
-              transition-all
-              duration-300
-              hover:border-[#087FF5]
-              hover:bg-[#F8FAFC]
-              hover:text-[#087FF5]
-            "
-          >
-            <span>View Our Work</span>
+              {/* Quote content */}
+              <div className="relative z-10 w-full max-w-lg">
 
-            <ArrowRight
-              className="
-                h-4
-                w-4
-                text-slate-500
-                transition-transform
-                duration-300
-                group-hover:translate-x-1
-                group-hover:text-[#087FF5]
-              "
-            />
-          </Link>
+                {/* Section label */}
+                <div className="mb-5 flex items-center gap-3 sm:mb-6">
 
-        </motion.div>
+                  <span className="h-[2px] w-10 bg-[#087FF5]" />
+
+                  <span
+                    className="
+                      text-[10px]
+                      font-bold
+                      uppercase
+                      tracking-[0.18em]
+                      text-[#087FF5]
+                      sm:text-xs
+                    "
+                  >
+                    OUR APPROACH
+                  </span>
+
+                </div>
 
 
-        {/* Services */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: 0.8,
-            delay: 0.45,
-          }}
-          className="
-            mt-9
-            flex
-            flex-wrap
-            items-center
-            gap-x-5
-            gap-y-2
-            text-xs
-            font-semibold
-            text-slate-500
-            sm:text-sm
-          "
-        >
+                {/* ====================================================
+                    AUTO CHANGING QUOTE
+                ==================================================== */}
+                <div className="relative min-h-[245px] sm:min-h-[270px]">
 
-          <span>Web Development</span>
+                  <motion.div
+                    key={activeQuote}
+                    initial={{
+                      opacity: 0,
+                      y: 15,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    transition={{
+                      duration: 0.55,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="absolute left-0 right-0 top-0"
+                  >
 
-          <span className="h-1 w-1 rounded-full bg-[#087FF5]" />
-
-          <span>Mobile Applications</span>
-
-          <span className="h-1 w-1 rounded-full bg-[#13B89A]" />
-
-          <span>Custom Software</span>
-
-        </motion.div>
-
-      </motion.div>
-
-
-      {/* ============================================================
-          RIGHT — BUSINESS QUOTES
-          NO IMAGE / NO GRADIENT / NO CARD STACK
-      ============================================================ */}
-      <motion.div
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{
-          duration: 0.9,
-          delay: 0.2,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-        className="
-          relative
-          flex
-          min-h-[420px]
-          items-center
-          justify-center
-          lg:col-span-5
-          lg:min-h-[560px]
-        "
-      >
-
-        {/* Large quotation mark */}
-        <div
-          className="
-            absolute
-            left-[5%]
-            top-[8%]
-            select-none
-            text-[150px]
-            font-black
-            leading-none
-            text-[#087FF5]/[0.08]
-            sm:text-[190px]
-          "
-        >
-          “
-        </div>
+                    {/* Main quote */}
+                    <blockquote
+                      className="
+                        max-w-lg
+                        text-[24px]
+                        font-bold
+                        leading-[1.35]
+                        tracking-[-0.025em]
+                        text-[#0B2A5B]
+                        sm:text-[30px]
+                        lg:text-[32px]
+                      "
+                    >
+                      “{HERO_QUOTES[activeQuote].quote}”
+                    </blockquote>
 
 
-        {/* Quote content */}
-        <div className="relative z-10 max-w-md px-6 lg:px-8">
+                    {/* Solid divider */}
+                    <div className="mt-6 h-[2px] w-16 bg-[#13B89A]" />
 
-          {/* Small label */}
-          <div className="mb-6 flex items-center gap-3">
 
-            <span className="h-[2px] w-10 bg-[#087FF5]" />
+                    {/* Description */}
+                    <p
+                      className="
+                        mt-5
+                        max-w-md
+                        text-sm
+                        leading-6
+                        text-slate-600
+                        sm:text-base
+                        sm:leading-7
+                      "
+                    >
+                      {HERO_QUOTES[activeQuote].description}
+                    </p>
 
-            <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#087FF5]">
-              Our Approach
-            </span>
+
+                    {/* Company */}
+                    <div className="mt-6 border-l-[3px] border-[#FF6A00] pl-4">
+
+                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#0B2A5B]">
+                        AVM SMART SOLUTIONS
+                      </p>
+
+                    </div>
+
+                  </motion.div>
+
+                </div>
+
+
+                {/* ====================================================
+                    QUOTE INDICATORS
+                ==================================================== */}
+                <div className="mt-5 flex items-center gap-2">
+
+                  {HERO_QUOTES.map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      aria-label={`Show quote ${index + 1}`}
+                      onClick={() => setActiveQuote(index)}
+                      className={`
+                        h-[3px]
+                        rounded-full
+                        transition-all
+                        duration-300
+                        ${
+                          activeQuote === index
+                            ? 'w-8 bg-[#087FF5]'
+                            : 'w-3 bg-slate-300'
+                        }
+                      `}
+                    />
+                  ))}
+
+                </div>
+
+              </div>
+
+            </motion.div>
 
           </div>
 
-
-          {/* Main quote */}
-          <blockquote
-            className="
-              text-2xl
-              font-bold
-              leading-[1.35]
-              tracking-[-0.02em]
-              text-[#0B2A5B]
-              sm:text-3xl
-              lg:text-[34px]
-            "
-          >
-            “Good technology should not just look impressive.
-            It should make your business better.”
-          </blockquote>
-
-
-          {/* Quote line */}
-          <div className="mt-7 h-[2px] w-20 bg-[#13B89A]" />
-
-
-          {/* Supporting quote */}
-          <p className="mt-6 text-base leading-7 text-slate-600">
-            Your business has unique goals, challenges, and customers.
-            We create digital solutions around them — not the other way around.
-          </p>
-
-
-          {/* Second short quote */}
-          <div className="mt-8 border-l-[3px] border-[#FF6A00] pl-5">
-
-            <p className="text-sm font-semibold leading-6 text-[#0B2A5B] sm:text-base">
-              “We turn ideas into digital experiences that customers
-              remember and businesses can rely on.”
-            </p>
-
-            <p className="mt-2 text-xs font-bold uppercase tracking-wider text-slate-500">
-              AVM Smart Solutions
-            </p>
-
-          </div>
-
         </div>
 
 
-        {/* Decorative solid arrow */}
-        <div
-          className="
-            pointer-events-none
-            absolute
-            bottom-[8%]
-            right-[2%]
-            hidden
-            h-16
-            w-24
-            lg:block
-          "
-          style={{
-            clipPath:
-              'polygon(0 0, 65% 0, 100% 50%, 65% 100%, 0 100%, 35% 50%)',
-            background: '#087FF5',
-          }}
-        />
+        {/* ================================================================
+            BOTTOM BRAND LINE
+            NOT ABSOLUTE — PREVENTS MOBILE OVERLAP
+        ================================================================ */}
+        <div className="flex h-[3px] w-full">
 
-        {/* Small teal block */}
-        <div
-          className="
-            pointer-events-none
-            absolute
-            bottom-[12%]
-            right-[12%]
-            hidden
-            h-8
-            w-12
-            lg:block
-          "
-          style={{
-            clipPath:
-              'polygon(0 0, 65% 0, 100% 50%, 65% 100%, 0 100%, 35% 50%)',
-            background: '#13B89A',
-          }}
-        />
+          <div className="w-[45%] bg-[#087FF5]" />
 
-      </motion.div>
+          <div className="w-[30%] bg-[#13B89A]" />
 
-    </div>
+          <div className="flex-1 bg-[#FF6A00]" />
 
-  </div>
+        </div>
 
-
-  {/* ================================================================
-      BOTTOM SOLID BRAND LINE
-  ================================================================ */}
-  <div className="absolute bottom-0 left-0 right-0 flex h-[3px]">
-
-    <div className="w-[45%] bg-[#087FF5]" />
-
-    <div className="w-[30%] bg-[#13B89A]" />
-
-    <div className="flex-1 bg-[#FF6A00]" />
-
-  </div>
-
+      </>
+    );
+  })()}
 </section>
 
       {/* 2. CORE SERVICES SECTION - VIBRANT 3-COLOR CARDS */}
