@@ -1,0 +1,68 @@
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#0B2A5B"/>
+  <rect width="800" height="450" fill="url(#bg_grad_hostel)" opacity="0.4"/>
+  
+  <path d="M0 50H800M0 100H800M0 150H800M0 200H800M0 250H800M0 300H800M0 350H800M0 400H800" stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="1"/>
+
+  <!-- UI Window -->
+  <rect x="60" y="50" width="680" height="350" rx="12" fill="#FFFFFF"/>
+  <rect x="60" y="50" width="680" height="40" rx="12" fill="#F1F5F9"/>
+  <circle cx="85" cy="70" r="6" fill="#FF5F56"/>
+  <circle cx="105" cy="70" r="6" fill="#FFBD2E"/>
+  <circle cx="125" cy="70" r="6" fill="#27C93F"/>
+  <rect x="160" y="60" width="300" height="20" rx="6" fill="#E2E8F0"/>
+  <text x="170" y="74" font-family="sans-serif" font-size="11" font-weight="600" fill="#64748B">hostel.avmsmart.in</text>
+
+  <!-- Content Sidebar -->
+  <rect x="60" y="90" width="150" height="310" fill="#F8FAFC"/>
+  <rect x="75" y="110" width="120" height="24" rx="6" fill="#087FF5" opacity="0.2"/>
+  <rect x="85" y="117" width="80" height="10" rx="3" fill="#087FF5"/>
+  <rect x="75" y="146" width="120" height="14" rx="4" fill="#E2E8F0"/>
+  <rect x="75" y="170" width="120" height="14" rx="4" fill="#E2E8F0"/>
+  <rect x="75" y="194" width="120" height="14" rx="4" fill="#E2E8F0"/>
+
+  <!-- Dashboard Overview -->
+  <g transform="translate(230, 110)">
+    <!-- Metric 1 -->
+    <rect x="0" y="0" width="150" height="70" rx="10" fill="#F0FDF4" stroke="#BBF7D0"/>
+    <text x="15" y="25" font-family="sans-serif" font-size="11" font-weight="600" fill="#166534">Total Occupancy</text>
+    <text x="15" y="52" font-family="sans-serif" font-size="22" font-weight="800" fill="#15803D">94.2%</text>
+
+    <!-- Metric 2 -->
+    <rect x="165" y="0" width="150" height="70" rx="10" fill="#EFF6FF" stroke="#BFDBFE"/>
+    <text x="180" y="25" font-family="sans-serif" font-size="11" font-weight="600" fill="#1E40AF">Active Residents</text>
+    <text x="180" y="52" font-family="sans-serif" font-size="22" font-weight="800" fill="#1D4ED8">480 / 510</text>
+
+    <!-- Metric 3 -->
+    <rect x="330" y="0" width="150" height="70" rx="10" fill="#FFF7ED" stroke="#FFEDD5"/>
+    <text x="345" y="25" font-family="sans-serif" font-size="11" font-weight="600" fill="#9A3412">Pending Tickets</text>
+    <text x="345" y="52" font-family="sans-serif" font-size="22" font-weight="800" fill="#C2410C">3 Open</text>
+
+    <!-- Room Table -->
+    <rect x="0" y="90" width="480" height="180" rx="10" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <rect x="0" y="90" width="480" height="35" rx="10" fill="#F8FAFC"/>
+    <text x="20" y="112" font-family="sans-serif" font-size="12" font-weight="700" fill="#0B2A5B">Room No</text>
+    <text x="120" y="112" font-family="sans-serif" font-size="12" font-weight="700" fill="#0B2A5B">Block</text>
+    <text x="220" y="112" font-family="sans-serif" font-size="12" font-weight="700" fill="#0B2A5B">Status</text>
+    <text x="360" y="112" font-family="sans-serif" font-size="12" font-weight="700" fill="#0B2A5B">Action</text>
+
+    <!-- Row 1 -->
+    <text x="20" y="145" font-family="sans-serif" font-size="11" font-weight="600" fill="#334155">Room 101</text>
+    <text x="120" y="145" font-family="sans-serif" font-size="11" font-weight="500" fill="#64748B">Block A</text>
+    <rect x="220" y="132" width="70" height="18" rx="4" fill="#DCFCE7"/>
+    <text x="232" y="145" font-family="sans-serif" font-size="10" font-weight="700" fill="#166534">Occupied</text>
+
+    <!-- Row 2 -->
+    <text x="20" y="180" font-family="sans-serif" font-size="11" font-weight="600" fill="#334155">Room 102</text>
+    <text x="120" y="180" font-family="sans-serif" font-size="11" font-weight="500" fill="#64748B">Block A</text>
+    <rect x="220" y="167" width="70" height="18" rx="4" fill="#FEF3C7"/>
+    <text x="230" y="180" font-family="sans-serif" font-size="10" font-weight="700" fill="#92400E">Available</text>
+  </g>
+
+  <defs>
+    <linearGradient id="bg_grad_hostel" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#087FF5"/>
+      <stop offset="1" stop-color="#FF6A00"/>
+    </linearGradient>
+  </defs>
+</svg>

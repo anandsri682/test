@@ -20,7 +20,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-white text-[#071A33] border-t border-slate-200">
+    <footer className="bg-white text-[#071A33] border-t border-slate-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
 
@@ -138,6 +138,15 @@ export default function Footer() {
                   className="hover:text-[#087FF5] transition-colors py-1 inline-block"
                 >
                   Solutions
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/demos"
+                  className="hover:text-[#087FF5] transition-colors py-1 inline-block"
+                >
+                  Live Demos
                 </Link>
               </li>
 
@@ -278,7 +287,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Footer */}
-      <div className="border-t border-slate-200 bg-slate-50 py-6">
+      <div className="border-t border-slate-300 bg-red py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
 
           <p className="text-center sm:text-left">

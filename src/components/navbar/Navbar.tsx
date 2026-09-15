@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { label: 'Team', href: '/team', badge: 'Meet' },
   { label: 'Services', href: '/services', badge: 'Hot' },
   { label: 'Solutions', href: '/solutions' },
+  { label: 'Demos', href: '/demos', badge: 'Live' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },

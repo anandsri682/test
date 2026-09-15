@@ -1,0 +1,78 @@
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#0B2A5B"/>
+  <rect width="800" height="450" fill="url(#bg_grad)" opacity="0.4"/>
+  
+  <!-- Grid overlay -->
+  <path d="M0 50H800M0 100H800M0 150H800M0 200H800M0 250H800M0 300H800M0 350H800M0 400H800" stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="1"/>
+  <path d="M100 0V450M200 0V450M300 0V450M400 0V450M500 0V450M600 0V450M700 0V450" stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="1"/>
+
+  <!-- UI Window Container -->
+  <rect x="60" y="50" width="680" height="350" rx="12" fill="#FFFFFF"/>
+  
+  <!-- Window Header -->
+  <rect x="60" y="50" width="680" height="40" rx="12" fill="#F1F5F9"/>
+  <circle cx="85" cy="70" r="6" fill="#FF5F56"/>
+  <circle cx="105" cy="70" r="6" fill="#FFBD2E"/>
+  <circle cx="125" cy="70" r="6" fill="#27C93F"/>
+  <rect x="160" y="60" width="300" height="20" rx="6" fill="#E2E8F0"/>
+  <text x="170" y="74" font-family="sans-serif" font-size="11" font-weight="600" fill="#64748B">vegetable.avmsmart.in</text>
+
+  <!-- Sidebar -->
+  <rect x="60" y="90" width="140" height="310" fill="#F8FAFC"/>
+  <rect x="75" y="110" width="110" height="24" rx="6" fill="#67D63B" opacity="0.2"/>
+  <rect x="85" y="117" width="70" height="10" rx="3" fill="#67D63B"/>
+  <rect x="75" y="146" width="110" height="14" rx="4" fill="#E2E8F0"/>
+  <rect x="75" y="170" width="110" height="14" rx="4" fill="#E2E8F0"/>
+  <rect x="75" y="194" width="110" height="14" rx="4" fill="#E2E8F0"/>
+
+  <!-- Main Content Grid -->
+  <rect x="220" y="110" width="490" height="40" rx="8" fill="#F1F5F9"/>
+  <text x="235" y="134" font-family="sans-serif" font-size="14" font-weight="700" fill="#0B2A5B">Fresh Produce &amp; Wholesale Market</text>
+  <rect x="610" y="118" width="90" height="24" rx="6" fill="#087FF5"/>
+  <text x="625" y="134" font-family="sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">+ Add Item</text>
+
+  <!-- Product Cards -->
+  <g transform="translate(220, 165)">
+    <!-- Card 1 -->
+    <rect x="0" y="0" width="150" height="180" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="10" y="10" width="130" height="85" rx="8" fill="#E8F5E9"/>
+    <!-- Veg Icon -->
+    <circle cx="75" cy="52" r="22" fill="#67D63B"/>
+    <path d="M75 38C82 38 88 44 88 52C88 60 75 68 75 68C75 68 62 60 62 52C62 44 68 38 75 38Z" fill="#FFFFFF"/>
+    <rect x="15" y="105" width="100" height="12" rx="3" fill="#0B2A5B"/>
+    <rect x="15" y="123" width="60" height="10" rx="3" fill="#13B89A"/>
+    <rect x="15" y="145" width="120" height="24" rx="6" fill="#087FF5"/>
+    <text x="45" y="161" font-family="sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">Order Now</text>
+  </g>
+
+  <g transform="translate(390, 165)">
+    <!-- Card 2 -->
+    <rect x="0" y="0" width="150" height="180" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="10" y="10" width="130" height="85" rx="8" fill="#FFF3E0"/>
+    <circle cx="75" cy="52" r="22" fill="#FF6A00"/>
+    <circle cx="75" cy="52" r="14" fill="#FFFFFF"/>
+    <rect x="15" y="105" width="100" height="12" rx="3" fill="#0B2A5B"/>
+    <rect x="15" y="123" width="60" height="10" rx="3" fill="#FF6A00"/>
+    <rect x="15" y="145" width="120" height="24" rx="6" fill="#087FF5"/>
+    <text x="45" y="161" font-family="sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">Order Now</text>
+  </g>
+
+  <g transform="translate(560, 165)">
+    <!-- Card 3 -->
+    <rect x="0" y="0" width="150" height="180" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="10" y="10" width="130" height="85" rx="8" fill="#E0F2FE"/>
+    <circle cx="75" cy="52" r="22" fill="#087FF5"/>
+    <rect x="67" y="44" width="16" height="16" fill="#FFFFFF" rx="2"/>
+    <rect x="15" y="105" width="100" height="12" rx="3" fill="#0B2A5B"/>
+    <rect x="15" y="123" width="60" height="10" rx="3" fill="#087FF5"/>
+    <rect x="15" y="145" width="120" height="24" rx="6" fill="#087FF5"/>
+    <text x="45" y="161" font-family="sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">Order Now</text>
+  </g>
+
+  <defs>
+    <linearGradient id="bg_grad" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#087FF5"/>
+      <stop offset="1" stop-color="#13B89A"/>
+    </linearGradient>
+  </defs>
+</svg>

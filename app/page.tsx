@@ -2,6 +2,7 @@ import React from 'react';
 import Hero from '@/components/hero/Hero';
 import ServicesSection from '@/components/home/ServicesSection';
 import SolutionsSection from '@/components/home/SolutionsSection';
+import FeaturedDemosSection from '@/components/home/FeaturedDemosSection';
 import PortfolioSection from '@/components/home/PortfolioSection';
 import ReviewsSection from '@/components/home/ReviewsSection';
 import CTASection from '@/components/home/CTASection';
@@ -18,7 +19,10 @@ export default function HomePage() {
       {/* 3. Strategic Growth Partnership / Solutions Section */}
       <SolutionsSection />
 
-      {/* 4. Featured Work / Portfolio Section */}
+      {/* 4. Live Product Demos Showcase */}
+      <FeaturedDemosSection />
+
+      {/* 5. Featured Work / Portfolio Section */}
       <PortfolioSection />
 
       {/* 5. Dynamic Customer Reviews Marquee Section */}
