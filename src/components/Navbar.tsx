@@ -149,10 +149,10 @@ export default function Navbar() {
                 src="/logo.png"
                 alt="AVM Smart Solutions"
                 width={350}
-                height={50}
+                height={250}
                 priority
                 className="
-                  h-10
+                  h-15
                   w-auto
                   object-contain
                   transition-transform

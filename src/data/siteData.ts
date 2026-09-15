@@ -89,7 +89,8 @@ export const COMPANY_DETAILS = {
   whatsappUrl: "https://wa.me/919553357971",
   address: "Innovation and Incubation Center, G Pulla Reddy Engineering College, Nandyal Main Road, Kurnool, Andhra Pradesh 518007, India",
   googleMapsUrl: "https://maps.google.com/?q=G%20pulla%20Reddy%20Engineering%20College%20Near%20Pasupula%20Village,%20Kurnool%20-%20Nandyal,%20Main%20Road,%20Kurnool,%20Andhra%20Pradesh%20518007,%20India",
-  googleMapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3844.7554867566087!2d78.0772739!3d15.8168962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb5e2f75cf52541%3A0x6a05f187a4192b0!2sG.%20Pulla%20Reddy%20Engineering%20College!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
+  googleMapsEmbed:
+  'https://www.google.com/maps?q=G.Pulla+Reddy+Engineering+College,+G.Pulla+Reddy+Nagar,+Nandyal+Road,+Kurnool,+Andhra+Pradesh+518007&output=embed',
   socials: {
     linkedin: "https://www.linkedin.com/company/avmsmart",
     twitter: "https://twitter.com/avmsmart",
