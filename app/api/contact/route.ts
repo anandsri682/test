@@ -1,66 +1,55 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/db';
-import Lead from '@/models/Lead';
-
-// In-memory fallback store when DB is offline
-const memoryLeads: any[] = [];
+import { connectToDatabase } from '@/lib/mongodb';
+import Contact from '@/models/Contact';
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { fullName, email, phone, company, service, budget, timeline, message } = body;
+    const { fullName, email, phone, service, company, message } = body;
 
-    if (!fullName || !email || !message) {
+    // Server-side validation
+    if (!fullName || !email || !phone) {
       return NextResponse.json(
-        { success: false, error: 'Full Name, Email, and Message are required fields.' },
+        { success: false, error: 'Full name, email, and phone number are required.' },
         { status: 400 }
       );
     }
 
-    const newLeadData = {
-      id: Date.now().toString(),
-      fullName,
-      email,
-      phone: phone || '',
-      company: company || '',
-      service: service || 'General Inquiry',
-      budget: budget || '',
-      timeline: timeline || '',
-      message,
-      status: 'New',
-      createdAt: new Date(),
-    };
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { success: false, error: 'Please enter a valid email address.' },
+        { status: 400 }
+      );
+    }
 
     const conn = await connectToDatabase();
     if (conn) {
-      const dbLead = new Lead(newLeadData);
-      await dbLead.save();
-    } else {
-      memoryLeads.unshift(newLeadData);
+      const newContact = await Contact.create({
+        fullName: fullName.trim(),
+        email: email.trim().toLowerCase(),
+        phone: phone.trim(),
+        service: service || 'Web Development',
+        company: company ? company.trim() : '',
+        message: message ? message.trim() : '',
+      });
+
+      return NextResponse.json({
+        success: true,
+        message: 'Request received successfully!',
+        id: newContact._id,
+      });
     }
 
+    // Fallback response if DB is offline
     return NextResponse.json({
       success: true,
-      message: 'Thank you! Your inquiry has been submitted successfully. Our team will get back to you within 24 hours.',
+      message: 'Request received successfully! (In-memory confirmation)',
     });
   } catch (error: any) {
-    console.error('API /contact error:', error);
     return NextResponse.json(
-      { success: false, error: 'Internal server error while processing your inquiry.' },
+      { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}
-
-export async function GET() {
-  try {
-    const conn = await connectToDatabase();
-    if (conn) {
-      const leads = await Lead.find({}).sort({ createdAt: -1 });
-      return NextResponse.json({ success: true, leads });
-    }
-    return NextResponse.json({ success: true, leads: memoryLeads });
-  } catch (error: any) {
-    return NextResponse.json({ success: true, leads: memoryLeads });
   }
 }

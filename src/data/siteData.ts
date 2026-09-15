@@ -82,12 +82,12 @@ export const COMPANY_DETAILS = {
   domain: "https://www.avmsmart.in",
   tagline: "Digital Solutions for Real Business Growth",
   subtitle: "We build websites, applications and digital solutions that help your business scale faster and perform better.",
-  email: "AVMSmart.official@gmail.com",
+  email: "avmsmart.official@gmail.com",
   phones: ["8978040537", "8247329044", "9347495620"],
   phone: "8978040537",
   whatsappNumber: "9553357971",
   whatsappUrl: "https://wa.me/919553357971",
-  address: "Innovation and Incubation Center, G Pulla Reddy Engineering College, Near Pasupula Village, Kurnool - Nandyal Main Road, Kurnool, Andhra Pradesh 518007, India",
+  address: "Innovation and Incubation Center, G Pulla Reddy Engineering College, Nandyal Main Road, Kurnool, Andhra Pradesh 518007, India",
   googleMapsUrl: "https://maps.google.com/?q=G%20pulla%20Reddy%20Engineering%20College%20Near%20Pasupula%20Village,%20Kurnool%20-%20Nandyal,%20Main%20Road,%20Kurnool,%20Andhra%20Pradesh%20518007,%20India",
   googleMapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3844.7554867566087!2d78.0772739!3d15.8168962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb5e2f75cf52541%3A0x6a05f187a4192b0!2sG.%20Pulla%20Reddy%20Engineering%20College!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
   socials: {
@@ -559,7 +559,7 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     id: "1",
     name: "Sai Teja",
-    role: "Digital Solutions Partner",
+    role: "",
     company: "Business Solutions",
     quote: "Great experience working with AVM Smart. The team was supportive, professional, and focused on delivering a quality digital solution.",
     rating: 5
@@ -567,7 +567,7 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     id: "2",
     name: "Anjali",
-    role: "Web Application Client",
+    role: "",
     company: "E-Commerce Venture",
     quote: "AVM Smart understood our requirements clearly and delivered a clean and professional website with a smooth user experience.",
     rating: 5
@@ -575,7 +575,7 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     id: "3",
     name: "Venkatesh",
-    role: "Software Client",
+    role: "",
     company: "Enterprise Systems",
     quote: "The team communicated well throughout the project and provided a practical solution that matched our business requirements.",
     rating: 5
@@ -583,7 +583,7 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     id: "4",
     name: "Priya",
-    role: "UI/UX Project Lead",
+    role: "",
     company: "EdTech Platform",
     quote: "Very good experience with the AVM Smart team. Their attention to design, functionality, and responsiveness was impressive.",
     rating: 5
@@ -591,7 +591,7 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     id: "5",
     name: "Ramesh",
-    role: "Technical Client",
+    role: "",
     company: "Cloud & Mobile",
     quote: "Professional service and good technical support. The team was helpful throughout the development process.",
     rating: 5
@@ -599,7 +599,7 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     id: "6",
     name: "Karthik",
-    role: "App Development Client",
+    role: "",
     company: "Mobile Platform",
     quote: "AVM Smart provided a smooth development experience with good communication and attention to detail.",
     rating: 5
