@@ -20,6 +20,7 @@ import {
   Sparkles,
   CheckCircle2,
 } from "lucide-react";
+import { COMPANY_DETAILS } from "@/data/siteData";
 
 interface SocialPlatform {
   id: "whatsapp" | "instagram" | "youtube" | "linkedin" | "github" | "email";
@@ -45,11 +46,11 @@ const SOCIAL_PLATFORMS: SocialPlatform[] = [
     borderColor: "border-[#13B89A]/50",
     glowColor: "shadow-[#13B89A]/20",
     gradient: "from-[#13B89A]/20 to-[#13B89A]/10",
-    subtitle: "+91 98765 43210",
+    subtitle: "+91 95533 57971",
     metricLabel: "Response Time",
     metricValue: "Usually within 10 mins",
     actionText: "Chat on WhatsApp",
-    href: "https://wa.me/919876543210"
+    href: "https://wa.me/919553357971"
   },
   {
     id: "instagram",
@@ -115,11 +116,11 @@ const SOCIAL_PLATFORMS: SocialPlatform[] = [
     borderColor: "border-[#13B89A]/50",
     glowColor: "shadow-[#13B89A]/20",
     gradient: "from-[#13B89A]/20 to-[#13B89A]/10",
-    subtitle: "contact@thefreelancingmind.com",
+    subtitle: "AVMSmart.official@gmail.com",
     metricLabel: "Response",
     metricValue: "Within 24 Hours",
     actionText: "Send Email",
-    href: "mailto:contact@thefreelancingmind.com"
+    href: "mailto:AVMSmart.official@gmail.com"
   }
 ];
 
@@ -190,41 +191,68 @@ export default function ContactSection() {
 
           {/* Quick Contact Info Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            
+            {/* Email Card */}
             <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md">
               <Mail className="w-4 h-4 text-[#087FF5] shrink-0" />
               <div className="truncate">
                 <p className="text-[10px] text-slate-400 uppercase font-bold">Email</p>
-                <a href="mailto:contact@thefreelancingmind.com" className="text-xs font-bold text-white hover:text-[#087FF5] transition-colors truncate block">
-                  contact@thefreelancingmind.com
+                <a href={`mailto:${COMPANY_DETAILS.email}`} className="text-xs font-bold text-white hover:text-[#087FF5] transition-colors truncate block">
+                  {COMPANY_DETAILS.email}
                 </a>
               </div>
             </div>
 
+            {/* WhatsApp Card */}
             <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md">
-              <Phone className="w-4 h-4 text-[#13B89A] shrink-0" />
+              <FaWhatsapp className="w-4 h-4 text-[#13B89A] shrink-0" />
               <div>
-                <p className="text-[10px] text-slate-400 uppercase font-bold">Phone</p>
-                <a href="tel:+919876543210" className="text-xs font-bold text-white hover:text-[#13B89A] transition-colors">
-                  +91 98765 43210
+                <p className="text-[10px] text-slate-400 uppercase font-bold">WhatsApp</p>
+                <a href={COMPANY_DETAILS.whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-[#13B89A] hover:underline">
+                  +91 {COMPANY_DETAILS.whatsappNumber}
                 </a>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md">
-              <Clock className="w-4 h-4 text-[#FF6A00] shrink-0" />
-              <div>
-                <p className="text-[10px] text-slate-400 uppercase font-bold">Business Hours</p>
-                <p className="text-xs font-bold text-white">Mon – Fri (9 AM - 6 PM)</p>
+            {/* Phone Numbers Card */}
+            <div className="col-span-1 sm:col-span-2 p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md">
+              <div className="flex items-start gap-3">
+                <Phone className="w-4 h-4 text-[#FF6A00] shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Phone Numbers</p>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-bold text-white">
+                    {COMPANY_DETAILS.phones.map((p, idx) => (
+                      <a key={idx} href={`tel:${p}`} className="hover:text-[#FF6A00] transition-colors">
+                        +91 {p}
+                      </a>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md">
-              <MapPin className="w-4 h-4 text-[#087FF5] shrink-0" />
-              <div>
-                <p className="text-[10px] text-slate-400 uppercase font-bold">Location</p>
-                <p className="text-xs font-bold text-white">Hyderabad / Remote</p>
+            {/* Office Address Card */}
+            <div className="col-span-1 sm:col-span-2 p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md">
+              <div className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 text-[#087FF5] shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <p className="text-[10px] text-slate-400 uppercase font-bold">Official Office Address</p>
+                  <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                    {COMPANY_DETAILS.address}
+                  </p>
+                  <a
+                    href={COMPANY_DETAILS.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#13B89A] hover:underline pt-1"
+                  >
+                    <span>View on Google Maps</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
               </div>
             </div>
+
           </div>
 
           {/* Direct Project Request Form */}

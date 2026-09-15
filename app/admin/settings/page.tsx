@@ -12,9 +12,9 @@ export default function AdminSettingsPage() {
     secondaryColor: '#13B89A',
     accentColor: '#FF6A00',
     navyColor: '#0B2A5B',
-    contactEmail: 'contact@thefreelancingmind.com',
-    contactPhone: '+91 98765 43210',
-    officeAddress: 'Cyber City, Hitech City, Hyderabad, Telangana, India',
+    contactEmail: 'AVMSmart.official@gmail.com',
+    contactPhone: '8978040537',
+    officeAddress: 'Innovation and Incubation Center, G Pulla Reddy Engineering College, Near Pasupula Village, Kurnool - Nandyal Main Road, Kurnool, Andhra Pradesh 518007, India',
   });
 
   const [saving, setSaving] = useState(false);
@@ -54,7 +54,7 @@ export default function AdminSettingsPage() {
         setSavedSuccess(true);
         setTimeout(() => setSavedSuccess(false), 4000);
       }
-    } catch (e) {
+    } catch {
     } finally {
       setSaving(false);
     }

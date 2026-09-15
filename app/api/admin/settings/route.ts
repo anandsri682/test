@@ -7,9 +7,9 @@ const defaultSettings = {
   secondaryColor: '#13B89A',
   accentColor: '#FF6A00',
   navyColor: '#0B2A5B',
-  contactEmail: 'contact@thefreelancingmind.com',
-  contactPhone: '+91 98765 43210',
-  officeAddress: 'Cyber City, Hitech City, Hyderabad, Telangana, India',
+  contactEmail: 'AVMSmart.official@gmail.com',
+  contactPhone: '8978040537',
+  officeAddress: 'Innovation and Incubation Center, G Pulla Reddy Engineering College, Near Pasupula Village, Kurnool - Nandyal Main Road, Kurnool, Andhra Pradesh 518007, India',
 };
 
 export async function GET() {
@@ -20,7 +20,7 @@ export async function GET() {
       return NextResponse.json({ success: true, settings: settings || defaultSettings });
     }
     return NextResponse.json({ success: true, settings: defaultSettings });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ success: true, settings: defaultSettings });
   }
 }

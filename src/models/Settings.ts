@@ -16,9 +16,9 @@ const SettingsSchema: Schema = new Schema({
   secondaryColor: { type: String, default: '#13B89A' },
   accentColor: { type: String, default: '#FF6A00' },
   navyColor: { type: String, default: '#0B2A5B' },
-  contactEmail: { type: String, default: 'contact@thefreelancingmind.com' },
-  contactPhone: { type: String, default: '+91 98765 43210' },
-  officeAddress: { type: String, default: 'Cyber City, Hitech City, Hyderabad, Telangana, India' },
+  contactEmail: { type: String, default: 'AVMSmart.official@gmail.com' },
+  contactPhone: { type: String, default: '8978040537' },
+  officeAddress: { type: String, default: 'Innovation and Incubation Center, G Pulla Reddy Engineering College, Near Pasupula Village, Kurnool - Nandyal Main Road, Kurnool, Andhra Pradesh 518007, India' },
   updatedAt: { type: Date, default: Date.now }
 });
 

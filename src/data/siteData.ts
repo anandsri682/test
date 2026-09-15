@@ -72,7 +72,7 @@ export interface Testimonial {
   name: string;
   role: string;
   company: string;
-  avatar: string;
+  avatar?: string;
   rating: number;
 }
 
@@ -81,12 +81,15 @@ export const COMPANY_DETAILS = {
   brandName: "AVM Smart",
   domain: "https://www.avmsmart.in",
   tagline: "Digital Solutions for Real Business Growth",
-  subtitle: "We build websites, applications and digital solutions. Solutions that help your business scale faster and perform better.",
-  email: "contact@thefreelancingmind.com",
-  phone: "+91 98765 43210",
-  address: "Cyber City, Hitech City, Hyderabad, Telangana, India",
-  googleMapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.299597371587!2d78.3802773!3d17.4452814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9158f201b205%3A0x11bbe7be7792411b!2sHITEC%20City%2C%20Hyderabad%2C%20Telangana!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
-  whatsappNumber: "919876543210",
+  subtitle: "We build websites, applications and digital solutions that help your business scale faster and perform better.",
+  email: "AVMSmart.official@gmail.com",
+  phones: ["8978040537", "8247329044", "9347495620"],
+  phone: "8978040537",
+  whatsappNumber: "9553357971",
+  whatsappUrl: "https://wa.me/919553357971",
+  address: "Innovation and Incubation Center, G Pulla Reddy Engineering College, Near Pasupula Village, Kurnool - Nandyal Main Road, Kurnool, Andhra Pradesh 518007, India",
+  googleMapsUrl: "https://maps.google.com/?q=G%20pulla%20Reddy%20Engineering%20College%20Near%20Pasupula%20Village,%20Kurnool%20-%20Nandyal,%20Main%20Road,%20Kurnool,%20Andhra%20Pradesh%20518007,%20India",
+  googleMapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3844.7554867566087!2d78.0772739!3d15.8168962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb5e2f75cf52541%3A0x6a05f187a4192b0!2sG.%20Pulla%20Reddy%20Engineering%20College!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
   socials: {
     linkedin: "https://www.linkedin.com/company/avmsmart",
     twitter: "https://twitter.com/avmsmart",
@@ -555,56 +558,50 @@ export const TEAM_MEMBERS: TeamMember[] = [
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: "1",
-    quote: "AVM Smart delivered our portal ahead of schedule. Outstanding technical quality, responsive communication, and exceptional support!",
-    name: "Rajesh Mehta",
-    role: "Director, City Travels",
-    company: "City Travels",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
+    name: "Sai Teja",
+    role: "Digital Solutions Partner",
+    company: "Business Solutions",
+    quote: "Great experience working with AVM Smart. The team was supportive, professional, and focused on delivering a quality digital solution.",
     rating: 5
   },
   {
     id: "2",
-    quote: "They understood our complex requirements perfectly and built an intuitive, high-converting digital platform.",
-    name: "Sneha Reddy",
-    role: "Director, EduTrack",
-    company: "EduTrack Systems",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop",
+    name: "Anjali",
+    role: "Web Application Client",
+    company: "E-Commerce Venture",
+    quote: "AVM Smart understood our requirements clearly and delivered a clean and professional website with a smooth user experience.",
     rating: 5
   },
   {
     id: "3",
-    quote: "The enterprise mobile app engineered by AVM Smart boosted our customer retention by over 200%. Highly recommended!",
-    name: "Vikram Kapoor",
-    role: "VP Engineering, Foodie Global",
-    company: "Foodie Global",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop",
+    name: "Venkatesh",
+    role: "Software Client",
+    company: "Enterprise Systems",
+    quote: "The team communicated well throughout the project and provided a practical solution that matched our business requirements.",
     rating: 5
   },
   {
     id: "4",
-    quote: "Working with Anand and the AVM Smart team was seamless. They engineered a modern architecture that handles our peak traffic effortlessly.",
-    name: "Ananya Sharma",
-    role: "Product Manager, HealthCare Pro",
-    company: "HealthCare Alliance",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop",
+    name: "Priya",
+    role: "UI/UX Project Lead",
+    company: "EdTech Platform",
+    quote: "Very good experience with the AVM Smart team. Their attention to design, functionality, and responsiveness was impressive.",
     rating: 5
   },
   {
     id: "5",
-    quote: "Their Java Full Stack and React expertise is top tier. Our custom ERP system was delivered with bank-grade security.",
-    name: "Karthik Varma",
-    role: "Chief Technology Officer",
-    company: "Apex RealEstate",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop",
+    name: "Ramesh",
+    role: "Technical Client",
+    company: "Cloud & Mobile",
+    quote: "Professional service and good technical support. The team was helpful throughout the development process.",
     rating: 5
   },
   {
     id: "6",
-    quote: "AVM Smart Solutions transformed our online presence. Page speed went from 4 seconds to under 800ms!",
-    name: "Priya Sundaram",
-    role: "Head of Marketing",
-    company: "RetailStore Global",
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop",
+    name: "Karthik",
+    role: "App Development Client",
+    company: "Mobile Platform",
+    quote: "AVM Smart provided a smooth development experience with good communication and attention to detail.",
     rating: 5
   }
 ];

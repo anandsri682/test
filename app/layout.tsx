@@ -13,7 +13,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(COMPANY_DETAILS.domain),
   title: {
-    default: "AVM Smart Solutions | Digital Solutions for Real Business Growth",
+    default: "AVM Smart Solutions | Digital Solutions for Real Growth",
     template: "%s | AVM Smart Solutions",
   },
   description:
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
     "UI/UX Design",
     "Digital Marketing",
     "Cloud Solutions",
-    "Business Automation",
-    "Software Agency Hyderabad",
+    "Software Agency Kurnool",
+    "G Pulla Reddy Engineering College Incubation",
   ],
   authors: [{ name: "AVM Smart Solutions", url: COMPANY_DETAILS.domain }],
   creator: "AVM Smart Solutions",
@@ -89,12 +89,13 @@ const jsonLd = {
       "logo": `${COMPANY_DETAILS.domain}/logo.png`,
       "description": COMPANY_DETAILS.subtitle,
       "email": COMPANY_DETAILS.email,
-      "telephone": COMPANY_DETAILS.phone,
+      "telephone": "+91-8978040537",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "Cyber City, Hitech City",
-        "addressLocality": "Hyderabad",
-        "addressRegion": "Telangana",
+        "streetAddress": "Innovation and Incubation Center, G Pulla Reddy Engineering College, Near Pasupula Village, Kurnool - Nandyal Main Road",
+        "addressLocality": "Kurnool",
+        "addressRegion": "Andhra Pradesh",
+        "postalCode": "518007",
         "addressCountry": "IN"
       },
       "sameAs": Object.values(COMPANY_DETAILS.socials),
