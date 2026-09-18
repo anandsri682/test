@@ -4,7 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Download, Search, Eye, X } from 'lucide-react';
+import { ArrowLeft, Download, Search, Eye, X, Trash2 } from 'lucide-react';
+import { getApiUrl } from '@/lib/api';
 
 export default function AdminLeadsPage() {
   const router = useRouter();
@@ -19,7 +20,11 @@ export default function AdminLeadsPage() {
       return;
     }
 
-    fetch('/api/contact')
+    fetch(getApiUrl('/api/contact'), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.leads) {
@@ -30,15 +35,38 @@ export default function AdminLeadsPage() {
   }, [router]);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
+    const token = localStorage.getItem('avm_admin_token');
     setLeads((prev) =>
       prev.map((l) => (l._id === id || l.id === id ? { ...l, status: newStatus } : l))
     );
 
     try {
-      await fetch('/api/admin/leads', {
+      await fetch(getApiUrl('/api/admin/leads'), {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ id, status: newStatus }),
+      });
+    } catch (e) {}
+  };
+
+  const handleDeleteLead = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this contact submission?')) return;
+    const token = localStorage.getItem('avm_admin_token');
+
+    setLeads((prev) => prev.filter((l) => l._id !== id && l.id !== id));
+    if (selectedLead && (selectedLead._id === id || selectedLead.id === id)) {
+      setSelectedLead(null);
+    }
+
+    try {
+      await fetch(getApiUrl(`/api/contact?id=${id}`), {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
     } catch (e) {}
   };
@@ -161,13 +189,22 @@ export default function AdminLeadsPage() {
                       {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : 'Recent'}
                     </td>
                     <td className="p-4 text-right">
-                      <button
-                        onClick={() => setSelectedLead(lead)}
-                        className="p-1.5 bg-slate-800 hover:bg-blue-primary text-slate-300 hover:text-white rounded-lg transition-colors"
-                        title="View Full Brief"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => setSelectedLead(lead)}
+                          className="p-1.5 bg-slate-800 hover:bg-blue-primary text-slate-300 hover:text-white rounded-lg transition-colors"
+                          title="View Full Brief"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteLead(lead._id || lead.id)}
+                          className="p-1.5 bg-slate-800 hover:bg-rose-600 text-slate-300 hover:text-white rounded-lg transition-colors"
+                          title="Delete Contact Inquiry"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))

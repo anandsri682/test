@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { COMPANY_DETAILS, SERVICES } from '@/data/siteData';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle, Loader2, ExternalLink, MessageCircle } from 'lucide-react';
+import { getApiUrl } from '@/lib/api';
 
 export default function ContactClient() {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ export default function ContactClient() {
     setErrorMessage('');
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(getApiUrl('/api/contact'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

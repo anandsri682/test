@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Users, FileText, Settings as SettingsIcon, LogOut, CheckCircle, Clock } from 'lucide-react';
+import { getApiUrl } from '@/lib/api';
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -17,7 +18,11 @@ export default function AdminDashboardPage() {
       return;
     }
 
-    fetch('/api/contact')
+    fetch(getApiUrl('/api/contact'), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.leads) {

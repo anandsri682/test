@@ -124,6 +124,8 @@ const SOCIAL_PLATFORMS: SocialPlatform[] = [
   }
 ];
 
+import { getApiUrl } from '@/lib/api';
+
 export default function ContactSection() {
   const [activePlatform, setActivePlatform] = useState<SocialPlatform>(SOCIAL_PLATFORMS[0]);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", service: "Web Development", message: "" });
@@ -132,7 +134,7 @@ export default function ContactSection() {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await fetch('/api/contact', {
+      await fetch(getApiUrl('/api/contact'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

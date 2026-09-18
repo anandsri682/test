@@ -1,0 +1,24 @@
+# Render Blueprint Configuration for AVM Smart Backend
+services:
+  - type: web
+    name: avm-smart-backend
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false
+      - key: ADMIN_EMAIL
+        value: AVMSmart.admin@gmail.com
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        value: https://www.avmsmart.in

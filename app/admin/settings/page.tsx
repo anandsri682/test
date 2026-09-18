@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Save, CheckCircle, Loader2 } from 'lucide-react';
+import { getApiUrl } from '@/lib/api';
 
 export default function AdminSettingsPage() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function AdminSettingsPage() {
       return;
     }
 
-    fetch('/api/admin/settings')
+    fetch(getApiUrl('/api/admin/settings'))
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.settings) {
@@ -42,10 +43,15 @@ export default function AdminSettingsPage() {
     setSaving(true);
     setSavedSuccess(false);
 
+    const token = localStorage.getItem('avm_admin_token');
+
     try {
-      const res = await fetch('/api/admin/settings', {
+      const res = await fetch(getApiUrl('/api/admin/settings'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(settings),
       });
 

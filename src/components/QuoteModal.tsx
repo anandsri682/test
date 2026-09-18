@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { X, CheckCircle, AlertCircle, Loader2, Send } from 'lucide-react';
 import { SERVICES } from '@/data/siteData';
+import { getApiUrl } from '@/lib/api';
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -30,7 +31,7 @@ export default function QuoteModal({ isOpen, onClose, defaultService }: QuoteMod
     setErrorMessage('');
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(getApiUrl('/api/contact'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
