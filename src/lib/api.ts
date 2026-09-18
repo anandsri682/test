@@ -1,29 +1,18 @@
 /**
- * Utility function to construct absolute API endpoints.
- * Supports NEXT_PUBLIC_API_URL when frontend and backend are hosted on separate platforms (e.g., Vercel + Render).
- * Automatically falls back to the production Render backend URL in browser production environments if unconfigured.
+ * Centralized API URL constructor.
+ * Ensures all client-side network calls target the live Render backend URL directly:
+ * https://test-bsh2.onrender.com
  */
-const PRODUCTION_RENDER_BACKEND = 'https://test-bsh2.onrender.com';
+const DEFAULT_PRODUCTION_BACKEND = 'https://test-bsh2.onrender.com';
 
 export function getApiUrl(endpoint: string): string {
-  let baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+  const envUrl = process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL.trim() : '';
+  const baseUrl = envUrl || DEFAULT_PRODUCTION_BACKEND;
 
-  // In production browser environments (e.g. Vercel deployment), fallback to the Render backend URL
-  if (
-    !baseUrl &&
-    typeof window !== 'undefined' &&
-    window.location.hostname !== 'localhost' &&
-    window.location.hostname !== '127.0.0.1'
-  ) {
-    baseUrl = PRODUCTION_RENDER_BACKEND;
-  }
-
+  const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
 
-  if (baseUrl) {
-    const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-    return `${cleanBase}${cleanEndpoint}`;
-  }
-
-  return cleanEndpoint;
+  return `${cleanBase}${cleanEndpoint}`;
 }
+
+export default getApiUrl;

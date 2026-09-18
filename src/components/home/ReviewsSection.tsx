@@ -3,12 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import { Star, User } from 'lucide-react';
 import { TESTIMONIALS, Testimonial } from '@/data/siteData';
+import { getApiUrl } from '@/lib/api';
 
 export default function ReviewsSection() {
   const [reviews, setReviews] = useState<Testimonial[]>(TESTIMONIALS);
 
   useEffect(() => {
-    fetch('/api/reviews')
+    fetch(getApiUrl('/api/reviews'))
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.reviews && data.reviews.length > 0) {
