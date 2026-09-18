@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     if (!conn) {
       console.error('[Admin Login Failed]: Database connection failed.');
       return NextResponse.json(
-        { success: false, error: 'Database service unavailable. Please check MONGODB_URI.' },
+        { success: false, error: 'Database service unavailable. Please try again later.' },
         { status: 503, headers: corsHeaders }
       );
     }
