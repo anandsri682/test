@@ -14,12 +14,13 @@ export interface AdminPayload {
 }
 
 /**
- * Safely initializes / seeds the admin account into MongoDB Atlas.
+ * Safely initializes / seeds the admin account into MongoDB Atlas (`avmsmart` DB).
  * Never overwrites existing passwords on restart.
  * Uses environment variables ADMIN_EMAIL and ADMIN_PASSWORD.
  */
 export async function seedAdminAccount() {
-  const adminEmail = (process.env.ADMIN_EMAIL || 'AVMSmart.admin@gmail.com').toLowerCase().trim();
+  const rawAdminEmail = process.env.ADMIN_EMAIL || 'avmsmart.admin@gmail.com';
+  const adminEmail = rawAdminEmail.toLowerCase().trim();
   const adminPassword = process.env.ADMIN_PASSWORD || 'AVMSmart@2024#Admin';
 
   if (!adminEmail || !adminPassword) {
@@ -30,7 +31,11 @@ export async function seedAdminAccount() {
     const conn = await connectToDatabase();
     if (!conn) return null;
 
-    const existingAdmin = await Admin.findOne({ email: adminEmail });
+    // Case-insensitive query to prevent duplicates
+    const existingAdmin = await Admin.findOne({
+      email: { $regex: new RegExp('^' + adminEmail + '$', 'i') }
+    });
+
     if (existingAdmin) {
       return existingAdmin;
     }
@@ -42,7 +47,7 @@ export async function seedAdminAccount() {
       role: 'admin',
     });
 
-    console.log(`[Admin Seed]: Default admin identity seeded in MongoDB for ${adminEmail}`);
+    console.log(`[Admin Seed]: Default admin identity seeded in avmsmart database for ${adminEmail}`);
     return newAdmin;
   } catch (error: any) {
     console.error('[Admin Seed Error]:', error?.message || 'Failed to seed admin user');

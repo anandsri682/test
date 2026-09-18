@@ -24,9 +24,10 @@ export async function connectToDatabase(): Promise<typeof mongoose | null> {
   }
 
   if (!cached.promise) {
-    const opts = {
+    const opts: mongoose.ConnectOptions = {
       bufferCommands: false,
       serverSelectionTimeoutMS: 10000,
+      dbName: 'avmsmart', // Explicitly target avmsmart database
     };
 
     if (process.env.NODE_ENV === 'production' && !process.env.MONGODB_URI) {

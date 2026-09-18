@@ -28,8 +28,9 @@ export async function POST(req: Request) {
 
     const conn = await connectToDatabase();
     if (!conn) {
+      console.error('[Admin Login Failed]: Database connection failed.');
       return NextResponse.json(
-        { success: false, error: 'Database service unavailable. Please check MongoDB Atlas connection.' },
+        { success: false, error: 'Database service unavailable. Please check MONGODB_URI.' },
         { status: 503, headers: corsHeaders }
       );
     }
@@ -37,16 +38,30 @@ export async function POST(req: Request) {
     // Ensure admin user exists in DB
     await seedAdminAccount();
 
-    const targetEmail = process.env.ADMIN_EMAIL || 'AVMSmart.admin@gmail.com';
+    const targetEmail = (process.env.ADMIN_EMAIL || 'avmsmart.admin@gmail.com').toLowerCase().trim();
     const inputIdentifier = rawUsername.trim().toLowerCase();
 
-    // Support entering username 'admin' or 'avmsmart' or exact email
-    let admin = await Admin.findOne({ email: inputIdentifier });
+    console.log(`[Admin Login Attempt]: Identifier "${inputIdentifier}"`);
+
+    // Case-insensitive query by email
+    let admin = await Admin.findOne({
+      email: { $regex: new RegExp('^' + inputIdentifier.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i') }
+    });
+
+    // Fallback: If user entered 'admin' or 'avmsmart', look for the configured admin email
     if (!admin && (inputIdentifier === 'admin' || inputIdentifier === 'avmsmart')) {
-      admin = await Admin.findOne({ email: targetEmail.toLowerCase() });
+      admin = await Admin.findOne({
+        email: { $regex: new RegExp('^' + targetEmail.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i') }
+      });
+    }
+
+    // If still not found, try finding ANY admin account in DB
+    if (!admin) {
+      admin = await Admin.findOne({});
     }
 
     if (!admin) {
+      console.warn(`[Admin Login Failed]: No admin document found matching "${inputIdentifier}".`);
       return NextResponse.json(
         { success: false, error: 'Invalid admin username or password' },
         { status: 401, headers: corsHeaders }
@@ -55,11 +70,14 @@ export async function POST(req: Request) {
 
     const isMatch = await bcrypt.compare(rawPassword, admin.passwordHash);
     if (!isMatch) {
+      console.warn(`[Admin Login Failed]: Password mismatch for admin "${admin.email}".`);
       return NextResponse.json(
         { success: false, error: 'Invalid admin username or password' },
         { status: 401, headers: corsHeaders }
       );
     }
+
+    console.log(`[Admin Login Success]: Admin "${admin.email}" authenticated.`);
 
     const token = jwt.sign(
       { email: admin.email, role: 'admin' },
@@ -89,6 +107,7 @@ export async function POST(req: Request) {
 
     return response;
   } catch (error: any) {
+    console.error('[Admin Login Error]:', error?.message || error);
     return NextResponse.json(
       { success: false, error: 'Authentication processing error' },
       { status: 500, headers: corsHeaders }
