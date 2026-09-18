@@ -13,57 +13,63 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(COMPANY_DETAILS.domain),
   title: {
-    default: "AVM Smart Solutions | Digital Solutions for Real Growth",
-    template: "%s | AVM Smart Solutions",
+    default: "AVM Smart | Web, App & Digital Solutions",
+    template: "%s | AVM Smart",
   },
   description:
-    "We design, develop, and deliver digital solutions that help businesses work smarter, grow faster, and create a better tomorrow.",
+    "AVM Smart is a digital solutions company offering website development, mobile app development, custom software, SEO and technology solutions for businesses.",
   keywords: [
     "AVM Smart",
     "AVM Smart Solutions",
+    "avmsmart",
     "avmsmart.in",
-    "Website Development",
-    "Mobile App Development",
-    "UI/UX Design",
-    "Digital Marketing",
-    "Cloud Solutions",
-    "Software Agency Kurnool",
-    "G Pulla Reddy Engineering College Incubation",
+    "Website Development Kurnool",
+    "Mobile App Development Kurnool",
+    "Software Development Company Kurnool",
+    "Web Design Kurnool",
+    "SEO Services Kurnool",
+    "Digital Solutions Kurnool",
+    "AVM Smart Solutions Location Kurnool",
   ],
-  authors: [{ name: "AVM Smart Solutions", url: COMPANY_DETAILS.domain }],
-  creator: "AVM Smart Solutions",
+  authors: [{ name: "AVM Smart", url: COMPANY_DETAILS.domain }],
+  creator: "AVM Smart",
   publisher: "AVM Smart Solutions",
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/icon.png",
-    apple: "/logo.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
   alternates: {
     canonical: COMPANY_DETAILS.domain,
   },
   openGraph: {
-    title: "AVM Smart Solutions | Digital Solutions for Real Growth",
+    title: "AVM Smart | Web, App & Digital Solutions",
     description:
-      "We design, develop, and deliver digital solutions that help businesses work smarter, grow faster, and create a better tomorrow.",
+      "AVM Smart is a digital solutions company offering website development, mobile app development, custom software, SEO and technology solutions for businesses.",
     url: COMPANY_DETAILS.domain,
-    siteName: "AVM Smart Solutions",
+    siteName: "AVM Smart",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: `${COMPANY_DETAILS.domain}/logo.png`,
+        url: `${COMPANY_DETAILS.domain}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "AVM Smart Solutions Corporate Logo",
+        alt: "AVM Smart Corporate Logo & Identity",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AVM Smart Solutions | Technology That Moves Business Forward",
+    title: "AVM Smart | Web, App & Digital Solutions",
     description:
-      "We design, develop, and deliver digital solutions that help businesses work smarter, grow faster, and create a better tomorrow.",
-    images: [`${COMPANY_DETAILS.domain}/logo.png`],
+      "AVM Smart is a digital solutions company offering website development, mobile app development, custom software, SEO and technology solutions for businesses.",
+    images: [`${COMPANY_DETAILS.domain}/og-image.png`],
   },
   robots: {
     index: true,
@@ -84,27 +90,56 @@ const jsonLd = {
     {
       "@type": "Organization",
       "@id": `${COMPANY_DETAILS.domain}/#organization`,
-      "name": COMPANY_DETAILS.name,
-      "url": COMPANY_DETAILS.domain,
+      "name": "AVM Smart",
+      "alternateName": "AVM Smart Solutions",
+      "url": `${COMPANY_DETAILS.domain}/`,
       "logo": `${COMPANY_DETAILS.domain}/logo.png`,
-      "description": COMPANY_DETAILS.subtitle,
+      "image": `${COMPANY_DETAILS.domain}/og-image.png`,
+      "description":
+        "AVM Smart is a digital solutions company providing website development, mobile app development, custom software, SEO and technology solutions for businesses.",
       "email": COMPANY_DETAILS.email,
       "telephone": "+91-8978040537",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "Innovation and Incubation Center, G Pulla Reddy Engineering College, Near Pasupula Village, Kurnool - Nandyal Main Road",
+        "streetAddress": "AVM Smart Solutions",
         "addressLocality": "Kurnool",
         "addressRegion": "Andhra Pradesh",
-        "postalCode": "518007",
-        "addressCountry": "IN"
+        "postalCode": "518002",
+        "addressCountry": "IN",
       },
       "sameAs": Object.values(COMPANY_DETAILS.socials),
     },
     {
+      "@type": "ProfessionalService",
+      "@id": `${COMPANY_DETAILS.domain}/#localbusiness`,
+      "name": "AVM Smart",
+      "alternateName": "AVM Smart Solutions",
+      "url": `${COMPANY_DETAILS.domain}/`,
+      "logo": `${COMPANY_DETAILS.domain}/logo.png`,
+      "image": `${COMPANY_DETAILS.domain}/og-image.png`,
+      "telephone": "+91-8978040537",
+      "email": COMPANY_DETAILS.email,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "AVM Smart Solutions",
+        "addressLocality": "Kurnool",
+        "addressRegion": "Andhra Pradesh",
+        "postalCode": "518002",
+        "addressCountry": "IN",
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 15.7749214,
+        "longitude": 78.0582479,
+      },
+      "priceRange": "$$",
+    },
+    {
       "@type": "WebSite",
       "@id": `${COMPANY_DETAILS.domain}/#website`,
-      "url": COMPANY_DETAILS.domain,
-      "name": COMPANY_DETAILS.name,
+      "url": `${COMPANY_DETAILS.domain}/`,
+      "name": "AVM Smart",
+      "alternateName": "AVM Smart Solutions",
       "publisher": {
         "@id": `${COMPANY_DETAILS.domain}/#organization`,
       },
@@ -122,7 +157,8 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.png" type="image/png" />
+        <link rel="icon" href="/icon.png" type="image/png" sizes="512x512" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

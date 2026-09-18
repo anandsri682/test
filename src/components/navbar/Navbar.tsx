@@ -4,19 +4,33 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronRight, Rocket } from 'lucide-react';
+import {
+  Menu,
+  X,
+  ChevronRight,
+  Rocket,
+  Home,
+  Info,
+  Users,
+  Briefcase,
+  Lightbulb,
+  Monitor,
+  FolderKanban,
+  FileText,
+  Mail,
+} from 'lucide-react';
 import QuoteModal from '@/components/QuoteModal';
 
 const NAV_ITEMS = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Team', href: '/team', badge: 'Meet' },
-  { label: 'Services', href: '/services', badge: 'Hot' },
-  { label: 'Solutions', href: '/solutions' },
-  { label: 'Demos', href: '/demos', badge: 'Live' },
-  { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Home', href: '/', icon: Home },
+  { label: 'About', href: '/about', icon: Info },
+  { label: 'Team', href: '/team', badge: 'Meet', icon: Users },
+  { label: 'Services', href: '/services', badge: 'Hot', icon: Briefcase },
+  { label: 'Solutions', href: '/solutions', icon: Lightbulb },
+  { label: 'Demos', href: '/demos', badge: 'Live', icon: Monitor },
+  { label: 'Portfolio', href: '/portfolio', icon: FolderKanban },
+  { label: 'Blog', href: '/blog', icon: FileText },
+  { label: 'Contact', href: '/contact', icon: Mail },
 ];
 
 export default function Navbar() {
@@ -487,78 +501,19 @@ export default function Navbar() {
 
 
           {/* ==========================================================
-              COMPANY INFORMATION
-          ========================================================== */}
-
-          <div className="px-5 pt-6">
-
-            <div
-              className="
-                flex
-                items-center
-                gap-3
-                border-b
-                border-slate-100
-                pb-5
-              "
-            >
-
-              <div
-                className="
-                  flex
-                  h-11
-                  w-11
-                  shrink-0
-                  items-center
-                  justify-center
-                  rounded-xl
-                  border
-                  border-slate-200
-                  bg-slate-50
-                "
-              >
-
-                <Image
-                  src="/logo.png"
-                  alt="AVM Smart"
-                  width={40}
-                  height={40}
-                  className="h-9 w-9 object-contain"
-                />
-
-              </div>
-
-
-              <div>
-
-                <p className="text-sm font-bold text-[#0B2A5B]">
-                  AVM Smart Solutions
-                </p>
-
-                <p className="mt-0.5 text-[11px] text-slate-500">
-                  Digital Solutions for Growth
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          {/* ==========================================================
               MOBILE LINKS
           ========================================================== */}
 
           <nav
             aria-label="Mobile navigation"
-            className="px-5 pt-5"
+            className="px-4 pt-3"
           >
 
             <div className="space-y-1">
 
               {NAV_ITEMS.map((item) => {
                 const active = isActive(item.href);
+                const IconComponent = item.icon;
 
                 return (
                   <Link
@@ -566,25 +521,43 @@ export default function Navbar() {
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className={`
+                      group
                       flex
-                      min-h-[52px]
+                      min-h-[44px]
                       items-center
                       justify-between
                       rounded-xl
-                      px-4
+                      px-3.5
+                      py-2.5
                       text-sm
                       transition-colors
                       duration-200
 
                       ${
                         active
-                          ? 'bg-[#087FF5] font-bold text-white shadow-[0_5px_15px_rgba(8,127,245,0.18)]'
+                          ? 'bg-[#087FF5]/10 font-bold text-[#087FF5]'
                           : 'font-medium text-[#0B2A5B] hover:bg-slate-50 hover:text-[#087FF5]'
                       }
                     `}
                   >
 
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-3">
+
+                      <IconComponent
+                        className={`
+                          h-4
+                          w-4
+                          shrink-0
+                          stroke-[1.8]
+                          transition-colors
+                          duration-200
+                          ${
+                            active
+                              ? 'text-[#087FF5]'
+                              : 'text-slate-400 group-hover:text-[#087FF5]'
+                          }
+                        `}
+                      />
 
                       <span>
                         {item.label}
@@ -602,7 +575,7 @@ export default function Navbar() {
 
                             ${
                               active
-                                ? 'bg-white/20 text-white'
+                                ? 'bg-[#087FF5] text-white'
                                 : 'bg-[#FF6A00]/10 text-[#F05A00]'
                             }
                           `}
@@ -618,10 +591,14 @@ export default function Navbar() {
                       className={`
                         h-4
                         w-4
+                        shrink-0
+                        transition-transform
+                        duration-200
+                        group-hover:translate-x-0.5
                         ${
                           active
-                            ? 'text-white'
-                            : 'text-slate-400'
+                            ? 'text-[#087FF5]'
+                            : 'text-slate-300 group-hover:text-[#087FF5]'
                         }
                       `}
                     />

@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { DEMOS } from "@/data/demos";
+import { SERVICES, SOLUTIONS, PORTFOLIO, BLOG_POSTS } from "@/data/siteData";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.avmsmart.in";
@@ -60,7 +61,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/privacy-policy`,
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/terms-and-conditions`,
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
+
+  const serviceRoutes: MetadataRoute.Sitemap = SERVICES.map((service) => ({
+    url: `${baseUrl}/services/${service.slug}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  const solutionRoutes: MetadataRoute.Sitemap = SOLUTIONS.map((solution) => ({
+    url: `${baseUrl}/solutions/${solution.slug}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
 
   const demoRoutes: MetadataRoute.Sitemap = DEMOS.map((demo) => ({
     url: `${baseUrl}/demos/${demo.slug}`,
@@ -69,5 +96,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  return [...staticRoutes, ...demoRoutes];
+  const portfolioRoutes: MetadataRoute.Sitemap = PORTFOLIO.map((item) => ({
+    url: `${baseUrl}/portfolio/${item.slug}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [
+    ...staticRoutes,
+    ...serviceRoutes,
+    ...solutionRoutes,
+    ...demoRoutes,
+    ...portfolioRoutes,
+    ...blogRoutes,
+  ];
 }

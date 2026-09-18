@@ -23,22 +23,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!demo) {
     return {
-      title: 'Demo Not Found | AVM Smart Solutions',
+      title: 'Demo Not Found | AVM Smart',
     };
   }
 
   return {
-    title: `${demo.name} Demo | AVM Smart Solutions`,
+    title: `${demo.name} | AVM Smart`,
     description: demo.shortDesc || demo.description,
     alternates: {
       canonical: `${COMPANY_DETAILS.domain}/demos/${demo.slug}`,
     },
     openGraph: {
-      title: `${demo.name} Live Demo | AVM Smart Solutions`,
+      title: `${demo.name} Demo | AVM Smart`,
       description: demo.shortDesc || demo.description,
       url: `${COMPANY_DETAILS.domain}/demos/${demo.slug}`,
-      siteName: COMPANY_DETAILS.name,
+      siteName: 'AVM Smart',
       type: 'website',
+      images: [`${COMPANY_DETAILS.domain}/og-image.png`],
     },
   };
 }

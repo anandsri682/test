@@ -2,8 +2,8 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | AVM Smart Solutions",
-  description: "Terms and conditions of service for AVM Smart Solutions.",
+  title: "Terms & Conditions | AVM Smart",
+  description: "Terms and conditions of service for AVM Smart.",
   alternates: { canonical: "https://www.avmsmart.in/terms-and-conditions" },
 };
 

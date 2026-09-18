@@ -8,13 +8,18 @@ export default function manifest(): MetadataRoute.Manifest {
       "AVM Smart provides website development, mobile app development, custom web applications, UI/UX design, and software solutions.",
     start_url: "/",
     display: "standalone",
-    background_color: "#07070a",
-    theme_color: "#F59E0B",
+    background_color: "#FFFFFF",
+    theme_color: "#0B2A5B",
     icons: [
       {
-        src: "/public\logo.png",
-        sizes: "any",
-        type: "image/x-icon",
+        src: "/icon.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        src: "/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
       },
     ],
   };

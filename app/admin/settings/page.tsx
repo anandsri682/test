@@ -14,7 +14,7 @@ export default function AdminSettingsPage() {
     navyColor: '#0B2A5B',
     contactEmail: 'AVMSmart.official@gmail.com',
     contactPhone: '8978040537',
-    officeAddress: 'Innovation and Incubation Center, G Pulla Reddy Engineering College, Near Pasupula Village, Kurnool - Nandyal Main Road, Kurnool, Andhra Pradesh 518007, India',
+    officeAddress: 'AVM Smart Solutions, Kurnool, Andhra Pradesh 518002, India',
   });
 
   const [saving, setSaving] = useState(false);

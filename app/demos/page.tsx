@@ -4,19 +4,20 @@ import DemosClient from '@/components/pages/DemosClient';
 import { COMPANY_DETAILS } from '@/data/siteData';
 
 export const metadata: Metadata = {
-  title: 'Live Product Demos | AVM Smart Solutions',
+  title: 'Live Product Demos | AVM Smart',
   description:
-    'Explore live demos of digital products, business applications, websites and custom software solutions developed by AVM Smart Solutions.',
+    'Explore live demos of digital products, business applications, websites and custom software solutions developed by AVM Smart.',
   alternates: {
     canonical: `${COMPANY_DETAILS.domain}/demos`,
   },
   openGraph: {
-    title: 'Live Product Demos | AVM Smart Solutions',
+    title: 'Live Product Demos | AVM Smart',
     description:
-      'Explore live demos of digital products, business applications, websites and custom software solutions developed by AVM Smart Solutions.',
+      'Explore live demos of digital products, business applications, websites and custom software solutions developed by AVM Smart.',
     url: `${COMPANY_DETAILS.domain}/demos`,
-    siteName: COMPANY_DETAILS.name,
+    siteName: 'AVM Smart',
     type: 'website',
+    images: [`${COMPANY_DETAILS.domain}/og-image.png`],
   },
 };
 

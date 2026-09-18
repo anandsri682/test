@@ -198,12 +198,10 @@ export default function ContactClient() {
                   <MapPin className="w-6 h-6" />
                 </div>
                 <div className="space-y-2">
-                  <h4 className="font-black text-slate-900 text-sm">Official Office Address</h4>
+                  <h4 className="font-black text-slate-900 text-sm">Official Registered Location</h4>
                   <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                    Innovation and Incubation Center<br />
-                    G Pulla Reddy Engineering College<br />
-                    Near Pasupula Village, Kurnool - Nandyal Main Road,<br />
-                    Kurnool, Andhra Pradesh 518007, India
+                    AVM Smart Solutions<br />
+                    Kurnool, Andhra Pradesh 518002, India
                   </p>
                   <a
                     href={COMPANY_DETAILS.googleMapsUrl}

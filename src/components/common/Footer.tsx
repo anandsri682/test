@@ -213,13 +213,9 @@ export default function Footer() {
 
                 <div className="space-y-1.5">
                   <p className="leading-relaxed font-medium text-slate-700">
-                    Innovation and Incubation Center
+                    AVM Smart Solutions
                     <br />
-                    G Pulla Reddy Engineering College
-                    <br />
-                    Near Pasupula Village, Kurnool - Nandyal Main Road,
-                    <br />
-                    Kurnool, Andhra Pradesh 518007, India
+                    Kurnool, Andhra Pradesh 518002, India
                   </p>
 
                   <a
@@ -287,7 +283,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Footer */}
-      <div className="border-t border-slate-300 bg-red py-6">
+      <div className="border-t border-slate-300 bg-slate-50/60 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
 
           <p className="text-center sm:text-left">
@@ -308,6 +304,15 @@ export default function Footer() {
             >
               Terms & Conditions
             </Link>
+
+            <a
+              href="/llms.txt"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#087FF5] transition-colors"
+            >
+              AI Information
+            </a>
           </div>
 
         </div>

@@ -2,8 +2,8 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | AVM Smart Solutions",
-  description: "Privacy Policy and data protection guidelines for AVM Smart Solutions.",
+  title: "Privacy Policy | AVM Smart",
+  description: "Privacy Policy and data protection guidelines for AVM Smart.",
   alternates: { canonical: "https://www.avmsmart.in/privacy-policy" },
 };
 

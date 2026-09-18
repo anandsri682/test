@@ -87,10 +87,12 @@ export const COMPANY_DETAILS = {
   phone: "8978040537",
   whatsappNumber: "9553357971",
   whatsappUrl: "https://wa.me/919553357971",
-  address: "Innovation and Incubation Center, G Pulla Reddy Engineering College, Nandyal Main Road, Kurnool, Andhra Pradesh 518007, India",
-  googleMapsUrl: "https://maps.google.com/?q=G%20pulla%20Reddy%20Engineering%20College%20Near%20Pasupula%20Village,%20Kurnool%20-%20Nandyal,%20Main%20Road,%20Kurnool,%20Andhra%20Pradesh%20518007,%20India",
+  address: "AVM Smart Solutions, Kurnool, Andhra Pradesh 518002, India",
+  googleMapsUrl: "https://www.google.com/maps/place/AVM+Smart+Solutions/@15.7749214,78.0576042,210m/data=!3m1!1e3!4m14!1m7!3m6!1s0x3bb5ddb0c23c9fbd:0x91164f2ffc1454d8!2sAVM+Smart+Solutions!8m2!3d15.7749214!4d78.0582479!16s%2Fg%2F11nw2j8j9t!3m5!1s0x3bb5ddb0c23c9fbd:0x91164f2ffc1454d8!8m2!3d15.7749214!4d78.0582479!16s%2Fg%2F11nw2j8j9t?entry=ttu&g_ep=EgoyMDI2MDkxNS4wIKXMDSoASAFQAw%3D%3D",
   googleMapsEmbed:
-  'https://www.google.com/maps?q=G.Pulla+Reddy+Engineering+College,+G.Pulla+Reddy+Nagar,+Nandyal+Road,+Kurnool,+Andhra+Pradesh+518007&output=embed',
+    "https://maps.google.com/maps?q=AVM+Smart+Solutions,+15.7749214,78.0582479&t=&z=17&ie=UTF8&iwloc=&output=embed",
+  latitude: 15.7749214,
+  longitude: 78.0582479,
   socials: {
     linkedin: "https://www.linkedin.com/company/avmsmart",
     twitter: "https://twitter.com/avmsmart",

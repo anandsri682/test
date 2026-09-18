@@ -22,7 +22,7 @@ export default function Hero() {
 
             {/* Main Headline - Solid Dark Navy (#0B2A5B) Only */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-[#0B2A5B]">
-              Digital Solutions for Real Business Growth
+              AVM Smart — Digital Solutions for Real Business Growth
             </h1>
 
             {/* Supporting Paragraph */}
