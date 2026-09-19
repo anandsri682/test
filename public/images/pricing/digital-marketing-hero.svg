@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" fill="none" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradDM" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064E3B"/>
+      <stop offset="50%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#065F46"/>
+    </linearGradient>
+    <linearGradient id="chartGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#34D399" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6EE7B7"/>
+      <stop offset="50%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#A7F3D0"/>
+    </linearGradient>
+    <filter id="glowDM">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="600" fill="url(#bgGradDM)" rx="24"/>
+  <circle cx="850" cy="150" r="250" fill="#10B981" opacity="0.15" filter="url(#glowDM)"/>
+  <circle cx="150" cy="450" r="200" fill="#34D399" opacity="0.1" filter="url(#glowDM)"/>
+
+  <!-- Analytics Monitor Frame -->
+  <rect x="150" y="100" width="700" height="400" rx="20" fill="#022C22" stroke="#10B981" stroke-width="3" opacity="0.95"/>
+  <rect x="170" y="120" width="660" height="360" rx="12" fill="#064E3B"/>
+
+  <!-- Monitor Header -->
+  <rect x="170" y="120" width="660" height="45" fill="#022C22" rx="12"/>
+  <circle cx="195" cy="142" r="6" fill="#EF4444"/>
+  <circle cx="215" cy="142" r="6" fill="#F59E0B"/>
+  <circle cx="235" cy="142" r="6" fill="#10B981"/>
+  <rect x="270" y="132" width="220" height="20" rx="10" fill="#065F46"/>
+  
+  <!-- Dashboard Grid Lines -->
+  <line x1="210" y1="220" x2="790" y2="220" stroke="#047857" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <line x1="210" y1="290" x2="790" y2="290" stroke="#047857" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <line x1="210" y1="360" x2="790" y2="360" stroke="#047857" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <line x1="210" y1="430" x2="790" y2="430" stroke="#047857" stroke-width="1.5"/>
+
+  <!-- Bar Charts -->
+  <rect x="250" y="320" width="35" height="110" rx="6" fill="url(#chartGrad)"/>
+  <rect x="320" y="270" width="35" height="160" rx="6" fill="url(#chartGrad)"/>
+  <rect x="390" y="230" width="35" height="200" rx="6" fill="url(#chartGrad)"/>
+  <rect x="460" y="190" width="35" height="240" rx="6" fill="url(#chartGrad)"/>
+  <rect x="530" y="250" width="35" height="180" rx="6" fill="url(#chartGrad)"/>
+  <rect x="600" y="170" width="35" height="260" rx="6" fill="url(#chartGrad)"/>
+  <rect x="670" y="210" width="35" height="220" rx="6" fill="url(#chartGrad)"/>
+  <rect x="740" y="150" width="35" height="280" rx="6" fill="url(#chartGrad)"/>
+
+  <!-- Upward Trend Line -->
+  <path d="M 230 380 Q 360 280 480 210 T 760 140" fill="none" stroke="url(#lineGrad)" stroke-width="6" stroke-linecap="round" filter="url(#glowDM)"/>
+  
+  <!-- Pulsing Target Node -->
+  <circle cx="760" cy="140" r="10" fill="#34D399" filter="url(#glowDM)"/>
+  <circle cx="760" cy="140" r="5" fill="#FFFFFF"/>
+
+  <!-- Floating ROI Badge -->
+  <rect x="610" y="230" width="160" height="60" rx="14" fill="#022C22" stroke="#34D399" stroke-width="2"/>
+  <text x="630" y="255" fill="#34D399" font-family="sans-serif" font-size="12" font-weight="bold">CONVERSION RATE</text>
+  <text x="630" y="278" fill="#FFFFFF" font-family="sans-serif" font-size="18" font-weight="extrabold">+345% ROI</text>
+</svg>

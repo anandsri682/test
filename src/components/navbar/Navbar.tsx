@@ -30,6 +30,7 @@ import {
   Apple,
   HomeIcon,
   Shirt,
+  Tag,
 } from 'lucide-react';
 import QuoteModal from '@/components/QuoteModal';
 
@@ -101,6 +102,7 @@ const NAV_STRUCTURE: NavCategory[] = [
       { title: 'Fashion E-Commerce', desc: 'Clothing catalog & checkout', href: '/demos/fashion-ecommerce', icon: Shirt },
     ],
   },
+  { label: 'Pricing', href: '/pricing', badge: 'New' },
   { label: 'Contact', href: '/contact' },
 ];
 

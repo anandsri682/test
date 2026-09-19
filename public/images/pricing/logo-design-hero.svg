@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" fill="none" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradLD" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#831843"/>
+      <stop offset="50%" stop-color="#9D174D"/>
+      <stop offset="100%" stop-color="#701A75"/>
+    </linearGradient>
+    <linearGradient id="logoGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F472B6"/>
+      <stop offset="50%" stop-color="#EC4899"/>
+      <stop offset="100%" stop-color="#E11D48"/>
+    </linearGradient>
+    <filter id="glowLD">
+      <feGaussianBlur stdDeviation="15" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="600" fill="url(#bgGradLD)" rx="24"/>
+  <circle cx="800" cy="180" r="260" fill="#EC4899" opacity="0.2" filter="url(#glowLD)"/>
+  <circle cx="200" cy="420" r="220" fill="#F472B6" opacity="0.15" filter="url(#glowLD)"/>
+
+  <!-- Canvas Frame -->
+  <rect x="180" y="80" width="640" height="440" rx="20" fill="#500724" stroke="#F472B6" stroke-width="3" opacity="0.95"/>
+  <rect x="200" y="100" width="600" height="400" rx="14" fill="#831843"/>
+
+  <!-- Designer Grid Background -->
+  <g stroke="#9D174D" stroke-width="1" stroke-dasharray="8 8">
+    <line x1="200" y1="200" x2="800" y2="200"/>
+    <line x1="200" y1="300" x2="800" y2="300"/>
+    <line x1="200" y1="400" x2="800" y2="400"/>
+    <line x1="350" y1="100" x2="350" y2="500"/>
+    <line x1="500" y1="100" x2="500" y2="500"/>
+    <line x1="650" y1="100" x2="650" y2="500"/>
+  </g>
+
+  <!-- Central Geometric Emblem Logo Concept -->
+  <circle cx="500" cy="300" r="110" fill="none" stroke="url(#logoGlow)" stroke-width="12" filter="url(#glowLD)"/>
+  <path d="M 430 300 L 500 180 L 570 300 L 500 420 Z" fill="none" stroke="#F472B6" stroke-width="8"/>
+  <circle cx="500" cy="300" r="45" fill="url(#logoGlow)"/>
+
+  <!-- Vector Anchor Points & Pen Tool Handles -->
+  <rect x="424" y="294" width="12" height="12" fill="#FFFFFF" stroke="#EC4899" stroke-width="3"/>
+  <rect x="564" y="294" width="12" height="12" fill="#FFFFFF" stroke="#EC4899" stroke-width="3"/>
+  <rect x="494" y="174" width="12" height="12" fill="#FFFFFF" stroke="#EC4899" stroke-width="3"/>
+  <rect x="494" y="414" width="12" height="12" fill="#FFFFFF" stroke="#EC4899" stroke-width="3"/>
+
+  <line x1="430" y1="300" x2="370" y2="250" stroke="#FFFFFF" stroke-width="2"/>
+  <circle cx="370" cy="250" r="5" fill="#FFFFFF"/>
+  <line x1="570" y1="300" x2="630" y2="350" stroke="#FFFFFF" stroke-width="2"/>
+  <circle cx="630" cy="350" r="5" fill="#FFFFFF"/>
+
+  <!-- Vector Pen Tool Icon -->
+  <g transform="translate(620, 180) rotate(-45)">
+    <path d="M 0 0 L 25 -40 L 50 0 L 35 70 L 15 70 Z" fill="#F472B6" stroke="#FFFFFF" stroke-width="3"/>
+    <circle cx="25" cy="15" r="6" fill="#831843"/>
+  </g>
+
+  <!-- Color Palette Circles -->
+  <circle cx="240" cy="460" r="14" fill="#F472B6"/>
+  <circle cx="280" cy="460" r="14" fill="#EC4899"/>
+  <circle cx="320" cy="460" r="14" fill="#BE185D"/>
+  <circle cx="360" cy="460" r="14" fill="#9D174D"/>
+</svg>

@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { DEMOS } from "@/data/demos";
 import { SERVICES, SOLUTIONS, PORTFOLIO, BLOG_POSTS } from "@/data/siteData";
+import { MAIN_PRICING_SERVICES } from "@/data/pricingData";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.avmsmart.in";
@@ -35,6 +36,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/demos`,
       lastModified,
       changeFrequency: "daily",
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/pricing`,
+      lastModified,
+      changeFrequency: "weekly",
       priority: 0.95,
     },
     {
@@ -75,6 +82,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
+  const pricingRoutes: MetadataRoute.Sitemap = MAIN_PRICING_SERVICES.map((pricing) => ({
+    url: `${baseUrl}/pricing/${pricing.slug}`,
+    lastModified,
+    changeFrequency: "weekly",
+    priority: 0.9,
+  }));
+
   const serviceRoutes: MetadataRoute.Sitemap = SERVICES.map((service) => ({
     url: `${baseUrl}/services/${service.slug}`,
     lastModified,
@@ -112,6 +126,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticRoutes,
+    ...pricingRoutes,
     ...serviceRoutes,
     ...solutionRoutes,
     ...demoRoutes,
