@@ -79,80 +79,13 @@ export default function PricingDetailClient({ data }: PricingDetailClientProps) 
       {/* ============================================================
           HERO SECTION
       ============================================================ */}
-      <section className={`relative overflow-hidden text-white py-14 lg:py-20 ${data.heroBg}`}>
-        
-        {/* LIGHTING GLOWS */}
-        <div className="absolute top-0 right-10 h-96 w-96 rounded-full bg-blue-400/10 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-10 h-80 w-80 rounded-full bg-purple-400/10 blur-3xl pointer-events-none" />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            {/* HERO LEFT CONTENT */}
-            <div className="lg:col-span-6 space-y-6 text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md">
-                <Sparkles className="h-3.5 w-3.5" style={{ color: data.accentHex }} />
-                <span className="text-xs font-bold uppercase tracking-widest text-white">
-                  {data.eyebrow}
-                </span>
-              </div>
-
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.15] text-white">
-                {data.tagline}
-              </h1>
-
-              <p className="text-slate-300 text-sm sm:text-base font-normal leading-relaxed max-w-xl">
-                {data.description}
-              </p>
-
-              {/* BENEFIT PILLS */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                {data.benefits.map((b, bIdx) => {
-                  const IconComp = DYNAMIC_ICONS[b.iconName] || CheckCircle;
-                  return (
-                    <div key={bIdx} className="flex items-center gap-2 rounded-xl bg-white/10 border border-white/10 p-2.5 backdrop-blur-sm">
-                      <IconComp className="h-4 w-4 shrink-0" style={{ color: data.accentHex }} />
-                      <span className="text-xs font-semibold text-slate-100 line-clamp-1">{b.label}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* HERO RIGHT MOCKUP IMAGE */}
-            <div className="lg:col-span-6 flex justify-center">
-              <div className="relative w-full max-w-lg aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl border border-white/20 group">
-                <Image
-                  src={data.heroImage}
-                  alt={data.title}
-                  fill
-                  priority
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* STATS BAR BELOW HERO */}
-        <div className="mt-12 border-t border-white/10 bg-black/20 py-4 backdrop-blur-md">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            {data.stats.map((s, sIdx) => (
-              <div key={sIdx} className="space-y-0.5">
-                <div className="text-lg sm:text-2xl font-black text-white">{s.value}</div>
-                <div className="text-[11px] text-slate-400 font-medium">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+     
 
 
       {/* ============================================================
           PRICING PLANS SECTION
       ============================================================ */}
-      <section className="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-12 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-3 mb-12">
           <span className="inline-block px-3.5 py-1 bg-blue-50 text-[#087FF5] text-xs font-extrabold uppercase tracking-widest rounded-full">
             OUR PLANS

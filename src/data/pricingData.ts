@@ -6,7 +6,7 @@ export interface PricingMainService {
   shortDesc: string;
   startingPrice: string;
   features: string[];
-  color: 'blue' | 'purple' | 'green' | 'pink';
+  color: 'blue' | 'purple' | 'green' | 'pink' | 'orange';
   accentHex: string;
   bgGradient: string;
   cardBorder: string;
@@ -51,7 +51,7 @@ export interface PricingDetailData {
   eyebrow: string;
   tagline: string;
   description: string;
-  themeColor: 'blue' | 'purple' | 'green' | 'pink';
+  themeColor: 'blue' | 'purple' | 'green' | 'pink' | 'orange';
   accentHex: string;
   heroBg: string;
   heroImage: string;
@@ -143,12 +143,12 @@ export const MAIN_PRICING_SERVICES: PricingMainService[] = [
       'PNG, JPG, SVG, PDF',
       'Full Commercial Rights',
     ],
-    color: 'pink',
-    accentHex: '#EC4899',
-    bgGradient: 'from-pink-50/70 to-[#FDF2F8]',
-    cardBorder: 'border-pink-200/80 hover:border-[#EC4899]',
-    btnBg: 'bg-[#EC4899] hover:bg-[#DB2777]',
-    illustration: '/images/pricing/logo-design-card.png',
+    color: 'orange',
+    accentHex: '#FF6A00',
+    bgGradient: 'from-orange-50/70 to-[#FFFBEB]',
+    cardBorder: 'border-orange-200/80 hover:border-[#FF6A00]',
+    btnBg: 'bg-[#FF6A00] hover:bg-[#E05B00]',
+    illustration: '/images/pricing/logo-design-card.svg',
   },
 ];
 
@@ -496,9 +496,9 @@ export const PRICING_DETAILS: Record<string, PricingDetailData> = {
     eyebrow: 'LOGO & BRAND IDENTITY',
     tagline: 'Distinctive Visual Identity for Iconic Brands',
     description: 'Stand out from competitors with custom logo designs, brand style guides, vector source files, and commercial rights.',
-    themeColor: 'pink',
-    accentHex: '#EC4899',
-    heroBg: 'bg-gradient-to-b from-[#831843] via-[#9D174D] to-[#701A75]',
+    themeColor: 'orange',
+    accentHex: '#FF6A00',
+    heroBg: 'bg-gradient-to-b from-[#7C2D12] via-[#9A3412] to-[#431407]',
     heroImage: '/images/pricing/logo-design-hero.svg',
     benefits: [
       { iconName: 'Palette', label: '100% Original Vector' },

@@ -3,6 +3,7 @@ import Hero from '@/components/hero/Hero';
 import ServicesSection from '@/components/home/ServicesSection';
 import SolutionsSection from '@/components/home/SolutionsSection';
 import FeaturedDemosSection from '@/components/home/FeaturedDemosSection';
+import HomePricingSection from '@/components/home/HomePricingSection';
 import PortfolioSection from '@/components/home/PortfolioSection';
 import ReviewsSection from '@/components/home/ReviewsSection';
 import CTASection from '@/components/home/CTASection';
@@ -16,19 +17,24 @@ export default function HomePage() {
       {/* 2. Core Capabilities / Services Section */}
       <ServicesSection />
 
+      
+
+      {/* 4. Live Product Demos Showcase */}
+      {/* <FeaturedDemosSection /> */}
+
+      {/* 5. Service & Pricing Showcase */}
+      <HomePricingSection />
+
       {/* 3. Strategic Growth Partnership / Solutions Section */}
       <SolutionsSection />
 
-      {/* 4. Live Product Demos Showcase */}
-      <FeaturedDemosSection />
+      {/* 6. Featured Work / Portfolio Section */}
+      {/* <PortfolioSection /> */}
 
-      {/* 5. Featured Work / Portfolio Section */}
-      <PortfolioSection />
-
-      {/* 5. Dynamic Customer Reviews Marquee Section */}
+      {/* 7. Dynamic Customer Reviews Marquee Section */}
       <ReviewsSection />
 
-      {/* 6. Bottom CTA Banner */}
+      {/* 8. Bottom CTA Banner */}
       <CTASection />
     </div>
   );

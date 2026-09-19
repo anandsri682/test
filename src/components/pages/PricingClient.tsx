@@ -56,7 +56,7 @@ export default function PricingClient() {
           {/* MAIN HEADLINE */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#0B2A5B] leading-[1.12]">
             Transparent Pricing for{' '}
-            <span className="bg-gradient-to-r from-[#087FF5] via-[#8B5CF6] to-[#EC4899] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#087FF5] via-[#8B5CF6] to-[#FF6A00] bg-clip-text text-transparent">
               Real Business Growth
             </span>
           </h1>
@@ -109,7 +109,7 @@ export default function PricingClient() {
                 </div>
 
                 {/* SERVICE ILLUSTRATION */}
-                <div className="relative my-4 h-36 sm:h-40 w-full overflow-hidden rounded-2xl bg-white/60 p-2 shadow-xs border border-white group-hover:scale-[1.02] transition-transform duration-500">
+                {/* <div className="relative my-4 h-36 sm:h-40 w-full overflow-hidden rounded-2xl bg-white/60 p-2 shadow-xs border border-white group-hover:scale-[1.02] transition-transform duration-500">
                   <Image
                     src={service.illustration}
                     alt={service.title}
@@ -117,7 +117,7 @@ export default function PricingClient() {
                     priority={index < 2}
                     className="object-contain"
                   />
-                </div>
+                </div> */}
 
                 {/* TITLE & DESCRIPTION */}
                 <div className="space-y-1.5">
