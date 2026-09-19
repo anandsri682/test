@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="uiCanvasGrad" x1="50" y1="30" x2="250" y2="170" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F472B6"/>
+      <stop offset="50%" stop-color="#EC4899"/>
+      <stop offset="100%" stop-color="#DB2777"/>
+    </linearGradient>
+    <filter id="softShadowUI" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#EC4899" flood-opacity="0.3"/>
+    </filter>
+    <filter id="uiGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Ambient Backdrop Glow -->
+  <circle cx="160" cy="110" r="90" fill="#EC4899" opacity="0.12" filter="url(#uiGlow)"/>
+
+  <!-- UI Window Frame Shadow -->
+  <ellipse cx="160" cy="182" rx="100" ry="14" fill="#0F172A" opacity="0.15"/>
+
+  <!-- 3D UI CANVAS WINDOW -->
+  <g transform="translate(50, 35)" filter="url(#softShadowUI)">
+    <!-- Main Board -->
+    <rect x="0" y="0" width="220" height="140" rx="16" fill="#FFFFFF" stroke="#F472B6" stroke-width="2"/>
+    
+    <!-- Header Bar -->
+    <path d="M0 16 C0 7.2 7.2 0 16 0 L204 0 C212.8 0 220 7.2 220 16 L220 28 L0 28 Z" fill="#F1F5F9"/>
+    <circle cx="16" cy="14" r="4" fill="#EF4444"/>
+    <circle cx="28" cy="14" r="4" fill="#F59E0B"/>
+    <circle cx="40" cy="14" r="4" fill="#10B981"/>
+
+    <!-- Inside UI Elements -->
+    <!-- Left Card Box -->
+    <rect x="16" y="42" width="70" height="82" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+    <!-- Typography "Aa" Card -->
+    <rect x="24" y="50" width="54" height="40" rx="6" fill="url(#uiCanvasGrad)"/>
+    <text x="35" y="79" font-family="sans-serif" font-weight="extrabold" font-size="24" fill="#FFFFFF">Aa</text>
+    <!-- Text Lines -->
+    <rect x="24" y="98" width="48" height="6" rx="3" fill="#64748B"/>
+    <rect x="24" y="108" width="34" height="5" rx="2.5" fill="#94A3B8"/>
+
+    <!-- Right Media Box -->
+    <rect x="98" y="42" width="106" height="52" rx="10" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+    <!-- Image Icon Visual -->
+    <rect x="110" y="52" width="32" height="32" rx="6" fill="#6366F1"/>
+    <circle cx="120" cy="60" r="3" fill="#FFFFFF"/>
+    <polygon points="112,78 122,66 130,74 136,70 140,78" fill="#A5B4FC"/>
+
+    <rect x="150" y="56" width="44" height="6" rx="3" fill="#475569"/>
+    <rect x="150" y="66" width="32" height="5" rx="2.5" fill="#94A3B8"/>
+
+    <!-- Bottom Button UI Controls -->
+    <rect x="98" y="102" width="48" height="22" rx="6" fill="#3B82F6"/>
+    <rect x="154" y="102" width="50" height="22" rx="6" fill="#10B981"/>
+  </g>
+
+  <!-- Color Swatches (Bottom Left) -->
+  <g transform="translate(35, 130)" filter="url(#softShadowUI)">
+    <circle cx="14" cy="14" r="12" fill="#EC4899" stroke="#FFFFFF" stroke-width="2"/>
+    <circle cx="34" cy="14" r="12" fill="#8B5CF6" stroke="#FFFFFF" stroke-width="2"/>
+    <circle cx="54" cy="14" r="12" fill="#06B6D4" stroke="#FFFFFF" stroke-width="2"/>
+  </g>
+
+  <!-- 3D MOUSE POINTER CURSOR (Right Center) -->
+  <g transform="translate(230, 115) rotate(-15)" filter="url(#softShadowUI)">
+    <path d="M0 0 L0 32 L8 24 L16 38 L22 35 L14 21 L24 21 Z" fill="#1E293B" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Decorative Sparkles -->
+  <polygon points="275,45 278,51 284,52 279,57 281,63 275,60 269,63 271,57 266,52 272,51" fill="#EC4899"/>
+</svg>

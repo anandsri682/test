@@ -431,10 +431,10 @@ export const TEAM_MEMBERS: TeamMember[] = [
     id: "founder",
     name: "Anand",
     role: "Founder & CEO",
-    title: "Full Stack Developer | UI/UX Designer | YouTube Educator",
+    title: "Full Stack Developer | UI/UX Designer | YouTube Creator",
     experience: "Full Stack Engineer & Tech Lead",
     bio: "Full-stack developer, designer, and tech educator passionate about building high-performance web applications and scaling tech solutions.",
-    image: "/images/profiles/anand.png",
+    image: "/images/profiles/a.png",
     skills: ["React", "Next.js", "Java", "Spring Boot", "Node.js", "Express.js", "MongoDB", "TypeScript", "Tailwind CSS", "REST APIs"],
     socials: {
       linkedin: "https://www.linkedin.com/in/arekanti-anand-raju-2615a0377/",

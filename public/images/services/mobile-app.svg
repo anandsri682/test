@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="androidPhoneGrad" x1="90" y1="40" x2="175" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="iosPhoneGrad" x1="175" y1="45" x2="255" y2="185" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="appScreenGrad" x1="0" y1="0" x2="0" y2="150" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="softShadowMobile" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#059669" flood-opacity="0.25"/>
+    </filter>
+    <filter id="blurGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background Aura -->
+  <circle cx="160" cy="110" r="85" fill="#10B981" opacity="0.12" filter="url(#blurGlow)"/>
+
+  <!-- Phone Shadows -->
+  <ellipse cx="130" cy="188" rx="45" ry="12" fill="#0F172A" opacity="0.18"/>
+  <ellipse cx="210" cy="192" rx="45" ry="12" fill="#0F172A" opacity="0.18"/>
+
+  <!-- ANDROID PHONE (Left Green Phone) -->
+  <g transform="rotate(-6 130 110)" filter="url(#softShadowMobile)">
+    <!-- Outer Body -->
+    <rect x="85" y="32" width="90" height="152" rx="20" fill="url(#androidPhoneGrad)" stroke="#34D399" stroke-width="2"/>
+    <!-- Inner Screen -->
+    <rect x="91" y="38" width="78" height="140" rx="15" fill="url(#appScreenGrad)"/>
+    
+    <!-- Camera Notch Pill -->
+    <rect x="118" y="44" width="24" height="5" rx="2.5" fill="#334155"/>
+    <circle cx="137" cy="46.5" r="1.5" fill="#10B981"/>
+
+    <!-- Android Screen Content (Android Bot Icon) -->
+    <!-- Android Head -->
+    <path d="M115 88 C115 76 145 76 145 88 Z" fill="#A4C639"/>
+    <!-- Eyes -->
+    <circle cx="123" cy="83" r="1.8" fill="#1E293B"/>
+    <circle cx="137" cy="83" r="1.8" fill="#1E293B"/>
+    <!-- Antennas -->
+    <line x1="120" y1="76" x2="116" y2="70" stroke="#A4C639" stroke-width="2" stroke-linecap="round"/>
+    <line x1="140" y1="76" x2="144" y2="70" stroke="#A4C639" stroke-width="2" stroke-linecap="round"/>
+    <!-- Android Body -->
+    <rect x="115" y="91" width="30" height="24" rx="4" fill="#A4C639"/>
+
+    <!-- UI Elements -->
+    <rect x="100" y="125" width="60" height="8" rx="4" fill="#34D399" opacity="0.9"/>
+    <rect x="100" y="138" width="42" height="6" rx="3" fill="#64748B"/>
+    <rect x="100" y="148" width="50" height="6" rx="3" fill="#64748B"/>
+  </g>
+
+  <!-- iOS PHONE (Right Blue iPhone) -->
+  <g transform="rotate(6 210 110)" filter="url(#softShadowMobile)">
+    <!-- Outer Body -->
+    <rect x="165" y="36" width="90" height="152" rx="20" fill="url(#iosPhoneGrad)" stroke="#60A5FA" stroke-width="2"/>
+    <!-- Inner Screen -->
+    <rect x="171" y="42" width="78" height="140" rx="15" fill="url(#appScreenGrad)"/>
+
+    <!-- Dynamic Island / Notch -->
+    <rect x="198" y="47" width="24" height="6" rx="3" fill="#000000"/>
+
+    <!-- Apple Logo Visual -->
+    <path d="M213 86 C214.5 84.2 216 84.3 216.8 84.3 C217.7 84.3 219 84.1 220 85.3 C220.8 86.3 220.3 88 220.8 89.2 C221.3 90.3 222.3 91.2 222.1 92.5 C221.8 94.2 220.3 96.5 219 96.5 C218.1 96.5 217.6 95.8 216.5 95.8 C215.3 95.8 214.7 96.5 213.9 96.5 C212.5 96.5 210.8 94 210.8 91.5 C210.8 89 212.3 87 213 86 Z" fill="#FFFFFF"/>
+    <path d="M217.5 83.5 C217.5 82.3 218.4 81 219.5 80.5 C219.7 81.7 219.1 82.9 217.5 83.5 Z" fill="#FFFFFF"/>
+
+    <!-- iOS Widgets/UI -->
+    <rect x="180" y="108" width="60" height="26" rx="8" fill="#334155" opacity="0.8"/>
+    <circle cx="194" cy="121" r="7" fill="#3B82F6"/>
+    <rect x="206" y="116" width="28" height="4" rx="2" fill="#FFFFFF"/>
+    <rect x="206" y="123" width="20" height="3" rx="1.5" fill="#94A3B8"/>
+
+    <rect x="180" y="140" width="27" height="27" rx="8" fill="#10B981" opacity="0.9"/>
+    <rect x="213" y="140" width="27" height="27" rx="8" fill="#F59E0B" opacity="0.9"/>
+  </g>
+
+  <!-- Floating App Badges -->
+  <circle cx="65" cy="80" r="14" fill="#10B981" filter="url(#softShadowMobile)"/>
+  <path d="M60 80 L64 84 L71 76" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <circle cx="265" cy="70" r="12" fill="#3B82F6" filter="url(#softShadowMobile)"/>
+  <polygon points="265,63 268,69 274,70 270,74 271,80 265,77 259,80 260,74 256,70 262,69" fill="#FFFFFF"/>
+</svg>
