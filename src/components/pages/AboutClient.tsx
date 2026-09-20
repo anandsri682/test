@@ -2,8 +2,14 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { COMPANY_DETAILS, TEAM_MEMBERS, FOUR_PILLARS, CORE_VALUES } from '@/data/siteData';
+
+import {
+  COMPANY_DETAILS,
+  TEAM_MEMBERS,
+  FOUR_PILLARS,
+  CORE_VALUES,
+} from '@/data/siteData';
+
 import {
   Sparkles,
   Shield,
@@ -14,304 +20,854 @@ import {
   Lightbulb,
   Award,
   Play,
+  ArrowUpRight,
 } from 'lucide-react';
-import { FaLinkedin, FaTwitter, FaGithub, FaYoutube, FaInstagram } from 'react-icons/fa6';
+
+import {
+  FaLinkedin,
+  FaGithub,
+  FaYoutube,
+  FaInstagram,
+} from 'react-icons/fa6';
+
 import QuoteModal from '@/components/QuoteModal';
 
+// ==========================================
+// ICON MAP
+// ==========================================
+
 const iconMap: Record<string, React.ReactNode> = {
-  Sparkles: <Sparkles className="w-6 h-6 text-blue-primary" />,
-  Shield: <Shield className="w-6 h-6 text-blue-primary" />,
-  TrendingUp: <TrendingUp className="w-6 h-6 text-blue-primary" />,
-  Users: <Users className="w-6 h-6 text-blue-primary" />,
-  HeartHandshake: <HeartHandshake className="w-6 h-6 text-blue-primary" />,
-  ShieldCheck: <ShieldCheck className="w-6 h-6 text-blue-primary" />,
-  Lightbulb: <Lightbulb className="w-6 h-6 text-blue-primary" />,
-  Award: <Award className="w-6 h-6 text-blue-primary" />,
+  Sparkles: <Sparkles className="h-6 w-6 text-blue-primary" />,
+  Shield: <Shield className="h-6 w-6 text-blue-primary" />,
+  TrendingUp: <TrendingUp className="h-6 w-6 text-blue-primary" />,
+  Users: <Users className="h-6 w-6 text-blue-primary" />,
+  HeartHandshake: (
+    <HeartHandshake className="h-6 w-6 text-blue-primary" />
+  ),
+  ShieldCheck: <ShieldCheck className="h-6 w-6 text-blue-primary" />,
+  Lightbulb: <Lightbulb className="h-6 w-6 text-blue-primary" />,
+  Award: <Award className="h-6 w-6 text-blue-primary" />,
 };
 
 export default function AboutClient() {
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
 
-  const founder = TEAM_MEMBERS.filter((m) => m.isFounder);
-  const coFounders = TEAM_MEMBERS.filter((m) => m.isCoFounder);
-  const teamMembers = TEAM_MEMBERS.filter((m) => !m.isFounder && !m.isCoFounder);
+  // ==========================================
+  // TEAM GROUPS
+  // ==========================================
 
-  const renderCard = (member: (typeof TEAM_MEMBERS)[0], colorTheme: 'blue' | 'green' | 'orange') => {
-    const displayRole = member.isFounder ? 'Java Full Stack Developer' : member.role;
+  const founder = TEAM_MEMBERS.filter((member) => member.isFounder);
 
-    const accentClasses = {
-      blue: { borderTop: 'border-t-4 border-t-[#087FF5]', roleText: 'text-[#087FF5]' },
-      green: { borderTop: 'border-t-4 border-t-[#13B89A]', roleText: 'text-[#13B89A]' },
-      orange: { borderTop: 'border-t-4 border-t-[#FF6A00]', roleText: 'text-[#FF6A00]' },
-    }[colorTheme];
+  const coFounders = TEAM_MEMBERS.filter(
+    (member) => member.isCoFounder
+  );
+
+  const teamMembers = TEAM_MEMBERS.filter(
+    (member) => !member.isFounder && !member.isCoFounder
+  );
+
+  // ==========================================
+  // TEAM MEMBER COMPONENT
+  // ==========================================
+
+  const renderTeamMember = (
+    member: (typeof TEAM_MEMBERS)[0],
+    type: 'founder' | 'cofounder' | 'member'
+  ) => {
+    const isFounder = type === 'founder';
+    const isCoFounder = type === 'cofounder';
+
+    const designation = isFounder
+      ? 'Founder & CEO'
+      : isCoFounder
+      ? 'Co-Founder & Technical Lead'
+      : 'Team Member';
+
+    const theme = isFounder
+      ? {
+          ring: 'border-[#087FF5]',
+          glow: 'bg-[#087FF5]',
+          badge:
+            'border-[#087FF5]/30 bg-[#087FF5]/10 text-[#087FF5]',
+          dot: 'bg-[#087FF5]',
+          role: 'text-[#087FF5]',
+          hover: 'group-hover:text-[#087FF5]',
+          line:
+            'from-transparent via-[#087FF5]/30 to-transparent',
+        }
+      : isCoFounder
+      ? {
+          ring: 'border-[#13B89A]',
+          glow: 'bg-[#13B89A]',
+          badge:
+            'border-[#13B89A]/30 bg-[#13B89A]/10 text-[#0B9F88]',
+          dot: 'bg-[#13B89A]',
+          role: 'text-[#0B9F88]',
+          hover: 'group-hover:text-[#0B9F88]',
+          line:
+            'from-transparent via-[#13B89A]/30 to-transparent',
+        }
+      : {
+          ring: 'border-[#FF6A00]/70',
+          glow: 'bg-[#FF6A00]',
+          badge:
+            'border-[#FF6A00]/30 bg-[#FF6A00]/10 text-[#FF6A00]',
+          dot: 'bg-[#FF6A00]',
+          role: 'text-[#FF6A00]',
+          hover: 'group-hover:text-[#FF6A00]',
+          line:
+            'from-transparent via-[#FF6A00]/20 to-transparent',
+        };
 
     return (
       <div
         key={member.id}
-        className={`bg-white rounded-2xl border border-slate-200 ${accentClasses.borderTop} p-5 shadow-md hover:-translate-y-1 transition-all duration-300 flex items-center gap-4 group`}
+        className="group relative flex flex-col items-center text-center"
       >
-        <div className="relative w-20 h-24 sm:w-24 sm:h-28 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 shadow-2xs">
-          <Image
-            src={member.image}
-            alt={member.name}
-            fill
-            className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+        {/* ==========================================
+            PROFILE IMAGE
+        ========================================== */}
+
+        <div className="relative">
+
+          {/* Glow */}
+          <div
+            className={`absolute -inset-5 rounded-full ${theme.glow} opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-20`}
+          />
+
+          {/* Image Circle */}
+          <div
+            className={`relative h-28 w-28 overflow-hidden rounded-full border-[4px] bg-white shadow-xl transition-all duration-500 group-hover:scale-105 sm:h-32 sm:w-32 lg:h-36 lg:w-36 ${theme.ring}`}
+          >
+            <Image
+              src={member.image}
+              alt={member.name}
+              fill
+              sizes="144px"
+              className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
+            />
+          </div>
+
+          {/* Online / Active Dot */}
+          <span
+            className={`absolute bottom-1 right-1 h-4 w-4 rounded-full border-[3px] border-white shadow-md ${theme.dot}`}
           />
         </div>
-        <div className="flex-1 min-w-0 space-y-1.5">
-          <h4 className="font-extrabold text-slate-900 text-base truncate group-hover:text-blue-primary transition-colors">
-            {member.name}
-          </h4>
-          <p className={`text-xs font-bold ${accentClasses.roleText} leading-snug`}>{displayRole}</p>
 
-          <div className="flex items-center gap-2 pt-1">
-            {member.socials.linkedin && (
-              <a
-                href={member.socials.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-lg bg-[#0A66C2]/10 hover:bg-[#0A66C2] text-[#0A66C2] hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin className="w-3.5 h-3.5 fill-current" />
-              </a>
-            )}
-            {member.socials.github && (
-              <a
-                href={member.socials.github}
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-lg bg-slate-900/10 hover:bg-slate-900 text-slate-900 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110"
-                aria-label="GitHub"
-              >
-                <FaGithub className="w-3.5 h-3.5 fill-current" />
-              </a>
-            )}
-            {member.socials.youtube && (
-              <a
-                href={member.socials.youtube}
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-lg bg-[#FF0000]/10 hover:bg-[#FF0000] text-[#FF0000] hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110"
-                aria-label="YouTube"
-              >
-                <FaYoutube className="w-3.5 h-3.5 fill-current" />
-              </a>
-            )}
-            {member.socials.instagram && (
-              <a
-                href={member.socials.instagram}
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#f09433]/15 via-[#dc2743]/15 to-[#bc1888]/15 hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] text-[#dc2743] hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110"
-                aria-label="Instagram"
-              >
-                <FaInstagram className="w-3.5 h-3.5 fill-current" />
-              </a>
-            )}
-          </div>
+        {/* ==========================================
+            REQUIRED DESIGNATION TAG
+        ========================================== */}
+
+        <div className="mt-5">
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.14em] shadow-sm sm:text-[10px] ${theme.badge}`}
+          >
+            <Award className="h-3 w-3" />
+            {designation}
+          </span>
+        </div>
+
+        {/* Name */}
+        <h3
+          className={`mt-3 max-w-[230px] text-lg font-extrabold tracking-tight text-slate-900 transition-colors duration-300 sm:text-xl ${theme.hover}`}
+        >
+          {member.name}
+        </h3>
+
+        {/* Actual Role */}
+        <p
+          className={`mt-1 max-w-[240px] text-xs font-bold leading-relaxed sm:text-sm ${theme.role}`}
+        >
+          {member.role}
+        </p>
+
+        {/* Social Links */}
+        <div className="mt-4 flex items-center justify-center gap-2">
+
+          {member.socials.linkedin && (
+            <a
+              href={member.socials.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${member.name} LinkedIn`}
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0A66C2]/10 text-[#0A66C2] transition-all duration-300 hover:-translate-y-1 hover:bg-[#0A66C2] hover:text-white"
+            >
+              <FaLinkedin className="h-3.5 w-3.5" />
+            </a>
+          )}
+
+          {member.socials.github && (
+            <a
+              href={member.socials.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${member.name} GitHub`}
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900/10 text-slate-800 transition-all duration-300 hover:-translate-y-1 hover:bg-slate-900 hover:text-white"
+            >
+              <FaGithub className="h-3.5 w-3.5" />
+            </a>
+          )}
+
+          {member.socials.youtube && (
+            <a
+              href={member.socials.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${member.name} YouTube`}
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-500/10 text-red-500 transition-all duration-300 hover:-translate-y-1 hover:bg-red-500 hover:text-white"
+            >
+              <FaYoutube className="h-3.5 w-3.5" />
+            </a>
+          )}
+
+          {member.socials.instagram && (
+            <a
+              href={member.socials.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${member.name} Instagram`}
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500/10 text-pink-500 transition-all duration-300 hover:-translate-y-1 hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white"
+            >
+              <FaInstagram className="h-3.5 w-3.5" />
+            </a>
+          )}
+
         </div>
       </div>
     );
   };
 
+  // ==========================================
+  // SECTION DIVIDER
+  // ==========================================
+
+  const sectionDivider = (
+    title: string,
+    color: 'blue' | 'green' | 'orange'
+  ) => {
+    const colors = {
+      blue: {
+        line: 'via-[#087FF5]/30',
+        bg: 'bg-blue-50',
+        border: 'border-blue-100',
+        text: 'text-[#087FF5]',
+      },
+      green: {
+        line: 'via-[#13B89A]/30',
+        bg: 'bg-emerald-50',
+        border: 'border-emerald-100',
+        text: 'text-[#0B9F88]',
+      },
+      orange: {
+        line: 'via-[#FF6A00]/30',
+        bg: 'bg-orange-50',
+        border: 'border-orange-100',
+        text: 'text-[#FF6A00]',
+      },
+    }[color];
+
+    return (
+      <div className="mb-10 flex items-center gap-4">
+
+        <div
+          className={`h-px flex-1 bg-gradient-to-r from-transparent ${colors.line}`}
+        />
+
+        <span
+          className={`rounded-full border px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.15em] ${colors.bg} ${colors.border} ${colors.text}`}
+        >
+          {title}
+        </span>
+
+        <div
+          className={`h-px flex-1 bg-gradient-to-l from-transparent ${colors.line}`}
+        />
+
+      </div>
+    );
+  };
+
   return (
-    <div className="w-full">
-      <section className="bg-navy-deep text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-2">People. Passion. Progress.</p>
-          <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">About Us</h1>
-          <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto">
-            Home <span className="mx-2 text-slate-500">/</span> About Us
+    <div className="w-full overflow-hidden bg-white">
+
+      {/* ==========================================
+          HERO
+      ========================================== */}
+
+      <section className="relative overflow-hidden bg-navy-deep py-16 text-white sm:py-20">
+
+        <div className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl" />
+
+        <div className="pointer-events-none absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-orange-500/10 blur-3xl" />
+
+        <div className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+
+          <p className="mb-2 text-xs font-bold uppercase tracking-widest text-blue-400">
+            People. Passion. Progress.
           </p>
+
+          <h1 className="mb-4 text-4xl font-extrabold sm:text-5xl">
+            About Us
+          </h1>
+
+          <p className="text-sm text-slate-300 sm:text-base">
+            Home
+            <span className="mx-2 text-slate-500">/</span>
+            About Us
+          </p>
+
         </div>
       </section>
 
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-6 space-y-6">
-              <span className="text-xs font-bold uppercase tracking-widest text-blue-primary block">
+      {/* ==========================================
+          WHO WE ARE
+      ========================================== */}
+
+      <section className="bg-white py-20">
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+
+            <div className="space-y-6 lg:col-span-6">
+
+              <span className="block text-xs font-bold uppercase tracking-widest text-blue-primary">
                 Who We Are
               </span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight">
+
+              <h2 className="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
                 Building technology solutions to power real growth.
               </h2>
-              <p className="text-slate-600 text-base leading-relaxed">
-                AVM Smart was founded with a single goal — to help businesses leverage technology for scalable growth. Over 3+ years of passionate service, we have built custom software, web platforms, and mobile apps for clients across multiple enterprise domains.
+
+              <p className="text-base leading-relaxed text-slate-600">
+                AVM Smart was founded with a single goal — to help businesses
+                leverage technology for scalable growth. Over 3+ years of
+                passionate service, we have built custom software, web
+                platforms, and mobile apps for clients across multiple
+                enterprise domains.
               </p>
-              <p className="text-slate-600 text-base leading-relaxed">
-                Our approach combines user-centered design, robust backend engineering, and high-converting marketing strategies to ensure every product delivers concrete ROI.
+
+              <p className="text-base leading-relaxed text-slate-600">
+                Our approach combines user-centered design, robust backend
+                engineering, and high-converting marketing strategies to ensure
+                every product delivers concrete ROI.
               </p>
+
             </div>
 
             <div className="lg:col-span-6">
-              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-slate-200">
+
+              <div className="relative overflow-hidden rounded-2xl border border-slate-200 shadow-xl">
+
                 <Image
                   src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop"
                   alt="AVM Smart Office Story"
                   width={600}
                   height={400}
-                  className="w-full h-80 sm:h-96 object-cover"
+                  className="h-80 w-full object-cover transition-transform duration-700 hover:scale-105 sm:h-96"
                 />
+
               </div>
+
             </div>
+
           </div>
+
         </div>
+
       </section>
 
-      <section className="py-12 bg-light-section border-y border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      {/* ==========================================
+          FOUR PILLARS
+      ========================================== */}
+
+      <section className="border-y border-slate-200/80 bg-light-section py-12">
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+
             {FOUR_PILLARS.map((pillar, idx) => (
-              <div key={idx} className="p-6 bg-white rounded-xl border border-slate-200 shadow-2xs text-center">
-                <div className="w-12 h-12 mx-auto rounded-full bg-blue-50 flex items-center justify-center mb-4">
+              <div
+                key={idx}
+                className="rounded-xl border border-slate-200 bg-white p-5 text-center shadow-2xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md sm:p-6"
+              >
+
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
                   {iconMap[pillar.icon]}
                 </div>
-                <h3 className="font-bold text-slate-900 text-base mb-1">{pillar.title}</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">{pillar.desc}</p>
+
+                <h3 className="mb-1 text-sm font-bold text-slate-900 sm:text-base">
+                  {pillar.title}
+                </h3>
+
+                <p className="text-xs leading-relaxed text-slate-600">
+                  {pillar.desc}
+                </p>
+
               </div>
             ))}
+
           </div>
+
         </div>
+
       </section>
 
-      <section className="py-20 bg-navy-dark text-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-extrabold">Turning Ideas into Impact</h2>
-          <p className="text-slate-300 text-base max-w-xl mx-auto">
-            Watch how our engineering team crafts digital experiences from concept to scale.
+      {/* ==========================================
+          VIDEO / STORY
+      ========================================== */}
+
+      <section className="relative overflow-hidden bg-navy-dark py-20 text-white">
+
+        <div className="pointer-events-none absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl" />
+
+        <div className="relative mx-auto max-w-7xl space-y-6 px-4 text-center sm:px-6 lg:px-8">
+
+          <h2 className="text-3xl font-extrabold sm:text-4xl">
+            Turning Ideas into Impact
+          </h2>
+
+          <p className="mx-auto max-w-xl text-base text-slate-300">
+            Watch how our engineering team crafts digital experiences from
+            concept to scale.
           </p>
-          <div className="relative max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+
+          <div className="group relative mx-auto max-w-3xl overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+
             <Image
               src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop"
               alt="Video Backdrop"
               width={1000}
               height={500}
-              className="w-full h-80 object-cover opacity-60 group-hover:scale-105 transition-transform duration-500"
+              className="h-80 w-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-105"
             />
+
+            <div className="absolute inset-0 bg-black/20" />
+
             <div className="absolute inset-0 flex items-center justify-center">
+
               <button
                 onClick={() => setQuoteModalOpen(true)}
-                className="w-20 h-20 rounded-full bg-blue-primary/90 text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"
+                className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-primary/90 text-white shadow-2xl transition-transform duration-300 hover:scale-110"
                 aria-label="Play video demo"
               >
-                <Play className="w-8 h-8 fill-current ml-1" />
+                <Play className="ml-1 h-8 w-8 fill-current" />
               </button>
+
             </div>
+
           </div>
+
         </div>
+
       </section>
 
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-8 bg-blue-50/50 rounded-2xl border border-blue-100 space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-blue-primary text-white flex items-center justify-center font-bold">
-                <ShieldCheck className="w-6 h-6" />
+      {/* ==========================================
+          MISSION / VISION
+      ========================================== */}
+
+      <section className="bg-white py-20">
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+
+            <div className="group space-y-4 rounded-2xl border border-blue-100 bg-blue-50/50 p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-primary text-white">
+                <ShieldCheck className="h-6 w-6" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900">Our Mission</h3>
-              <p className="text-slate-600 text-base leading-relaxed">
-                To empower businesses with innovative, dependable, and scalable digital solutions that streamline operations, attract customers, and unlock enterprise potential.
+
+              <h3 className="text-2xl font-bold text-slate-900">
+                Our Mission
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-600">
+                To empower businesses with innovative, dependable, and scalable
+                digital solutions that streamline operations, attract
+                customers, and unlock enterprise potential.
               </p>
+
             </div>
 
-            <div className="p-8 bg-emerald-50/50 rounded-2xl border border-emerald-100 space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-teal-brand text-white flex items-center justify-center font-bold">
-                <Lightbulb className="w-6 h-6" />
+            <div className="group space-y-4 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-brand text-white">
+                <Lightbulb className="h-6 w-6" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900">Our Vision</h3>
-              <p className="text-slate-600 text-base leading-relaxed">
-                To be a trusted global technology partner for businesses, recognized for engineering excellence, human-centered UI design, and long-term client success.
+
+              <h3 className="text-2xl font-bold text-slate-900">
+                Our Vision
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-600">
+                To be a trusted global technology partner for businesses,
+                recognized for engineering excellence, human-centered UI
+                design, and long-term client success.
               </p>
+
             </div>
+
           </div>
+
         </div>
+
       </section>
 
-      <section className="py-20 bg-light-section border-t border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-widest text-blue-primary mb-2 block">
+      {/* ==========================================
+          VALUES
+      ========================================== */}
+
+      <section className="border-t border-slate-200/80 bg-light-section py-20">
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          <div className="mx-auto mb-16 max-w-3xl text-center">
+
+            <span className="mb-2 block text-xs font-bold uppercase tracking-widest text-blue-primary">
               Core Principles
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900">Our Values</h2>
+
+            <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
+              Our Values
+            </h2>
+
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
             {CORE_VALUES.map((val, idx) => (
-              <div key={idx} className="p-6 bg-white rounded-2xl border border-slate-200 text-center shadow-xs">
-                <div className="w-12 h-12 mx-auto rounded-xl bg-blue-50 flex items-center justify-center mb-4">
+              <div
+                key={idx}
+                className="group rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+              >
+
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 transition-transform duration-300 group-hover:scale-110">
                   {iconMap[val.icon]}
                 </div>
-                <h4 className="font-bold text-slate-900 text-lg mb-2">{val.title}</h4>
-                <p className="text-xs text-slate-600 leading-relaxed">{val.desc}</p>
+
+                <h4 className="mb-2 text-lg font-bold text-slate-900">
+                  {val.title}
+                </h4>
+
+                <p className="text-xs leading-relaxed text-slate-600">
+                  {val.desc}
+                </p>
+
               </div>
             ))}
+
           </div>
+
         </div>
+
       </section>
 
-      <section className="py-20 bg-[#F6F9FC] border-t border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-          <div className="text-center max-w-3xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-widest text-blue-primary mb-2 block">
-              Leadership & Engineering
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">Meet Our Team</h2>
-            <p className="text-slate-600 text-base">The team driving digital innovation at AVM Smart Solutions.</p>
-          </div>
+      {/* ==========================================
+          TEAM SECTION
+      ========================================== */}
 
-          <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-6 text-center border-b border-slate-200 pb-2">
-              Founder & CEO
-            </h3>
-            <div className="max-w-md mx-auto">
-              {founder.map((m) => renderCard(m, 'blue'))}
+      <section className="relative overflow-hidden border-t border-slate-200/80 bg-[#F6F9FC] py-20 sm:py-24">
+
+        {/* Background Decorations */}
+
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+
+          <div className="absolute -left-40 top-20 h-96 w-96 rounded-full bg-blue-500/5 blur-3xl" />
+
+          <div className="absolute -right-40 bottom-20 h-96 w-96 rounded-full bg-orange-500/5 blur-3xl" />
+
+          <div className="absolute left-0 top-32 h-px w-full rotate-[12deg] bg-slate-300/30" />
+
+          <div className="absolute left-0 top-72 h-px w-full -rotate-[8deg] bg-slate-300/20" />
+
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          {/* ==========================================
+              TEAM HEADER
+          ========================================== */}
+
+          <div className="mb-16 grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
+
+            {/* Left heading */}
+
+            <div className="lg:col-span-5">
+
+              <div className="relative overflow-hidden rounded-[40px] bg-white p-8 shadow-sm sm:p-10">
+
+                <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-slate-100" />
+
+                <div className="relative">
+
+                  <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-blue-primary">
+                    <Users className="h-3.5 w-3.5" />
+                    Leadership & Engineering
+                  </span>
+
+                  <h2 className="max-w-md text-4xl font-black leading-[1.05] tracking-tight text-[#102A43] sm:text-5xl lg:text-6xl">
+                    Meet the
+                    <br />
+                    <span>Team</span>
+                  </h2>
+
+                  <p className="mt-6 max-w-md text-sm leading-relaxed text-slate-500 sm:text-base">
+                    The people behind AVM Smart Solutions — bringing together
+                    technology, creativity, and business-focused thinking.
+                  </p>
+
+                  <div className="mt-7 flex items-center gap-2 text-xs font-bold text-slate-400">
+                    <span className="h-2 w-2 rounded-full bg-[#087FF5]" />
+                    Building digital solutions together
+                  </div>
+
+                </div>
+
+              </div>
+
             </div>
-          </div>
 
-          <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-6 text-center border-b border-slate-200 pb-2">
-              Co-Founders & Technical Leads
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {coFounders.map((m) => renderCard(m, 'green'))}
-            </div>
-          </div>
+            {/* Right circular team preview */}
 
-          <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-6 text-center border-b border-slate-200 pb-2">
-              Team Members
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {teamMembers.map((m, idx) => {
-                const themes: ('blue' | 'green' | 'orange')[] = ['blue', 'green', 'orange'];
-                return renderCard(m, themes[idx % 3]);
+            <div className="relative hidden min-h-[330px] lg:col-span-7 lg:block">
+
+              {/* Connecting lines */}
+
+              <div className="absolute left-1/2 top-1/2 h-px w-[70%] -translate-x-1/2 bg-slate-300/60" />
+
+              <div className="absolute left-1/2 top-1/2 h-[70%] w-px -translate-y-1/2 bg-slate-300/40" />
+
+              {/* Founder */}
+
+              {founder[0] && (
+                <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
+
+                  <div className="relative">
+
+                    <div className="absolute -inset-4 rounded-full bg-blue-400/10 blur-xl" />
+
+                    <div className="relative h-32 w-32 overflow-hidden rounded-full border-4 border-[#087FF5] bg-white shadow-xl">
+
+                      <Image
+                        src={founder[0].image}
+                        alt={founder[0].name}
+                        fill
+                        sizes="128px"
+                        className="object-cover object-top"
+                      />
+
+                    </div>
+
+                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#087FF5] px-4 py-2 text-center text-white shadow-lg">
+
+                      <p className="text-[9px] font-extrabold uppercase tracking-wider">
+                        Founder & CEO
+                      </p>
+
+                      <p className="mt-0.5 text-[10px] opacity-90">
+                        {founder[0].name}
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+              )}
+
+              {/* Floating Team Photos */}
+
+              {[
+                ...coFounders.slice(0, 2),
+                ...teamMembers.slice(0, 5),
+              ].map((member, index) => {
+
+                const positions = [
+                  'left-[8%] top-[8%]',
+                  'right-[8%] top-[8%]',
+                  'left-[2%] bottom-[5%]',
+                  'left-[32%] top-[0%]',
+                  'right-[30%] top-[0%]',
+                  'right-[2%] bottom-[5%]',
+                  'left-[32%] bottom-[0%]',
+                ];
+
+                return (
+                  <div
+                    key={member.id}
+                    className={`absolute ${positions[index]}`}
+                  >
+
+                    <div className="relative h-20 w-20 overflow-hidden rounded-full border-[3px] border-white bg-white shadow-lg transition-transform duration-300 hover:scale-110">
+
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        sizes="80px"
+                        className="object-cover object-top"
+                      />
+
+                    </div>
+
+                  </div>
+                );
               })}
+
             </div>
+
           </div>
+
+          {/* ==========================================
+              FOUNDER
+          ========================================== */}
+
+          <div className="relative mb-20">
+
+            {sectionDivider('Founder & CEO', 'blue')}
+
+            <div className="flex justify-center">
+
+              {founder.map((member) => (
+                <div
+                  key={member.id}
+                  className="w-full max-w-xs"
+                >
+                  {renderTeamMember(member, 'founder')}
+                </div>
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* ==========================================
+              DESKTOP CONNECTOR
+          ========================================== */}
+
+          <div className="relative mx-auto mb-20 hidden h-16 max-w-4xl lg:block">
+
+            <div className="absolute left-1/2 top-0 h-8 w-px bg-slate-300" />
+
+            <div className="absolute left-1/4 right-1/4 top-8 h-px bg-slate-300" />
+
+            <div className="absolute left-1/4 top-8 h-8 w-px bg-slate-300" />
+
+            <div className="absolute right-1/4 top-8 h-8 w-px bg-slate-300" />
+
+          </div>
+
+          {/* ==========================================
+              CO-FOUNDERS
+          ========================================== */}
+
+          <div className="mb-20">
+
+            {sectionDivider(
+              'Co-Founders & Technical Leads',
+              'green'
+            )}
+
+            <div className="mx-auto grid max-w-3xl grid-cols-1 gap-14 sm:grid-cols-2 sm:gap-20">
+
+              {coFounders.map((member) => (
+                <div key={member.id}>
+                  {renderTeamMember(member, 'cofounder')}
+                </div>
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* ==========================================
+              TEAM MEMBERS
+          ========================================== */}
+
+          <div>
+
+            {sectionDivider('Team Members', 'orange')}
+
+            <div className="grid grid-cols-2 gap-x-5 gap-y-14 sm:grid-cols-2 sm:gap-x-12 sm:gap-y-16 lg:grid-cols-3 lg:gap-x-20 lg:gap-y-20">
+
+              {teamMembers.map((member) => (
+                <div key={member.id}>
+                  {renderTeamMember(member, 'member')}
+                </div>
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* ==========================================
+              TEAM FOOTER
+          ========================================== */}
+
+          <div className="mx-auto mt-20 max-w-2xl text-center">
+
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-xs font-semibold text-slate-500 shadow-sm">
+
+              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+
+              One Team · One Vision · Real Digital Solutions
+
+            </div>
+
+          </div>
+
         </div>
+
       </section>
 
-      <section className="bg-navy-deep text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-extrabold">Let's Build the Future Together</h2>
-          <p className="text-slate-300 text-base max-w-xl mx-auto">
-            We're always excited to discuss new opportunities and digital projects.
+      {/* ==========================================
+          FINAL CTA
+      ========================================== */}
+
+      <section className="relative overflow-hidden bg-navy-deep py-16 text-white">
+
+        <div className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl" />
+
+        <div className="pointer-events-none absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-orange-500/10 blur-3xl" />
+
+        <div className="relative mx-auto max-w-7xl space-y-6 px-4 text-center sm:px-6 lg:px-8">
+
+          <h2 className="text-3xl font-extrabold sm:text-4xl">
+            Let's Build the Future Together
+          </h2>
+
+          <p className="mx-auto max-w-xl text-base text-slate-300">
+            We're always excited to discuss new opportunities and digital
+            projects.
           </p>
+
           <div>
+
             <button
               onClick={() => setQuoteModalOpen(true)}
-              className="px-8 py-3.5 bg-blue-primary hover:bg-blue-600 text-white font-bold rounded-xl shadow-lg transition-colors"
+              className="inline-flex items-center gap-2 rounded-xl bg-blue-primary px-8 py-3.5 font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-blue-600 hover:shadow-xl"
             >
               Start a Project
+              <ArrowUpRight className="h-4 w-4" />
             </button>
+
           </div>
+
         </div>
+
       </section>
 
-      <QuoteModal isOpen={quoteModalOpen} onClose={() => setQuoteModalOpen(false)} />
+      {/* ==========================================
+          QUOTE MODAL
+      ========================================== */}
+
+      <QuoteModal
+        isOpen={quoteModalOpen}
+        onClose={() => setQuoteModalOpen(false)}
+      />
+
     </div>
   );
 }
