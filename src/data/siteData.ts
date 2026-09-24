@@ -556,6 +556,33 @@ export const TEAM_MEMBERS: TeamMember[] = [
       instagram: "https://www.instagram.com/subhashini_speaks/",
     },
   },
+  {
+  id: "molakalamurali",
+  name: "Molakala Murali",
+  role: "Data Analyst",
+  experience: "Data Analytics",
+  bio: "Data Analyst specializing in data analysis, insights, and data-driven solutions.",
+  image: "/images/profiles/murali.jpeg",
+  skills: ["Python", "Data Analysis", "SQL", "Excel", "Data Visualization"],
+  socials: {
+    github: "https://github.com/molakalamurali",
+    linkedin: "https://www.linkedin.com/in/molakala-murali-377669397/",
+    instagram: "https://www.instagram.com/murali_krishna_0077?stkn=MTJoeWNxejcwZWloeQ==",
+  },
+},
+{
+  id: "Manoj_14",
+  name: "MURABOINA MANOJ",
+  role: "Software Engineer",
+  experience: "Software Engineering",
+  bio: "Software Engineer specializing in software development and building practical digital solutions.",
+  image: "/images/profiles/manoj.jpeg",
+  skills: ["Java", "Python", "JavaScript", "React.js", "Node.js"],
+  socials: {
+    github: "https://github.com/Manoj10681",
+    linkedin: "https://www.linkedin.com/in/manoj-muraboina-aa380b348/",
+  },
+},
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
