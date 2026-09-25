@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { Target, Zap, Clock, ShieldCheck } from 'lucide-react';
 
 export default function SolutionsSection() {
@@ -14,7 +15,7 @@ export default function SolutionsSection() {
             Why Partner With AVM Smart
           </h2>
           <p className="text-slate-700 text-base sm:text-lg leading-relaxed">
-            We bring engineering precision, speed, and continuous support to ensure your business digital solutions scale effortlessly.
+            Founded & led by <Link href="/founder" className="font-bold text-[#087FF5] hover:underline">A. Anand Raju</Link> (Founder & CEO), we bring engineering precision, speed, and continuous support to ensure your business digital solutions scale effortlessly.
           </p>
         </div>
 

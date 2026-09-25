@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import {
   COMPANY_DETAILS,
@@ -233,6 +234,18 @@ export default function AboutClient() {
           )}
 
         </div>
+
+        {isFounder && (
+          <div className="mt-3">
+            <Link
+              href="/founder"
+              className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-[#087FF5]/10 text-[#087FF5] hover:bg-[#087FF5] hover:text-white text-[11px] font-bold transition-all duration-300"
+            >
+              <span>View Founder Profile</span>
+              <ArrowUpRight className="h-3 w-3" />
+            </Link>
+          </div>
+        )}
       </div>
     );
   };

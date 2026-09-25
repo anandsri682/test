@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { TEAM_MEMBERS } from '@/data/siteData';
 import { FaLinkedin, FaGithub, FaInstagram, FaYoutube } from 'react-icons/fa6';
@@ -358,9 +359,20 @@ export default function TeamClient() {
                         )}
                       </div>
 
-                      {/* Signature Element */}
-                      <div className="font-serif italic text-base sm:text-xl text-slate-600 font-bold opacity-75 select-none">
-                        {extras.signature}
+                      {/* Signature Element / Founder CTA */}
+                      <div className="flex items-center gap-3">
+                        {isFounder && (
+                          <Link
+                            href="/founder"
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-[#087FF5] px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-[#066FD6] transition-colors"
+                          >
+                            <span>View Founder Profile</span>
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </Link>
+                        )}
+                        <div className="font-serif italic text-base sm:text-xl text-slate-600 font-bold opacity-75 select-none">
+                          {extras.signature}
+                        </div>
                       </div>
                     </div>
 

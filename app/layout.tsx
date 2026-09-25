@@ -108,6 +108,13 @@ const jsonLd = {
         "addressCountry": "IN",
       },
       "sameAs": Object.values(COMPANY_DETAILS.socials),
+      "founder": {
+        "@type": "Person",
+        "@id": `${COMPANY_DETAILS.domain}/founder/#person`,
+        "name": "A. Anand Raju",
+        "jobTitle": "Founder & CEO",
+        "url": `${COMPANY_DETAILS.domain}/founder/`,
+      },
     },
     {
       "@type": "ProfessionalService",

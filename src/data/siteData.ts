@@ -371,7 +371,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Strategy",
     date: "Sep 10, 2024",
     readTime: "5 min read",
-    author: "Anand",
+    author: "A. Anand Raju",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop",
     excerpt: "A professional website acts as your 24/7 storefront, building trust, attracting organic search traffic, and converting visitors into loyal paying customers.",
     content: "In today's digital-first economy, a website is no longer optional—it is the foundation of corporate credibility. From establishing brand authority to automating lead capture, a fast and responsive website works continuously for your business..."
@@ -429,12 +429,12 @@ export const BLOG_POSTS: BlogPost[] = [
 export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: "founder",
-    name: "Anand",
+    name: "A. Anand Raju",
     role: "Founder & CEO",
-    title: "Full Stack Developer | UI/UX Designer | YouTube Creator",
-    experience: "Full Stack Engineer & Tech Lead",
-    bio: "Full-stack developer, designer, and tech educator passionate about building high-performance web applications and scaling tech solutions.",
-    image: "/images/profiles/a.png",
+    title: "Founder & CEO | Full Stack Engineer | YouTube Creator",
+    experience: "Founder, CEO & Lead Tech Architect",
+    bio: "A. Anand Raju is the Founder & CEO of AVM Smart Solutions, leading web development, mobile applications, software development, and digital solutions. He is also the technology content creator behind the Mr Anand Tech in Telugu YouTube channel.",
+    image: "/images/profiles/anand.png",
     skills: ["React", "Next.js", "Java", "Spring Boot", "Node.js", "Express.js", "MongoDB", "TypeScript", "Tailwind CSS", "REST APIs"],
     socials: {
       linkedin: "https://www.linkedin.com/in/arekanti-anand-raju-2615a0377/",

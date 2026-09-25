@@ -116,6 +116,15 @@ export default function Footer() {
 
               <li>
                 <Link
+                  href="/founder"
+                  className="hover:text-[#087FF5] transition-colors py-1 inline-block"
+                >
+                  Founder Profile
+                </Link>
+              </li>
+
+              <li>
+                <Link
                   href="/team"
                   className="hover:text-[#087FF5] transition-colors py-1 inline-block"
                 >

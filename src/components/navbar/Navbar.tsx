@@ -58,6 +58,7 @@ const NAV_STRUCTURE: NavCategory[] = [
     hasDropdown: true,
     dropdownItems: [
       { title: 'About AVM Smart', desc: 'Our mission, vision and growth story', href: '/about', icon: Info },
+      { title: 'Founder & CEO', desc: 'Meet A. Anand Raju, Founder of AVM Smart', href: '/founder', icon: Users, badge: 'Profile' },
       { title: 'Leadership & Team', desc: 'Meet our founders and tech architects', href: '/team', icon: Users, badge: 'Meet' },
       { title: 'Our Portfolio', desc: 'Explore successful client deployments', href: '/portfolio', icon: FolderKanban },
       { title: 'Tech Blog & Insights', desc: 'Latest articles on AI, Cloud & Web', href: '/blog', icon: FileText },
