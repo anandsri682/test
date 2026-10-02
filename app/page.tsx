@@ -17,24 +17,22 @@ export default function HomePage() {
       {/* 2. Core Capabilities / Services Section */}
       <ServicesSection />
 
-      
-
       {/* 4. Live Product Demos Showcase */}
       {/* <FeaturedDemosSection /> */}
 
       {/* 5. Service & Pricing Showcase */}
       <HomePricingSection />
 
-      {/* 3. Strategic Growth Partnership / Solutions Section */}
+      {/* 6. Strategic Growth Partnership / Solutions Section */}
       <SolutionsSection />
 
-      {/* 6. Featured Work / Portfolio Section */}
+      {/* 7. Featured Work / Portfolio Section */}
       {/* <PortfolioSection /> */}
 
-      {/* 7. Dynamic Customer Reviews Marquee Section */}
+      {/* 8. Dynamic Customer Reviews Marquee Section */}
       <ReviewsSection />
 
-      {/* 8. Bottom CTA Banner */}
+      {/* 9. Bottom CTA Banner */}
       <CTASection />
     </div>
   );

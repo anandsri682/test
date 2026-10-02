@@ -72,13 +72,13 @@ export const MAIN_PRICING_SERVICES: PricingMainService[] = [
     slug: 'website-development',
     title: 'Website Development',
     shortDesc: 'Modern, responsive websites for growing businesses.',
-    startingPrice: '₹7,000',
+    startingPrice: '₹2,499',
     features: [
       '5 Pages Website',
       'Responsive Design',
       'Contact Form',
       'Basic SEO Setup',
-      '1 Month Support',
+      '3 Months Support',
     ],
     color: 'blue',
     accentHex: '#087FF5',
@@ -114,7 +114,7 @@ export const MAIN_PRICING_SERVICES: PricingMainService[] = [
     slug: 'digital-marketing',
     title: 'Digital Marketing',
     shortDesc: 'Grow your brand with data-driven strategies.',
-    startingPrice: '₹5,000',
+    startingPrice: '₹3,999',
     features: [
       'Social Media Management',
       'SEO Optimization',
@@ -135,7 +135,7 @@ export const MAIN_PRICING_SERVICES: PricingMainService[] = [
     slug: 'logo-design',
     title: 'Logo Design',
     shortDesc: 'Unique logos that define your brand identity.',
-    startingPrice: '₹2,500',
+    startingPrice: '₹1,999',
     features: [
       '3 Initial Concepts',
       'High-Quality Files',
@@ -177,17 +177,18 @@ export const PRICING_DETAILS: Record<string, PricingDetailData> = {
     ],
     plans: [
       {
-        name: 'Starter',
-        price: '₹7,000',
+        name: 'Starter Package',
+        badge: 'Promotional Offer',
+        price: '₹2,499',
         period: 'One-Time Payment',
-        desc: 'Perfect for small businesses and personal projects looking for a fast online presence.',
+        desc: 'Complete business website package including WhatsApp integration, 3 months maintenance, and domain.',
         features: [
-          'Up to 5 Pages',
-          'Responsive Design',
-          'Basic SEO Setup',
-          'Contact Form Integration',
-          'Social Media Integration',
-          '1 Month Support',
+          'Website Development for ₹2,499',
+          '3 Months of Maintenance Included',
+          'WhatsApp Integration Included',
+          'Free Domain Purchase for 1 Year',
+          'Up to 5 Pages Responsive Design',
+          'Basic SEO & Contact Form',
         ],
         ctaText: 'Get Started',
       },
@@ -195,7 +196,7 @@ export const PRICING_DETAILS: Record<string, PricingDetailData> = {
         name: 'Business',
         badge: 'Most Popular',
         isPopular: true,
-        price: '₹10,000',
+        price: '₹4,999',
         period: 'One-Time Payment',
         desc: 'Ideal for growing companies needing advanced SEO, map integration, and blog channels.',
         features: [
@@ -211,7 +212,7 @@ export const PRICING_DETAILS: Record<string, PricingDetailData> = {
       },
       {
         name: 'Professional',
-        price: '₹15,000',
+        price: '₹12,999',
         period: 'One-Time Payment',
         desc: 'Best for established businesses requiring custom UI/UX, analytics, and news platforms.',
         features: [
@@ -221,7 +222,7 @@ export const PRICING_DETAILS: Record<string, PricingDetailData> = {
           'Contact Form + Map',
           'Blog / News Platform',
           'Analytics Integration',
-          '6 Months Support',
+          '3 Months Support',
         ],
         ctaText: 'Get Started',
       },
@@ -406,7 +407,7 @@ export const PRICING_DETAILS: Record<string, PricingDetailData> = {
     plans: [
       {
         name: 'Starter Growth',
-        price: '₹5,000',
+        price: '₹3,999',
         period: 'Per Month',
         desc: 'Essential social media management and basic local SEO for small business awareness.',
         features: [
@@ -422,7 +423,7 @@ export const PRICING_DETAILS: Record<string, PricingDetailData> = {
         name: 'Business Scale',
         badge: 'Most Popular',
         isPopular: true,
-        price: '₹12,000',
+        price: '₹7,999',
         period: 'Per Month',
         desc: 'Comprehensive marketing package with Google PPC Ads, Meta campaigns, and high-intent SEO.',
         features: [
@@ -437,7 +438,7 @@ export const PRICING_DETAILS: Record<string, PricingDetailData> = {
       },
       {
         name: 'Enterprise Dominance',
-        price: '₹25,000',
+        price: '₹15,999',
         period: 'Per Month',
         desc: 'Full-funnel digital marketing engine for companies wanting market dominance.',
         features: [
@@ -515,7 +516,7 @@ export const PRICING_DETAILS: Record<string, PricingDetailData> = {
     plans: [
       {
         name: 'Basic Logo',
-        price: '₹2,500',
+        price: '₹1,999',
         period: 'One-Time Payment',
         desc: 'Essential logo design for startups and local businesses.',
         features: [
@@ -532,7 +533,7 @@ export const PRICING_DETAILS: Record<string, PricingDetailData> = {
         name: 'Brand Identity',
         badge: 'Most Popular',
         isPopular: true,
-        price: '₹5,000',
+        price: '₹4,999',
         period: 'One-Time Payment',
         desc: 'Complete branding package with logo, color palette, typography guidelines, and social media kit.',
         features: [
@@ -547,7 +548,7 @@ export const PRICING_DETAILS: Record<string, PricingDetailData> = {
       },
       {
         name: 'Corporate Suite',
-        price: '₹10,000',
+        price: '₹9,999',
         period: 'One-Time Payment',
         desc: 'Comprehensive visual brand architecture for corporate enterprises and franchise systems.',
         features: [
