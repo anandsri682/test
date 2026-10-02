@@ -33,6 +33,7 @@ import {
   Tag,
 } from 'lucide-react';
 import QuoteModal from '@/components/QuoteModal';
+import OfferSystemManager from '@/components/offer/OfferSystemManager';
 
 interface NavDropdownItem {
   title: string;
@@ -171,6 +172,9 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full">
+        {/* TOP OFFER BANNER ABOVE NAVBAR & POPUP CONTROL */}
+        <OfferSystemManager />
+
         {/* TOP BRAND LINE */}
         <div className="h-[3px] w-full bg-gradient-to-r from-[#087FF5] via-[#13B89A] to-[#FF6A00]" />
 
