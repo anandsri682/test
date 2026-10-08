@@ -39,7 +39,7 @@ export async function sendCustomerConfirmationEmail(payload: CustomerEmailPayloa
   console.log(`[Resend Customer Email]: Dispatching confirmation email to ${customerEmail}`);
 
   try {
-    const data = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: [customerEmail],
       subject: 'Thank you for contacting AVM Smart Solutions',
@@ -74,8 +74,18 @@ export async function sendCustomerConfirmationEmail(payload: CustomerEmailPayloa
       `,
     });
 
-    console.log(`[Resend Customer Email Success]: Email ID: ${data?.id}`);
-    return { success: true, id: data?.id };
+    if (error) {
+      console.error(`[Resend Customer Email Error]:`, error.message);
+      return { success: false, error: error.message };
+    }
+
+    if (!data) {
+      console.error(`[Resend Customer Email Error]: No data returned from Resend API`);
+      return { success: false, error: 'No data returned from Resend API' };
+    }
+
+    console.log(`[Resend Customer Email Success]: Email ID: ${data.id}`);
+    return { success: true, id: data.id };
   } catch (error: any) {
     console.error(`[Resend Customer Email Error]:`, error?.message || error);
     return { success: false, error: error?.message || 'Failed to send customer confirmation email' };
@@ -98,7 +108,7 @@ export async function sendTeamNotificationEmail(payload: CustomerEmailPayload) {
   console.log(`[Resend Team Email]: Dispatching lead notification for ${customerName} to ${teamEmail}`);
 
   try {
-    const data = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: [teamEmail],
       subject: `New Contact Form Enquiry – ${customerName}`,
@@ -160,8 +170,18 @@ export async function sendTeamNotificationEmail(payload: CustomerEmailPayload) {
       `,
     });
 
-    console.log(`[Resend Team Email Success]: Email ID: ${data?.id}`);
-    return { success: true, id: data?.id };
+    if (error) {
+      console.error(`[Resend Team Email Error]:`, error.message);
+      return { success: false, error: error.message };
+    }
+
+    if (!data) {
+      console.error(`[Resend Team Email Error]: No data returned from Resend API`);
+      return { success: false, error: 'No data returned from Resend API' };
+    }
+
+    console.log(`[Resend Team Email Success]: Email ID: ${data.id}`);
+    return { success: true, id: data.id };
   } catch (error: any) {
     console.error(`[Resend Team Email Error]:`, error?.message || error);
     return { success: false, error: error?.message || 'Failed to send team notification email' };

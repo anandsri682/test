@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AdminLayout from '@/components/admin/AdminLayout';
@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import { getApiUrl } from '@/lib/api';
 
-export default function AdminLeadsPage() {
+function AdminLeadsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const urlSearch = searchParams.get('search') || '';
@@ -628,5 +628,13 @@ export default function AdminLeadsPage() {
         )}
       </div>
     </AdminLayout>
+  );
+}
+
+export default function AdminLeadsPage() {
+  return (
+    <Suspense fallback={<div className="p-12 text-center text-xs text-slate-400 font-medium">Loading Lead Management...</div>}>
+      <AdminLeadsContent />
+    </Suspense>
   );
 }
