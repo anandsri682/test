@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Contact from '@/models/Contact';
 import Lead from '@/models/Lead';
+import { sendLeadNotificationEmail } from '@/lib/email';
+import { sendCustomerConfirmationEmail, sendTeamNotificationEmail } from '@/lib/resend';
 import { verifyAdminAuth, getCorsHeaders, handleCorsPreflight } from '@/lib/auth';
 
 export async function OPTIONS(req: Request) {
@@ -51,7 +53,7 @@ export async function POST(req: Request) {
     const cleanedBudget = (budget || '').trim();
     const cleanedTimeline = (timeline || '').trim();
 
-    // Create Contact document
+    // Create Contact document in MongoDB
     const newContact = await Contact.create({
       fullName: cleanedFullName,
       email: cleanedEmail,
@@ -78,6 +80,43 @@ export async function POST(req: Request) {
         status: 'New',
       });
     } catch {}
+
+    const submittedAtFormatted = new Date().toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      dateStyle: 'full',
+      timeStyle: 'medium',
+    });
+
+    const emailPayload = {
+      customerName: cleanedFullName,
+      customerEmail: cleanedEmail,
+      phone: cleanedPhone,
+      service: cleanedService,
+      message: cleanedMessage,
+      submittedAt: submittedAtFormatted,
+    };
+
+    // STEP 5: Send Resend Customer Confirmation Email
+    sendCustomerConfirmationEmail(emailPayload).catch((err) => {
+      console.error('[Resend Customer Confirmation Dispatch Error]:', err);
+    });
+
+    // STEP 6: Send Resend Internal Team Notification Email
+    sendTeamNotificationEmail(emailPayload).catch((err) => {
+      console.error('[Resend Team Notification Dispatch Error]:', err);
+    });
+
+    // Backup Nodemailer dispatch
+    sendLeadNotificationEmail({
+      fullName: cleanedFullName,
+      email: cleanedEmail,
+      phone: cleanedPhone,
+      service: cleanedService,
+      company: cleanedCompany,
+      budget: cleanedBudget,
+      timeline: cleanedTimeline,
+      message: cleanedMessage,
+    }).catch(() => {});
 
     return NextResponse.json(
       {

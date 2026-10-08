@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
+import { getApiUrl } from '@/lib/api';
 import {
   Sparkles,
   Globe,
@@ -27,7 +28,19 @@ import QuoteModal from '@/components/QuoteModal';
 export default function OfferLandingClient() {
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [offerConfig, setOfferConfig] = useState<any>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    fetch(getApiUrl('/api/offer'))
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.offer) {
+          setOfferConfig(data.offer);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const OFFER_BENEFITS = [
     {
@@ -147,14 +160,14 @@ export default function OfferLandingClient() {
               </div>
 
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.12] text-white">
-                Your Business Website Starts at Just{' '}
+                {offerConfig?.landingHeadline || 'Your Business Website Starts at Just'}{' '}
                 <span className="bg-gradient-to-r from-[#67D63B] via-[#087FF5] to-[#FF6A00] bg-clip-text text-transparent inline-block">
-                  ₹2,499
+                  {offerConfig?.price || '₹2,499'}
                 </span>
               </h1>
 
               <p className="text-slate-300 text-sm sm:text-base lg:text-lg font-normal leading-relaxed max-w-2xl">
-                Everything you need to establish your business online, with WhatsApp integration, three months of maintenance, and a domain included for the first year.
+                {offerConfig?.landingSubtext || 'Everything you need to establish your business online, with WhatsApp integration, three months of maintenance, and a domain included for the first year.'}
               </p>
 
               {/* Action Buttons */}

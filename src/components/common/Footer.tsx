@@ -11,6 +11,7 @@ import {
   MessageCircle,
   ExternalLink,
 } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import {
   FaLinkedin,
   FaTwitter,
@@ -19,6 +20,12 @@ import {
 } from 'react-icons/fa6';
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Do not render main website footer on admin routes
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
   return (
     <footer className="bg-white text-[#071A33] border-t border-slate-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Save, CheckCircle, Loader2 } from 'lucide-react';
+import AdminLayout from '@/components/admin/AdminLayout';
+import { Save, CheckCircle, Loader2, Palette, Building2, Phone, Mail, MapPin } from 'lucide-react';
 import { getApiUrl } from '@/lib/api';
 
 export default function AdminSettingsPage() {
@@ -67,160 +68,166 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-6 space-y-6">
-      {/* Header */}
-      <div className="max-w-4xl mx-auto flex items-center justify-between border-b border-slate-800 pb-4">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/admin/dashboard"
-            className="p-2 bg-slate-900 hover:bg-slate-800 rounded-lg text-slate-300 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-          <div>
-            <h1 className="text-2xl font-bold text-white">Dynamic Branding & Site Settings</h1>
-            <p className="text-xs text-slate-400">Configure global website parameters & colors</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl">
+    <AdminLayout
+      title="Dynamic Branding & Settings"
+      subtitle="Configure global website CSS color variables, contact phone, email, and location parameters"
+    >
+      <div className="max-w-4xl space-y-6">
         {savedSuccess && (
-          <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs rounded-xl flex items-center gap-2">
-            <CheckCircle className="w-5 h-5" />
-            <span>Settings saved successfully! Website parameters updated.</span>
+          <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold rounded-xl flex items-center gap-2">
+            <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
+            <span>Website dynamic branding parameters and contact details saved successfully!</span>
           </div>
         )}
 
-        <form onSubmit={handleSave} className="space-y-6 text-xs text-slate-200">
-          <div>
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">
-              Brand Color Palette Variables
-            </h3>
+        <form onSubmit={handleSave} className="space-y-6">
+          {/* Brand Color Variables */}
+          <div className="p-6 bg-white border border-slate-200/80 rounded-2xl shadow-xs space-y-4">
+            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+              <Palette className="w-4 h-4 text-[#087FF5]" />
+              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+                Website Brand Palette Variables
+              </h3>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-slate-400 mb-1">Primary Blue Color</label>
+                <label className="block text-xs font-bold text-slate-500 mb-1.5">Primary Blue Color</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
                     value={settings.primaryColor}
                     onChange={(e) => setSettings({ ...settings, primaryColor: e.target.value })}
-                    className="w-10 h-10 rounded-lg border-0 cursor-pointer bg-transparent"
+                    className="w-9 h-9 rounded-lg border border-slate-200 cursor-pointer bg-transparent"
                   />
                   <input
                     type="text"
                     value={settings.primaryColor}
                     onChange={(e) => setSettings({ ...settings, primaryColor: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg font-mono text-white"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-mono text-slate-800 font-bold"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1">Secondary Teal Color</label>
+                <label className="block text-xs font-bold text-slate-500 mb-1.5">Secondary Teal Color</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
                     value={settings.secondaryColor}
                     onChange={(e) => setSettings({ ...settings, secondaryColor: e.target.value })}
-                    className="w-10 h-10 rounded-lg border-0 cursor-pointer bg-transparent"
+                    className="w-9 h-9 rounded-lg border border-slate-200 cursor-pointer bg-transparent"
                   />
                   <input
                     type="text"
                     value={settings.secondaryColor}
                     onChange={(e) => setSettings({ ...settings, secondaryColor: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg font-mono text-white"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-mono text-slate-800 font-bold"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1">Accent Orange Color</label>
+                <label className="block text-xs font-bold text-slate-500 mb-1.5">Accent Orange Color</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
                     value={settings.accentColor}
                     onChange={(e) => setSettings({ ...settings, accentColor: e.target.value })}
-                    className="w-10 h-10 rounded-lg border-0 cursor-pointer bg-transparent"
+                    className="w-9 h-9 rounded-lg border border-slate-200 cursor-pointer bg-transparent"
                   />
                   <input
                     type="text"
                     value={settings.accentColor}
                     onChange={(e) => setSettings({ ...settings, accentColor: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg font-mono text-white"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-mono text-slate-800 font-bold"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1">Deep Navy Color</label>
+                <label className="block text-xs font-bold text-slate-500 mb-1.5">Deep Navy Color</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
                     value={settings.navyColor}
                     onChange={(e) => setSettings({ ...settings, navyColor: e.target.value })}
-                    className="w-10 h-10 rounded-lg border-0 cursor-pointer bg-transparent"
+                    className="w-9 h-9 rounded-lg border border-slate-200 cursor-pointer bg-transparent"
                   />
                   <input
                     type="text"
                     value={settings.navyColor}
                     onChange={(e) => setSettings({ ...settings, navyColor: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg font-mono text-white"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-mono text-slate-800 font-bold"
                   />
                 </div>
               </div>
             </div>
           </div>
 
-          <div>
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-slate-800 pb-2 pt-4">
-              Corporate Contact Details
-            </h3>
+          {/* Corporate Contact Parameters */}
+          <div className="p-6 bg-white border border-slate-200/80 rounded-2xl shadow-xs space-y-4">
+            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+              <Building2 className="w-4 h-4 text-[#087FF5]" />
+              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+                Corporate Contact Parameters
+              </h3>
+            </div>
+
             <div className="space-y-4">
               <div>
-                <label className="block text-slate-400 mb-1">Contact Email</label>
+                <label className="block text-xs font-bold text-slate-500 mb-1.5 flex items-center gap-1.5">
+                  <Mail className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Contact Email Address</span>
+                </label>
                 <input
                   type="email"
                   value={settings.contactEmail}
                   onChange={(e) => setSettings({ ...settings, contactEmail: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white"
+                  className="w-full px-4 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#087FF5]/40"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1">Contact Phone</label>
+                <label className="block text-xs font-bold text-slate-500 mb-1.5 flex items-center gap-1.5">
+                  <Phone className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Contact Phone / WhatsApp Number</span>
+                </label>
                 <input
                   type="text"
                   value={settings.contactPhone}
                   onChange={(e) => setSettings({ ...settings, contactPhone: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white"
+                  className="w-full px-4 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#087FF5]/40"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1">Office Address</label>
+                <label className="block text-xs font-bold text-slate-500 mb-1.5 flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Corporate Office Address</span>
+                </label>
                 <textarea
                   rows={2}
                   value={settings.officeAddress}
                   onChange={(e) => setSettings({ ...settings, officeAddress: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white resize-none"
+                  className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#087FF5]/40 resize-none"
                 ></textarea>
               </div>
             </div>
           </div>
 
-          <div className="pt-4 flex justify-end">
+          <div className="pt-2 flex justify-end">
             <button
               type="submit"
               disabled={saving}
-              className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition-colors flex items-center gap-2"
+              className="px-6 py-3 bg-[#087FF5] hover:bg-[#066FD6] text-white font-bold text-xs rounded-xl shadow-md transition-colors flex items-center gap-2 cursor-pointer"
             >
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-              Save Dynamic Settings
+              <span>Save Dynamic Branding</span>
             </button>
           </div>
         </form>
       </div>
-    </div>
+    </AdminLayout>
   );
 }

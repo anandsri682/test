@@ -19,12 +19,25 @@ interface OfferPopupModalProps {
   isOpen: boolean;
   onClose: () => void;
   onClaim: () => void;
+  headline?: string;
+  price?: string;
+  supportingText?: string;
+  benefits?: string[];
 }
 
 export default function OfferPopupModal({
   isOpen,
   onClose,
   onClaim,
+  headline = 'Launch Your Business Website for Just',
+  price = '₹2,499',
+  supportingText = 'Take your business online with an affordable website package designed to help your business build a professional digital presence.',
+  benefits = [
+    'Website Dev (₹2,499)',
+    '3 Months Maintenance',
+    'WhatsApp Integration',
+    'Free Domain (1 Year)',
+  ],
 }: OfferPopupModalProps) {
   const shouldReduceMotion = useReducedMotion();
 
@@ -98,34 +111,27 @@ export default function OfferPopupModal({
                 id="popup-offer-title"
                 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight"
               >
-                Launch Your Business Website for Just{' '}
+                {headline}{' '}
                 <span className="bg-gradient-to-r from-[#67D63B] via-[#087FF5] to-[#FF6A00] bg-clip-text text-transparent">
-                  ₹2,499!
+                  {price}!
                 </span>
               </h2>
 
               <p className="text-slate-300 text-xs sm:text-sm font-normal leading-relaxed">
-                Take your business online with an affordable website package designed to help your business build a professional digital presence.
+                {supportingText}
               </p>
 
-              {/* 4 Benefits Inclusions List */}
+              {/* Dynamic Inclusions List */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-                <div className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 p-2 text-xs font-semibold text-slate-100">
-                  <Globe className="h-4 w-4 text-[#087FF5] shrink-0" />
-                  <span>Website Dev (₹2,499)</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 p-2 text-xs font-semibold text-slate-100">
-                  <ShieldCheck className="h-4 w-4 text-[#FF6A00] shrink-0" />
-                  <span>3 Months Maintenance</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 p-2 text-xs font-semibold text-slate-100">
-                  <MessageCircle className="h-4 w-4 text-[#67D63B] shrink-0" />
-                  <span>WhatsApp Integration</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 p-2 text-xs font-semibold text-slate-100">
-                  <Server className="h-4 w-4 text-purple-400 shrink-0" />
-                  <span>Free Domain (1 Year)</span>
-                </div>
+                {benefits.map((benefit, idx) => (
+                  <div key={idx} className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 p-2 text-xs font-semibold text-slate-100">
+                    {idx === 0 && <Globe className="h-4 w-4 text-[#087FF5] shrink-0" />}
+                    {idx === 1 && <ShieldCheck className="h-4 w-4 text-[#FF6A00] shrink-0" />}
+                    {idx === 2 && <MessageCircle className="h-4 w-4 text-[#67D63B] shrink-0" />}
+                    {idx >= 3 && <Server className="h-4 w-4 text-purple-400 shrink-0" />}
+                    <span>{benefit}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -146,9 +152,9 @@ export default function OfferPopupModal({
                 <div className="my-auto text-center space-y-1 py-2">
                   <div className="text-[10px] uppercase tracking-widest text-[#087FF5] font-extrabold">Complete Setup</div>
                   <div className="text-3xl sm:text-4xl font-black text-[#67D63B] tracking-tight">
-                    ₹2,499
+                    {price}
                   </div>
-                  <div className="text-[10px] text-slate-300 font-semibold">Website + WhatsApp + Maintenance</div>
+                  <div className="text-[10px] text-slate-300 font-semibold truncate">Limited Special Offer</div>
                 </div>
 
                 {/* Simulated Floating Code Floating Element */}

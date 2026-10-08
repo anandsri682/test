@@ -111,6 +111,11 @@ const NAV_STRUCTURE: NavCategory[] = [
 export default function Navbar() {
   const pathname = usePathname();
 
+  // Do not render main website navbar or offer banner on admin routes
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);

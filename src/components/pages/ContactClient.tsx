@@ -75,9 +75,9 @@ export default function ContactClient() {
               {status === 'success' ? (
                 <div className="p-8 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-3">
                   <CheckCircle className="w-12 h-12 text-[#13B89A] mx-auto" />
-                  <h3 className="text-xl font-bold text-emerald-900">Message Sent Successfully!</h3>
+                  <h3 className="text-xl font-bold text-emerald-900">Enquiry Received Successfully!</h3>
                   <p className="text-sm text-emerald-700">
-                    Thank you for reaching out to AVM Smart Solutions. An engineering lead will contact you shortly.
+                    Thank you for contacting AVM Smart Solutions. Your enquiry has been received successfully. Our team will contact you soon.
                   </p>
                   <button
                     onClick={() => setStatus('idle')}

@@ -1,18 +1,20 @@
 /**
  * Centralized API URL constructor.
- * Ensures all client-side network calls target the live Render backend URL directly:
- * https://test-bsh2.onrender.com
+ * Ensures client-side network calls target the current domain/origin by default,
+ * or process.env.NEXT_PUBLIC_API_URL if explicitly configured.
  */
-const DEFAULT_PRODUCTION_BACKEND = 'https://test-bsh2.onrender.com';
-
 export function getApiUrl(endpoint: string): string {
-  const envUrl = process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL.trim() : '';
-  const baseUrl = envUrl || DEFAULT_PRODUCTION_BACKEND;
-
-  const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
 
-  return `${cleanBase}${cleanEndpoint}`;
+  // If NEXT_PUBLIC_API_URL environment variable is explicitly set, use it
+  if (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL.trim()) {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL.trim();
+    const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+    return `${cleanBase}${cleanEndpoint}`;
+  }
+
+  // Otherwise, use relative same-origin path for Next.js internal API routes
+  return cleanEndpoint;
 }
 
 export default getApiUrl;

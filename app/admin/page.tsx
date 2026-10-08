@@ -13,6 +13,14 @@ export default function AdminLoginPage() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
+  // Check if token already exists in localStorage on component mount
+  React.useEffect(() => {
+    const existingToken = localStorage.getItem('avm_admin_token');
+    if (existingToken) {
+      router.push('/admin/dashboard');
+    }
+  }, [router]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');

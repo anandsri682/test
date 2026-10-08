@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import TopOfferBanner from './TopOfferBanner';
 import OfferPopupModal from './OfferPopupModal';
+import { getApiUrl } from '@/lib/api';
 
 export default function OfferSystemManager() {
   const pathname = usePathname();
@@ -11,14 +12,24 @@ export default function OfferSystemManager() {
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isBannerVisible, setIsBannerVisible] = useState(false);
+  const [offerConfig, setOfferConfig] = useState<any>(null);
 
   const isOfferPage = pathname === '/offer' || pathname === '/offer/';
 
   useEffect(() => {
+    // Fetch active offer configuration
+    fetch(getApiUrl('/api/offer'))
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.offer) {
+          setOfferConfig(data.offer);
+        }
+      })
+      .catch(() => {});
+
     // If we're on the dedicated offer page, do not open the popup
     if (isOfferPage) {
       setIsPopupOpen(false);
-      // Keep banner visible or hide depending on layout
       setIsBannerVisible(true);
       return;
     }
@@ -38,7 +49,6 @@ export default function OfferSystemManager() {
         return () => clearTimeout(timer);
       }
     } catch (e) {
-      // Fallback if sessionStorage is disabled/blocked
       const timer = setTimeout(() => {
         setIsPopupOpen(true);
       }, 1000);
@@ -67,16 +77,30 @@ export default function OfferSystemManager() {
     router.push('/offer/');
   };
 
+  // If offer is globally disabled by admin, do not render banner or popup
+  if (offerConfig && offerConfig.enabled === false) {
+    return null;
+  }
+
   return (
     <>
       {/* Slim Top Offer Banner directly above the Navbar */}
-      <TopOfferBanner isVisible={isBannerVisible} />
+      <TopOfferBanner
+        isVisible={isBannerVisible}
+        bannerText={offerConfig?.bannerText}
+        price={offerConfig?.price}
+        bannerCta={offerConfig?.bannerCta}
+      />
 
       {/* Animated Promotional Offer Popup Modal */}
       <OfferPopupModal
         isOpen={isPopupOpen}
         onClose={handleClosePopup}
         onClaim={handleClaimOffer}
+        headline={offerConfig?.headline}
+        price={offerConfig?.price}
+        supportingText={offerConfig?.popupSupportingText}
+        benefits={offerConfig?.benefits}
       />
     </>
   );

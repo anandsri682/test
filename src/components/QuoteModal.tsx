@@ -77,9 +77,9 @@ export default function QuoteModal({ isOpen, onClose, defaultService }: QuoteMod
           {status === 'success' ? (
             <div className="text-center py-8">
               <CheckCircle className="w-16 h-16 text-[#13B89A] mx-auto mb-4 animate-bounce" />
-              <h4 className="text-2xl font-extrabold text-slate-900 mb-2">Request Sent Successfully!</h4>
+              <h4 className="text-2xl font-extrabold text-slate-900 mb-2">Enquiry Received Successfully!</h4>
               <p className="text-slate-600 mb-6 max-w-md mx-auto text-sm leading-relaxed">
-                Thank you for reaching out to AVM Smart Solutions. Our engineering team will review your project details and get back to you within 24 hours.
+                Thank you for contacting AVM Smart Solutions. Your enquiry has been received successfully. Our team will contact you soon.
               </p>
               <button
                 onClick={onClose}
