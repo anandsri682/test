@@ -95,9 +95,11 @@ export function verifyAdminAuth(req: Request | NextRequest): AdminPayload | null
  * Generates CORS headers for production domain and local development.
  */
 export function getCorsHeaders(req: Request) {
-  const origin = req.headers.get('origin') || '';
+  const rawOrigin = req.headers.get('origin') || '';
+  const origin = rawOrigin.endsWith('/') ? rawOrigin.slice(0, -1) : rawOrigin;
+
   const allowedOrigins = [
-    process.env.FRONTEND_URL,
+    process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, '') : '',
     'https://www.avmsmart.in',
     'https://avmsmart.in',
     'http://localhost:3000',
@@ -105,8 +107,11 @@ export function getCorsHeaders(req: Request) {
     'http://localhost:5000',
   ].filter(Boolean);
 
-  const isAllowed = allowedOrigins.includes(origin);
-  const allowOrigin = isAllowed ? origin : (allowedOrigins[0] || '*');
+  const isAllowed =
+    allowedOrigins.includes(origin) ||
+    origin.endsWith('.vercel.app');
+
+  const allowOrigin = isAllowed ? rawOrigin || origin : (allowedOrigins[1] || 'https://www.avmsmart.in');
 
   return {
     'Access-Control-Allow-Origin': allowOrigin,

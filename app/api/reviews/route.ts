@@ -2,29 +2,48 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Review from '@/models/Review';
 import { TESTIMONIALS } from '@/data/siteData';
+import { getCorsHeaders, handleCorsPreflight } from '@/lib/auth';
 
-export async function GET() {
+export async function OPTIONS(req: Request) {
+  return handleCorsPreflight(req);
+}
+
+export async function GET(req: Request) {
+  const corsHeaders = getCorsHeaders(req);
   try {
     const conn = await connectToDatabase();
     if (conn) {
       const dbReviews = await Review.find({ approved: true }).sort({ createdAt: -1 });
       if (dbReviews && dbReviews.length > 0) {
-        return NextResponse.json({ success: true, reviews: dbReviews });
+        return NextResponse.json(
+          { success: true, reviews: dbReviews },
+          { status: 200, headers: corsHeaders }
+        );
       }
     }
-    return NextResponse.json({ success: true, reviews: TESTIMONIALS });
+    return NextResponse.json(
+      { success: true, reviews: TESTIMONIALS },
+      { status: 200, headers: corsHeaders }
+    );
   } catch {
-    return NextResponse.json({ success: true, reviews: TESTIMONIALS });
+    return NextResponse.json(
+      { success: true, reviews: TESTIMONIALS },
+      { status: 200, headers: corsHeaders }
+    );
   }
 }
 
 export async function POST(req: Request) {
+  const corsHeaders = getCorsHeaders(req);
   try {
     const body = await req.json();
     const { name, role, company, quote, rating } = body;
 
     if (!name || !quote) {
-      return NextResponse.json({ success: false, error: 'Name and testimonial text are required.' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: 'Name and testimonial text are required.' },
+        { status: 400, headers: corsHeaders }
+      );
     }
 
     const conn = await connectToDatabase();
@@ -38,11 +57,20 @@ export async function POST(req: Request) {
         approved: true,
       });
 
-      return NextResponse.json({ success: true, message: 'Review submitted successfully!', review: newReview });
+      return NextResponse.json(
+        { success: true, message: 'Review submitted successfully!', review: newReview },
+        { status: 201, headers: corsHeaders }
+      );
     }
 
-    return NextResponse.json({ success: true, message: 'Review recorded!' });
+    return NextResponse.json(
+      { success: true, message: 'Review recorded!' },
+      { status: 200, headers: corsHeaders }
+    );
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: error?.message || 'Failed to submit review' },
+      { status: 500, headers: corsHeaders }
+    );
   }
 }
