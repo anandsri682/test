@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Contact from '@/models/Contact';
 import Lead from '@/models/Lead';
+import Influencer from '@/models/Influencer';
+import Commission from '@/models/Commission';
 import { sendLeadNotificationEmail } from '@/lib/email';
 import { sendCustomerConfirmationEmail, sendTeamNotificationEmail } from '@/lib/resend';
 import { verifyAdminAuth, getCorsHeaders, handleCorsPreflight } from '@/lib/auth';
@@ -11,14 +13,14 @@ export async function OPTIONS(req: Request) {
 }
 
 /**
- * Public Contact / Quote Submission Endpoint
+ * Public Contact / Quote Submission Endpoint (With Optional Influencer Referral Attribution)
  */
 export async function POST(req: Request) {
   const corsHeaders = getCorsHeaders(req);
 
   try {
     const body = await req.json();
-    const { fullName, email, phone, service, company, message, budget, timeline } = body;
+    const { fullName, email, phone, service, company, message, budget, timeline, couponCode } = body;
 
     // Server-side validation
     if (!fullName || !email || !phone) {
@@ -53,6 +55,37 @@ export async function POST(req: Request) {
     const cleanedBudget = (budget || '').trim();
     const cleanedTimeline = (timeline || '').trim();
 
+    // Revalidate optional coupon code on backend
+    let matchedInfluencer: any = null;
+    let appliedCoupon: string | undefined = undefined;
+    let appliedPackagePrice: number | undefined = undefined;
+    let appliedDiscountAmount: number | undefined = undefined;
+
+    if (couponCode && typeof couponCode === 'string' && couponCode.trim()) {
+      const normalizedCoupon = couponCode.trim().toUpperCase();
+      const influencerDoc = await Influencer.findOne({ couponCode: normalizedCoupon });
+
+      if (influencerDoc && influencerDoc.status === 'approved' && influencerDoc.couponActive) {
+        if (!influencerDoc.couponExpiresAt || new Date(influencerDoc.couponExpiresAt) >= new Date()) {
+          matchedInfluencer = influencerDoc;
+          appliedCoupon = normalizedCoupon;
+          appliedPackagePrice = 3999;
+          appliedDiscountAmount = 1000;
+        }
+      }
+    }
+
+    let partnerType: 'individual' | 'influencer' | undefined = undefined;
+    let referrerDisplayName: string | undefined = undefined;
+
+    if (matchedInfluencer) {
+      partnerType = matchedInfluencer.partnerType || 'individual';
+      referrerDisplayName = matchedInfluencer.fullName;
+      if (partnerType === 'influencer' && matchedInfluencer.influencerName) {
+        referrerDisplayName = `${matchedInfluencer.fullName} · ${matchedInfluencer.influencerName}`;
+      }
+    }
+
     // Create Contact document in MongoDB
     const newContact = await Contact.create({
       fullName: cleanedFullName,
@@ -63,8 +96,38 @@ export async function POST(req: Request) {
       budget: cleanedBudget,
       timeline: cleanedTimeline,
       message: cleanedMessage,
+      couponCode: appliedCoupon,
+      influencerId: matchedInfluencer ? matchedInfluencer._id : undefined,
+      partnerType,
+      referrerDisplayName,
+      packagePrice: appliedPackagePrice,
+      discountAmount: appliedDiscountAmount,
+      projectStatus: 'Enquiry',
+      paymentStatus: 'Unpaid',
       status: 'New',
     });
+
+    // If a valid coupon was applied, create initial Commission record (status: 'pending')
+    if (matchedInfluencer) {
+      try {
+        await Commission.create({
+          influencerId: matchedInfluencer._id,
+          couponCode: appliedCoupon,
+          leadId: newContact._id,
+          customerName: cleanedFullName,
+          customerEmail: cleanedEmail,
+          packagePrice: appliedPackagePrice || 3999,
+          discountAmount: appliedDiscountAmount || 1000,
+          commissionRateType: 'fixed',
+          commissionAmount: 500, // Standard ₹500 commission per qualifying website package sale
+          status: 'pending',
+          projectTakeoverStatus: 'pending',
+          paymentReceived: false,
+        });
+      } catch (commErr) {
+        console.error('[Commission Creation Error]:', commErr);
+      }
+    }
 
     // Also mirror to Lead model for backward compatibility
     try {
@@ -94,6 +157,10 @@ export async function POST(req: Request) {
       service: cleanedService,
       message: cleanedMessage,
       submittedAt: submittedAtFormatted,
+      couponCode: appliedCoupon,
+      influencerName: matchedInfluencer ? matchedInfluencer.fullName : undefined,
+      packagePrice: appliedPackagePrice,
+      discountAmount: appliedDiscountAmount,
     };
 
     // STEP 5: Send Resend Customer Confirmation Email

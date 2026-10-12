@@ -7,6 +7,7 @@ import HomePricingSection from '@/components/home/HomePricingSection';
 import PortfolioSection from '@/components/home/PortfolioSection';
 import ReviewsSection from '@/components/home/ReviewsSection';
 import CTASection from '@/components/home/CTASection';
+import InfluencerPromoCard from '@/components/home/InfluencerPromoCard';
 
 export default function HomePage() {
   return (
@@ -25,6 +26,9 @@ export default function HomePage() {
 
       {/* 6. Strategic Growth Partnership / Solutions Section */}
       <SolutionsSection />
+
+      {/* 6.1 Influencer Partner Promotion Card */}
+      <InfluencerPromoCard />
 
       {/* 7. Featured Work / Portfolio Section */}
       {/* <PortfolioSection /> */}

@@ -14,21 +14,11 @@ export default function OfferSystemManager() {
   const [isBannerVisible, setIsBannerVisible] = useState(false);
   const [offerConfig, setOfferConfig] = useState<any>(null);
 
-  const isOfferPage = pathname === '/offer' || pathname === '/offer/';
+  const isReferralPage = pathname === '/influencer-program' || pathname === '/influencer-program/';
 
   useEffect(() => {
-    // Fetch active offer configuration
-    fetch(getApiUrl('/api/offer'))
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && data.offer) {
-          setOfferConfig(data.offer);
-        }
-      })
-      .catch(() => {});
-
-    // If we're on the dedicated offer page, do not open the popup
-    if (isOfferPage) {
+    // If we're on the dedicated referral page, do not open the popup
+    if (isReferralPage) {
       setIsPopupOpen(false);
       setIsBannerVisible(true);
       return;
@@ -54,7 +44,7 @@ export default function OfferSystemManager() {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [pathname, isOfferPage]);
+  }, [pathname, isReferralPage]);
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
@@ -74,7 +64,7 @@ export default function OfferSystemManager() {
     } catch (e) {
       // Ignore storage errors
     }
-    router.push('/offer/');
+    router.push('/influencer-program');
   };
 
   // If offer is globally disabled by admin, do not render banner or popup

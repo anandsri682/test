@@ -108,6 +108,13 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
           badge: 'Live',
           badgeColor: 'bg-emerald-500 text-white',
         },
+        {
+          name: 'Influencer & Coupons',
+          href: '/admin/influencers',
+          icon: UserCheck,
+          badge: 'Program',
+          badgeColor: 'bg-[#FFD600] text-slate-950 font-black',
+        },
       ],
     },
     {

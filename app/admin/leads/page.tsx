@@ -340,9 +340,23 @@ function AdminLeadsContent() {
                           <span className="inline-block bg-blue-50 text-[#087FF5] border border-blue-200/60 px-2.5 py-0.5 rounded-lg font-bold text-[11px]">
                             {lead.service || 'General Inquiry'}
                           </span>
+                          {lead.couponCode && (
+                            <div className="mt-1">
+                              <span className="inline-flex items-center gap-1 font-mono font-bold text-[10px] bg-[#FFD600] text-slate-950 px-2 py-0.5 rounded-md">
+                                Coupon: {lead.couponCode}
+                              </span>
+                            </div>
+                          )}
                         </td>
                         <td className="py-4 px-5 text-slate-600 font-semibold">
-                          {lead.budget || 'Standard'}
+                          {lead.packagePrice ? (
+                            <div>
+                              <span className="text-emerald-700 font-bold">₹{lead.packagePrice}</span>
+                              <span className="block text-[10px] text-slate-400">Save ₹{lead.discountAmount}</span>
+                            </div>
+                          ) : (
+                            lead.budget || 'Standard'
+                          )}
                         </td>
                         <td className="py-4 px-5">
                           <select

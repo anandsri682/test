@@ -7,6 +7,10 @@ export interface CustomerEmailPayload {
   service?: string;
   message?: string;
   submittedAt?: string;
+  couponCode?: string;
+  influencerName?: string;
+  packagePrice?: number;
+  discountAmount?: number;
 }
 
 /**
@@ -103,7 +107,7 @@ export async function sendTeamNotificationEmail(payload: CustomerEmailPayload) {
 
   const fromEmail = process.env.EMAIL_FROM || 'AVM Smart Solutions <no-reply@avmsmart.in>';
   const teamEmail = process.env.CONTACT_EMAIL || 'avmsmart.official@gmail.com';
-  const { customerName, customerEmail, phone, service, message, submittedAt } = payload;
+  const { customerName, customerEmail, phone, service, message, submittedAt, couponCode, influencerName, packagePrice, discountAmount } = payload;
 
   console.log(`[Resend Team Email]: Dispatching lead notification for ${customerName} to ${teamEmail}`);
 
@@ -111,7 +115,7 @@ export async function sendTeamNotificationEmail(payload: CustomerEmailPayload) {
     const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: [teamEmail],
-      subject: `New Contact Form Enquiry – ${customerName}`,
+      subject: `New Contact Form Enquiry – ${customerName}${couponCode ? ` (Referral: ${couponCode})` : ''}`,
       html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #ffffff; color: #1e293b;">
           <div style="background-color: #0B2A5B; padding: 20px 24px; border-radius: 12px; text-align: center;">
@@ -144,6 +148,24 @@ export async function sendTeamNotificationEmail(payload: CustomerEmailPayload) {
               </tr>`
                   : ''
               }
+              ${
+                couponCode
+                  ? `
+              <tr style="background-color: #fefce8;">
+                <td style="padding: 10px; border-bottom: 1px solid #fef08a; font-weight: 800; color: #854d0e;">Coupon Applied:</td>
+                <td style="padding: 10px; border-bottom: 1px solid #fef08a; font-weight: 800; color: #a16207;">
+                  <span style="background-color: #fde047; padding: 4px 10px; border-radius: 6px; font-family: monospace;">${couponCode}</span>
+                  ${influencerName ? `<span style="margin-left: 8px; color: #713f12; font-size: 13px;">(Influencer: ${influencerName})</span>` : ''}
+                </td>
+              </tr>
+              <tr style="background-color: #fefce8;">
+                <td style="padding: 10px; border-bottom: 1px solid #fef08a; font-weight: 800; color: #854d0e;">Package & Discount:</td>
+                <td style="padding: 10px; border-bottom: 1px solid #fef08a; font-weight: 700; color: #15803d;">
+                  Offer Price: ₹${packagePrice || 3999} (Regular ₹4,999 — Discount: ₹${discountAmount || 1000})
+                </td>
+              </tr>`
+                  : ''
+              }
               <tr>
                 <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; font-weight: 700; color: #64748b;">Message:</td>
                 <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; color: #334155;">${message || 'No additional text specified.'}</td>
@@ -158,7 +180,7 @@ export async function sendTeamNotificationEmail(payload: CustomerEmailPayload) {
               </tr>
             </table>
 
-            <div style="margin-top: 24px; p: 16px; background-color: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; text-align: center; color: #0369a1; font-weight: 700; font-size: 13px;">
+            <div style="margin-top: 24px; padding: 16px; background-color: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; text-align: center; color: #0369a1; font-weight: 700; font-size: 13px;">
               ⚡ Please contact the customer as soon as possible.
             </div>
           </div>
@@ -182,8 +204,160 @@ export async function sendTeamNotificationEmail(payload: CustomerEmailPayload) {
 
     console.log(`[Resend Team Email Success]: Email ID: ${data.id}`);
     return { success: true, id: data.id };
-  } catch (error: any) {
-    console.error(`[Resend Team Email Error]:`, error?.message || error);
-    return { success: false, error: error?.message || 'Failed to send team notification email' };
+  } catch (error: unknown) {
+    const errObj = error as { message?: string };
+    console.error(`[Resend Team Email Error]:`, errObj?.message || error);
+    return { success: false, error: errObj?.message || 'Failed to send team notification email' };
   }
 }
+
+export interface InfluencerWelcomePayload {
+  partnerName?: string;
+  partnerEmail?: string;
+  partnerType?: 'individual' | 'influencer';
+  influencerName?: string;
+  couponCode: string;
+  socialAccounts?: { platform: string; url: string }[];
+  platform?: string;
+  termsUrl?: string;
+  websiteUrl?: string;
+  // Backward compatibility aliases
+  influencerEmail?: string;
+}
+
+/**
+ * Sends welcome & coupon code notification email to newly registered referral partner (Individual or Influencer).
+ */
+export async function sendInfluencerWelcomeEmail(payload: InfluencerWelcomePayload) {
+  const resend = getResendClient();
+  if (!resend) {
+    return { success: false, warning: 'RESEND_API_KEY is missing' };
+  }
+
+  const fromEmail = process.env.EMAIL_FROM || 'AVM Smart Solutions <no-reply@avmsmart.in>';
+  const partnerName = payload.partnerName || (payload as any).influencerName || 'Valued Partner';
+  const partnerEmail = payload.partnerEmail || payload.influencerEmail || '';
+  const partnerType = payload.partnerType || 'individual';
+  const influencerAccountName = payload.influencerName || '';
+  const couponCode = payload.couponCode;
+  const siteUrl = payload.websiteUrl || 'https://www.avmsmart.in';
+  const termsUrl = payload.termsUrl || `${siteUrl}/influencer-terms`;
+
+  console.log(`[Resend Partner Email]: Dispatching 6-char coupon code to ${partnerEmail} (${couponCode}) [${partnerType}]`);
+
+  const isInfluencer = partnerType === 'influencer';
+  const subject = isInfluencer
+    ? `Welcome to the AVM Smart Influencer Program — Your Coupon Code: ${couponCode}`
+    : `Welcome to the AVM Smart Referral Partner Program — Your Coupon Code: ${couponCode}`;
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: fromEmail,
+      to: [partnerEmail],
+      subject,
+      html: `
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #ffffff; color: #1e293b;">
+          <!-- Header -->
+          <div style="background: linear-gradient(135deg, #0B0B0B 0%, #1A1A1A 100%); padding: 32px 24px; border-radius: 14px; text-align: center; border-bottom: 4px solid #FFD600;">
+            <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px;">AVM Smart Solutions</h1>
+            <p style="color: #FFD600; margin: 6px 0 0 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">
+              ${isInfluencer ? 'Influencer Partner Program' : 'Referral Partner Program'}
+            </p>
+          </div>
+
+          <!-- Body Content -->
+          <div style="padding: 28px 8px; font-size: 15px; line-height: 1.6;">
+            <p style="margin-top: 0; font-size: 17px;">Dear <strong>${partnerName}</strong>${isInfluencer && influencerAccountName ? ` (${influencerAccountName})` : ''},</p>
+
+            <p style="color: #334155;">
+              Welcome to the <strong>AVM Smart Solutions Referral Program</strong>! We are delighted to have you as an authorized partner. You can now refer clients to our digital services and help them save money while earning commissions.
+            </p>
+
+            <!-- Exclusive 6-Character Coupon Highlight Box -->
+            <div style="background: #FFFDF0; border: 2px dashed #FFD600; border-radius: 14px; padding: 24px; margin: 24px 0; text-align: center;">
+              <p style="margin: 0; font-size: 12px; font-weight: 800; color: #854d0e; text-transform: uppercase; letter-spacing: 1px;">Your Unique 6-Character Referral Coupon Code</p>
+              <div style="margin: 12px 0; font-size: 34px; font-weight: 900; letter-spacing: 4px; color: #0B0B0B; font-family: monospace; background: #FFD600; padding: 10px 24px; border-radius: 8px; display: inline-block;">
+                ${couponCode}
+              </div>
+              <p style="margin: 6px 0 0 0; font-size: 13px; color: #713f12; font-weight: 600;">
+                Share this coupon code with anyone planning to build a website or digital presence!
+              </p>
+            </div>
+
+            <!-- Pricing Offer Details -->
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+              <h3 style="margin-top: 0; font-size: 15px; color: #0F172A; font-weight: 800;">Offer Inclusions for Your Referred Customers:</h3>
+              <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #334155; font-size: 14px; line-height: 1.8;">
+                <li><strong>Regular Website Package Price:</strong> <span style="text-decoration: line-through; color: #64748b;">₹4,999</span></li>
+                <li><strong>Special Offer Price:</strong> <span style="color: #16A34A; font-weight: 800; font-size: 16px;">₹3,999</span></li>
+                <li><strong>Total Customer Savings:</strong> <strong style="color: #087FF5;">₹1,000 Flat Discount</strong> with code <strong>${couponCode}</strong></li>
+                <li><strong>Package Inclusions:</strong> Full custom responsive website, contact enquiry forms, basic SEO setup, domain integration, & dedicated support.</li>
+              </ul>
+            </div>
+
+            <!-- Commission & Takeover Conditions -->
+            <div style="background: #F0FDF4; border-left: 4px solid #16A34A; padding: 16px 20px; border-radius: 0 10px 10px 0; margin-bottom: 24px;">
+              <h4 style="margin: 0 0 8px 0; color: #166534; font-size: 14px; font-weight: 800;">Commission & Payout Policy:</h4>
+              <p style="margin: 0; font-size: 13px; color: #14532D; line-height: 1.5;">
+                Commissions are credited on qualifying successful conversions. Eligibility requires that the referred client completes project onboarding, payment requirements are met, and the project is officially taken over and begun by the AVM Smart Solutions engineering team.
+              </p>
+            </div>
+
+            ${
+              isInfluencer && payload.socialAccounts && payload.socialAccounts.length > 0
+                ? `
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 16px; margin-bottom: 24px; font-size: 13px;">
+              <strong>Registered Channels:</strong>
+              <ul style="margin: 6px 0 0 0; padding-left: 18px; color: #475569;">
+                ${payload.socialAccounts.map((acc) => `<li>${acc.platform}: <a href="${acc.url}" style="color: #087FF5;">${acc.url}</a></li>`).join('')}
+              </ul>
+            </div>`
+                : ''
+            }
+
+            <!-- Useful Links & CTAs -->
+            <div style="text-align: center; margin: 30px 0 20px 0;">
+              <a href="${siteUrl}/contact" style="background: #0B0B0B; color: #FFD600; padding: 12px 24px; border-radius: 10px; font-weight: 800; text-decoration: none; font-size: 14px; display: inline-block; margin-right: 8px;">
+                Visit Website Contact Page
+              </a>
+              <a href="${termsUrl}" style="background: #F1F5F9; color: #334155; padding: 12px 20px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 14px; display: inline-block;">
+                Review Referral Terms
+              </a>
+            </div>
+
+            <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #f1f5f9;">
+              <p style="margin: 0; font-weight: 700; color: #0B2A5B;">Warm regards,</p>
+              <p style="margin: 4px 0 0 0; font-weight: 800; color: #087FF5; font-size: 16px;">AVM Smart Solutions Team</p>
+              <p style="margin: 6px 0 0 0; font-size: 13px; color: #64748b;">
+                Partner Support: <a href="mailto:AVMSmart.official@gmail.com" style="color: #087FF5; text-decoration: none; font-weight: 600;">AVMSmart.official@gmail.com</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div style="background-color: #f8fafc; padding: 16px; text-align: center; border-radius: 12px; font-size: 12px; color: #94a3b8;">
+            © ${new Date().getFullYear()} AVM Smart Solutions. All rights reserved.
+          </div>
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error(`[Resend Partner Email Error]:`, error.message);
+      return { success: false, error: error.message };
+    }
+
+    if (!data) {
+      console.error(`[Resend Partner Email Error]: No data returned from Resend API`);
+      return { success: false, error: 'No data returned from Resend API' };
+    }
+
+    console.log(`[Resend Partner Email Success]: Email ID: ${data.id}`);
+    return { success: true, id: data.id };
+  } catch (error: unknown) {
+    const errObj = error as { message?: string };
+    console.error(`[Resend Partner Email Error]:`, errObj?.message || error);
+    return { success: false, error: errObj?.message || 'Failed to dispatch partner email' };
+  }
+}
+

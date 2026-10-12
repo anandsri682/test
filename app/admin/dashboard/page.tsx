@@ -115,6 +115,14 @@ export default function AdminDashboardPage() {
                   <Sparkles className="w-3.5 h-3.5 text-[#67D63B]" />
                   <span>Offer & Popup Manager</span>
                 </Link>
+
+                <Link
+                  href="/admin/influencers"
+                  className="px-5 py-2.5 bg-[#FFD600] hover:bg-amber-300 text-slate-950 font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-2"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+                  <span>Influencers & Coupons</span>
+                </Link>
               </div>
             </div>
 

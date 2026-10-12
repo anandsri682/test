@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { COMPANY_DETAILS, SERVICES } from '@/data/siteData';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle, Loader2, ExternalLink, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Send, CheckCircle, AlertCircle, Loader2, ExternalLink, MessageCircle, Tag, Check } from 'lucide-react';
 import { getApiUrl } from '@/lib/api';
 
 export default function ContactClient() {
@@ -12,10 +12,54 @@ export default function ContactClient() {
     phone: '',
     service: 'Web Development',
     message: '',
+    couponCode: '',
   });
 
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Coupon Validation State
+  const [couponValidating, setCouponValidating] = useState(false);
+  const [couponFeedback, setCouponFeedback] = useState<{
+    status: 'idle' | 'valid' | 'invalid';
+    message: string;
+    referrerDisplayName?: string;
+    details?: { regularPrice: number; discountedPrice: number; discountAmount: number };
+  }>({ status: 'idle', message: '' });
+
+  const handleValidateCoupon = async () => {
+    if (!formData.couponCode.trim()) {
+      setCouponFeedback({ status: 'idle', message: '' });
+      return;
+    }
+
+    setCouponValidating(true);
+    try {
+      const res = await fetch(getApiUrl(`/api/coupon/validate?code=${encodeURIComponent(formData.couponCode.trim())}`));
+      const data = await res.json();
+
+      if (data.valid) {
+        setCouponFeedback({
+          status: 'valid',
+          message: data.message || '₹1,000 SAVED — COUPON APPLIED',
+          referrerDisplayName: data.referrerDisplayName || data.referrerName,
+          details: data.pricing,
+        });
+      } else {
+        setCouponFeedback({
+          status: 'invalid',
+          message: data.message || 'This coupon code is invalid. Please check the code and try again.',
+        });
+      }
+    } catch {
+      setCouponFeedback({
+        status: 'invalid',
+        message: 'Could not validate coupon. Please try again.',
+      });
+    } finally {
+      setCouponValidating(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +82,9 @@ export default function ContactClient() {
           phone: '',
           service: 'Web Development',
           message: '',
+          couponCode: '',
         });
+        setCouponFeedback({ status: 'idle', message: '' });
       } else {
         setStatus('error');
         setErrorMessage(data.error || 'Failed to submit message.');
@@ -157,6 +203,74 @@ export default function ContactClient() {
                         <option value="Custom Enterprise Solution">Custom Enterprise Solution</option>
                       </select>
                     </div>
+                  </div>
+
+                  {/* Optional Influencer Coupon Code Field */}
+                  <div className="bg-slate-50/80 p-4 rounded-2xl border border-slate-200/90 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-black text-slate-700 uppercase tracking-wider">
+                        Influencer Coupon Code <span className="text-slate-400 font-normal lowercase">(optional)</span>
+                      </label>
+                      {couponFeedback.status === 'valid' && (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-extrabold text-emerald-600 bg-emerald-100/70 px-2 py-0.5 rounded-md">
+                          <Check className="w-3 h-3" /> ₹1,000 Off Applied
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <div className="relative flex-1">
+                        <Tag className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                        <input
+                          type="text"
+                          value={formData.couponCode}
+                          onChange={(e) => {
+                            setFormData({ ...formData, couponCode: e.target.value.toUpperCase() });
+                            if (couponFeedback.status !== 'idle') {
+                              setCouponFeedback({ status: 'idle', message: '' });
+                            }
+                          }}
+                          placeholder="Enter coupon code (e.g. RAHUL10)"
+                          className="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold uppercase tracking-wider text-slate-900 focus:border-[#087FF5] focus:ring-2 focus:ring-[#087FF5]/20 outline-none transition-all"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleValidateCoupon}
+                        disabled={couponValidating || !formData.couponCode.trim()}
+                        className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 disabled:bg-slate-300 text-white font-bold text-xs rounded-xl transition-colors shrink-0 flex items-center gap-1.5"
+                      >
+                        {couponValidating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Apply'}
+                      </button>
+                    </div>
+
+                    {/* Feedback messages */}
+                    {couponFeedback.status === 'valid' && (
+                      <div className="p-4 bg-emerald-50 border-2 border-emerald-400 rounded-2xl space-y-2 text-xs">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
+                          <span className="text-emerald-950 font-black text-sm tracking-tight uppercase">
+                            ₹1,000 SAVED — COUPON APPLIED
+                          </span>
+                        </div>
+                        {couponFeedback.referrerDisplayName && (
+                          <div className="text-xs font-semibold text-emerald-800 pl-7">
+                            Referred by: <span className="font-bold">{couponFeedback.referrerDisplayName}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-3 text-slate-700 pt-1.5 border-t border-emerald-200/80 pl-7 text-[11px]">
+                          <span>Regular Price: <span className="line-through text-slate-400">₹4,999</span></span>
+                          <span className="font-extrabold text-emerald-700 text-xs">Offer Price: ₹3,999</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {couponFeedback.status === 'invalid' && (
+                      <p className="text-xs font-semibold text-rose-600 flex items-center gap-1">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{couponFeedback.message}</span>
+                      </p>
+                    )}
                   </div>
 
                   <div>

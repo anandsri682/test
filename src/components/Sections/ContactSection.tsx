@@ -125,11 +125,46 @@ const SOCIAL_PLATFORMS: SocialPlatform[] = [
 ];
 
 import { getApiUrl } from '@/lib/api';
+import { Tag } from 'lucide-react';
 
 export default function ContactSection() {
   const [activePlatform, setActivePlatform] = useState<SocialPlatform>(SOCIAL_PLATFORMS[0]);
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "", service: "Web Development", message: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", service: "Web Development", message: "", couponCode: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [couponValidating, setCouponValidating] = useState(false);
+  const [couponFeedback, setCouponFeedback] = useState<{
+    status: 'idle' | 'valid' | 'invalid';
+    message: string;
+    referrerDisplayName?: string;
+  }>({ status: 'idle', message: '' });
+
+  const handleValidateCoupon = async () => {
+    if (!formData.couponCode.trim()) {
+      setCouponFeedback({ status: 'idle', message: '' });
+      return;
+    }
+    setCouponValidating(true);
+    try {
+      const res = await fetch(getApiUrl(`/api/coupon/validate?code=${encodeURIComponent(formData.couponCode.trim())}`));
+      const data = await res.json();
+      if (data.valid) {
+        setCouponFeedback({
+          status: 'valid',
+          message: data.message || '₹1,000 SAVED — COUPON APPLIED',
+          referrerDisplayName: data.referrerDisplayName || data.referrerName,
+        });
+      } else {
+        setCouponFeedback({
+          status: 'invalid',
+          message: data.message || 'This coupon code is invalid.',
+        });
+      }
+    } catch {
+      setCouponFeedback({ status: 'invalid', message: 'Could not validate coupon.' });
+    } finally {
+      setCouponValidating(false);
+    }
+  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,12 +178,14 @@ export default function ContactSection() {
           phone: formData.phone,
           service: formData.service,
           message: formData.message,
+          couponCode: formData.couponCode,
         }),
       });
       setSubmitted(true);
       setTimeout(() => {
         setSubmitted(false);
-        setFormData({ name: "", email: "", phone: "", service: "Web Development", message: "" });
+        setFormData({ name: "", email: "", phone: "", service: "Web Development", message: "", couponCode: "" });
+        setCouponFeedback({ status: 'idle', message: '' });
       }, 4000);
     } catch {
       setSubmitted(true);
@@ -343,6 +380,64 @@ export default function ContactSection() {
                   <option value="Custom Software">Custom Enterprise Solution</option>
                 </select>
               </div>
+            </div>
+
+            {/* Optional Coupon Code Field */}
+            <div className="bg-[#0B1528] border border-slate-800 rounded-xl p-3 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-bold uppercase tracking-wider text-[11px]">
+                  Referral Coupon Code (Optional)
+                </span>
+                {couponFeedback.status === 'valid' && (
+                  <span className="text-[#13B89A] font-black text-[11px]">
+                    ✓ ₹1,000 Off Applied
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <Tag className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <input
+                    type="text"
+                    value={formData.couponCode}
+                    onChange={(e) => {
+                      setFormData({ ...formData, couponCode: e.target.value.toUpperCase() });
+                      if (couponFeedback.status !== 'idle') setCouponFeedback({ status: 'idle', message: '' });
+                    }}
+                    placeholder="Enter Coupon Code (e.g. RAHUL10)"
+                    className="w-full bg-slate-900 border border-slate-800 rounded-lg pl-8 pr-3 py-2 text-xs uppercase tracking-wider text-white focus:outline-none focus:border-[#087FF5]"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleValidateCoupon}
+                  disabled={couponValidating || !formData.couponCode.trim()}
+                  className="px-3.5 py-2 bg-gradient-to-r from-[#087FF5] to-[#13B89A] disabled:opacity-50 text-white font-bold text-xs rounded-lg transition-all shrink-0 cursor-pointer"
+                >
+                  {couponValidating ? 'Checking...' : 'Apply'}
+                </button>
+              </div>
+              {couponFeedback.status === 'valid' && (
+                <div className="p-3.5 bg-emerald-950/60 border border-emerald-500/80 rounded-xl space-y-1">
+                  <div className="text-xs font-black text-emerald-400 tracking-wide uppercase">
+                    ₹1,000 SAVED — COUPON APPLIED
+                  </div>
+                  {couponFeedback.referrerDisplayName && (
+                    <div className="text-[11px] text-emerald-200 font-semibold">
+                      Referred by: <span className="font-bold text-white">{couponFeedback.referrerDisplayName}</span>
+                    </div>
+                  )}
+                  <div className="text-[10px] text-slate-300 pt-1 border-t border-emerald-900/60 flex items-center gap-3">
+                    <span>Regular: <span className="line-through text-slate-400">₹4,999</span></span>
+                    <span className="font-bold text-emerald-300">Discounted Price: ₹3,999</span>
+                  </div>
+                </div>
+              )}
+              {couponFeedback.status === 'invalid' && (
+                <div className="text-[11px] text-rose-400 font-medium">
+                  {couponFeedback.message}
+                </div>
+              )}
             </div>
 
             <div>

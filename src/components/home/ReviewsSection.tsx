@@ -12,14 +12,23 @@ export default function ReviewsSection() {
     fetch(getApiUrl('/api/reviews'))
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && data.reviews && data.reviews.length > 0) {
-          setReviews(data.reviews);
+        if (data && data.success && Array.isArray(data.reviews) && data.reviews.length > 0) {
+          const sanitized: Testimonial[] = data.reviews.map((item: any, idx: number) => ({
+            id: typeof item?.id === 'string' ? item.id : (typeof item?._id === 'string' ? item._id : `rev-${idx}`),
+            name: typeof item?.name === 'string' ? item.name : (typeof item?.name === 'object' && item?.name !== null ? JSON.stringify(item.name) : 'Verified Client'),
+            role: typeof item?.role === 'string' ? item.role : 'Client',
+            company: typeof item?.company === 'string' ? item.company : '',
+            quote: typeof item?.quote === 'string' ? item.quote : (typeof item?.quote === 'object' && item?.quote !== null ? JSON.stringify(item.quote) : 'Great service!'),
+            rating: typeof item?.rating === 'number' && item.rating >= 1 && item.rating <= 5 ? Math.floor(item.rating) : 5,
+          }));
+          setReviews(sanitized);
         }
       })
       .catch(() => {});
   }, []);
 
-  const marqueeReviews = [...reviews, ...reviews];
+  const safeReviews = Array.isArray(reviews) && reviews.length > 0 ? reviews : TESTIMONIALS;
+  const marqueeReviews = [...safeReviews, ...safeReviews];
 
   return (
     <section aria-labelledby="reviews-heading" className="py-20 bg-[#0B1528] text-white border-y border-slate-800 relative overflow-hidden">
@@ -46,21 +55,26 @@ export default function ReviewsSection() {
             const borderAccents = ['border-l-4 border-l-[#087FF5]', 'border-l-4 border-l-[#13B89A]', 'border-l-4 border-l-[#FF6A00]'];
             const accentClass = borderAccents[idx % 3];
 
+            const nameStr = typeof testimonial?.name === 'string' ? testimonial.name : 'Verified Client';
+            const roleStr = typeof testimonial?.role === 'string' ? testimonial.role : 'Client';
+            const quoteStr = typeof testimonial?.quote === 'string' ? testimonial.quote : '';
+            const ratingVal = typeof testimonial?.rating === 'number' && testimonial.rating >= 1 && testimonial.rating <= 5 ? Math.floor(testimonial.rating) : 5;
+
             return (
               <div
-                key={`${testimonial.id || idx}-${idx}`}
+                key={`${testimonial?.id || idx}-${idx}`}
                 className={`w-[320px] sm:w-[380px] shrink-0 bg-slate-900 border border-slate-800 ${accentClass} p-6 sm:p-7 rounded-3xl shadow-lg hover:scale-102 hover:border-slate-700 transition-all duration-300 space-y-4 cursor-pointer`}
               >
                 {/* 5-Star Rating */}
                 <div className="flex items-center gap-1 text-[#FFC21A]">
-                  {[...Array(testimonial.rating || 5)].map((_, i) => (
+                  {[...Array(ratingVal)].map((_, i) => (
                     <Star key={i} className="w-4 h-4 fill-current text-[#FFC21A]" />
                   ))}
                 </div>
 
                 {/* Quote Text */}
                 <p className="text-slate-200 text-xs sm:text-sm italic leading-relaxed line-clamp-3">
-                  &ldquo;{testimonial.quote}&rdquo;
+                  &ldquo;{quoteStr}&rdquo;
                 </p>
 
                 {/* Neutral Profile Avatar Icon (NO REAL PHOTOS) */}
@@ -69,8 +83,8 @@ export default function ReviewsSection() {
                     <User className="w-5 h-5 text-[#087FF5]" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-sm">{testimonial.name}</h3>
-                    <p className="text-[11px] font-semibold text-[#13B89A]">{testimonial.role}</p>
+                    <h3 className="font-bold text-white text-sm">{nameStr}</h3>
+                    <p className="text-[11px] font-semibold text-[#13B89A]">{roleStr}</p>
                   </div>
                 </div>
               </div>

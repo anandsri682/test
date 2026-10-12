@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, CheckCircle, AlertCircle, Loader2, Send } from 'lucide-react';
+import { X, CheckCircle, AlertCircle, Loader2, Send, Tag, Check } from 'lucide-react';
 import { SERVICES } from '@/data/siteData';
 import { getApiUrl } from '@/lib/api';
 
@@ -18,12 +18,47 @@ export default function QuoteModal({ isOpen, onClose, defaultService }: QuoteMod
     phone: '',
     service: defaultService || 'Web Development',
     message: '',
+    couponCode: '',
   });
 
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [couponValidating, setCouponValidating] = useState(false);
+  const [couponFeedback, setCouponFeedback] = useState<{
+    status: 'idle' | 'valid' | 'invalid';
+    message: string;
+    referrerDisplayName?: string;
+  }>({ status: 'idle', message: '' });
 
   if (!isOpen) return null;
+
+  const handleValidateCoupon = async () => {
+    if (!formData.couponCode.trim()) {
+      setCouponFeedback({ status: 'idle', message: '' });
+      return;
+    }
+    setCouponValidating(true);
+    try {
+      const res = await fetch(getApiUrl(`/api/coupon/validate?code=${encodeURIComponent(formData.couponCode.trim())}`));
+      const data = await res.json();
+      if (data.valid) {
+        setCouponFeedback({
+          status: 'valid',
+          message: data.message || '₹1,000 SAVED — COUPON APPLIED',
+          referrerDisplayName: data.referrerDisplayName || data.referrerName,
+        });
+      } else {
+        setCouponFeedback({
+          status: 'invalid',
+          message: data.message || 'This coupon code is invalid.',
+        });
+      }
+    } catch {
+      setCouponFeedback({ status: 'invalid', message: 'Could not validate coupon.' });
+    } finally {
+      setCouponValidating(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -161,6 +196,62 @@ export default function QuoteModal({ isOpen, onClose, defaultService }: QuoteMod
                     <option value="Custom Software">Custom Enterprise Solution</option>
                   </select>
                 </div>
+              </div>
+
+              {/* Optional Coupon Code */}
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-extrabold text-slate-700 uppercase tracking-wider text-[11px]">
+                    Referral Coupon Code <span className="text-slate-400 font-normal lowercase">(optional)</span>
+                  </span>
+                  {couponFeedback.status === 'valid' && (
+                    <span className="text-emerald-700 font-black text-[11px] bg-emerald-100 px-2 py-0.5 rounded-md flex items-center gap-1">
+                      <Check className="w-3 h-3" /> ₹1,000 Off Applied
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="relative flex-1">
+                    <Tag className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <input
+                      type="text"
+                      value={formData.couponCode}
+                      onChange={(e) => {
+                        setFormData({ ...formData, couponCode: e.target.value.toUpperCase() });
+                        if (couponFeedback.status !== 'idle') setCouponFeedback({ status: 'idle', message: '' });
+                      }}
+                      placeholder="e.g. RAHUL10"
+                      className="w-full pl-8 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-xs uppercase tracking-wider font-semibold text-slate-900 focus:border-[#087FF5] outline-none"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleValidateCoupon}
+                    disabled={couponValidating || !formData.couponCode.trim()}
+                    className="px-4 py-2 bg-slate-900 disabled:opacity-40 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition-colors cursor-pointer"
+                  >
+                    {couponValidating ? 'Checking...' : 'Apply'}
+                  </button>
+                </div>
+                {couponFeedback.status === 'valid' && (
+                  <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl space-y-1">
+                    <div className="text-xs font-black text-emerald-900 tracking-wide uppercase">
+                      ₹1,000 SAVED — COUPON APPLIED
+                    </div>
+                    {couponFeedback.referrerDisplayName && (
+                      <div className="text-[11px] text-emerald-800 font-semibold">
+                        Referred by: <span className="font-bold">{couponFeedback.referrerDisplayName}</span>
+                      </div>
+                    )}
+                    <div className="text-[10px] text-slate-600 pt-1 border-t border-emerald-200/70 flex items-center gap-2">
+                      <span>Regular: <span className="line-through">₹4,999</span></span>
+                      <span className="font-bold text-emerald-700">Special Offer: ₹3,999</span>
+                    </div>
+                  </div>
+                )}
+                {couponFeedback.status === 'invalid' && (
+                  <p className="text-[11px] text-rose-600 font-semibold">{couponFeedback.message}</p>
+                )}
               </div>
 
               {/* Project Brief Details (Optional) */}

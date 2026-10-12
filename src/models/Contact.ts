@@ -9,6 +9,14 @@ export interface IContact extends Document {
   budget?: string;
   timeline?: string;
   message?: string;
+  couponCode?: string;
+  influencerId?: mongoose.Types.ObjectId;
+  partnerType?: 'individual' | 'influencer';
+  referrerDisplayName?: string;
+  packagePrice?: number;
+  discountAmount?: number;
+  projectStatus?: 'Enquiry' | 'Project_Accepted' | 'In_Progress' | 'Completed' | 'Cancelled';
+  paymentStatus?: 'Unpaid' | 'Partial' | 'Paid' | 'Refunded';
   status: 'New' | 'Contacted' | 'Converted' | 'Archived';
   createdAt: Date;
   updatedAt?: Date;
@@ -24,6 +32,24 @@ const ContactSchema: Schema = new Schema(
     budget: { type: String, trim: true, default: '' },
     timeline: { type: String, trim: true, default: '' },
     message: { type: String, trim: true, default: '' },
+    couponCode: { type: String, trim: true, uppercase: true, index: true },
+    influencerId: { type: Schema.Types.ObjectId, ref: 'Influencer', index: true },
+    partnerType: { type: String, enum: ['individual', 'influencer'], default: 'individual' },
+    referrerDisplayName: { type: String, trim: true, default: '' },
+    packagePrice: { type: Number },
+    discountAmount: { type: Number },
+    projectStatus: {
+      type: String,
+      enum: ['Enquiry', 'Project_Accepted', 'In_Progress', 'Completed', 'Cancelled'],
+      default: 'Enquiry',
+      index: true,
+    },
+    paymentStatus: {
+      type: String,
+      enum: ['Unpaid', 'Partial', 'Paid', 'Refunded'],
+      default: 'Unpaid',
+      index: true,
+    },
     status: { type: String, enum: ['New', 'Contacted', 'Converted', 'Archived'], default: 'New', index: true },
   },
   {

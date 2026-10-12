@@ -306,7 +306,21 @@ export default function Footer() {
             © {new Date().getFullYear()} AVM Smart Solutions. All rights reserved.
           </p>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center gap-5 sm:gap-6">
+            <Link
+              href="/influencer-program"
+              className="text-[#0B2A5B] font-bold hover:text-[#087FF5] transition-colors"
+            >
+              Influencer Program
+            </Link>
+
+            <Link
+              href="/influencer-terms"
+              className="hover:text-[#087FF5] transition-colors"
+            >
+              Affiliate Terms
+            </Link>
+
             <Link
               href="/privacy-policy"
               className="hover:text-[#087FF5] transition-colors"
