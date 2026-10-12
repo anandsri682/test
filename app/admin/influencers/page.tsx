@@ -761,6 +761,49 @@ export default function AdminInfluencersPage() {
                   </div>
                 </div>
 
+                {/* Partner Payment Destination Notice */}
+                {(() => {
+                  const partner = data.influencers?.find(
+                    (inf: any) =>
+                      inf._id === payoutModalComm.influencerId ||
+                      inf.couponCode === payoutModalComm.couponCode
+                  );
+                  if (partner) {
+                    return (
+                      <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1 text-[11px]">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-slate-700">Partner Payment Destination:</span>
+                          <span className="font-bold text-[#087FF5] uppercase">
+                            {partner.paymentMethod === 'bank_transfer'
+                              ? 'Bank Transfer'
+                              : partner.paymentMethod === 'mobile_upi'
+                              ? 'Mobile UPI'
+                              : 'UPI ID'}
+                          </span>
+                        </div>
+                        {partner.paymentMethod === 'upi' && (
+                          <div className="font-mono font-bold text-slate-900">{partner.upiId || 'Not provided'}</div>
+                        )}
+                        {partner.paymentMethod === 'mobile_upi' && (
+                          <div className="font-mono font-bold text-slate-900">+91 {partner.upiMobile || partner.phone}</div>
+                        )}
+                        {partner.paymentMethod === 'bank_transfer' && partner.bankDetails && (
+                          <div className="grid grid-cols-2 gap-1 text-[10px] text-slate-600">
+                            <div>Bank: <strong className="text-slate-900">{partner.bankDetails.bankName}</strong></div>
+                            <div>A/C: <strong className="text-slate-900 font-mono">{partner.bankDetails.accountNumber}</strong></div>
+                            <div>IFSC: <strong className="text-slate-900 font-mono">{partner.bankDetails.ifscCode}</strong></div>
+                            <div>Holder: <strong className="text-slate-900">{partner.bankDetails.accountHolderName}</strong></div>
+                          </div>
+                        )}
+                        <p className="text-[10px] text-slate-400">
+                          Transfer ₹{(payoutModalComm.commissionAmount || 0).toLocaleString('en-IN')} using your banking/UPI app, then record the transaction UTR below.
+                        </p>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
+
                 {/* Payment Method Selector */}
                 <div>
                   <label className="block text-[11px] font-bold uppercase text-slate-500 mb-1">

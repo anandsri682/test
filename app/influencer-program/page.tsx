@@ -19,6 +19,11 @@ import {
   Trash2,
   User,
   Radio,
+  CreditCard,
+  Building,
+  Smartphone,
+  QrCode,
+  Lock,
 } from 'lucide-react';
 import { getApiUrl } from '@/lib/api';
 
@@ -29,8 +34,8 @@ interface SocialAccountField {
 
 export default function InfluencerProgramPage() {
   const [partnerType, setPartnerType] = useState<'individual' | 'influencer'>('individual');
-  
-  // Common fields
+
+  // Common contact fields
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -45,6 +50,24 @@ export default function InfluencerProgramPage() {
   const [category, setCategory] = useState('Tech & Business');
   const [message, setMessage] = useState('');
 
+  // Payment Details fields
+  const [paymentMethod, setPaymentMethod] = useState<'upi' | 'mobile_upi' | 'bank_transfer'>('upi');
+  
+  // UPI fields
+  const [upiId, setUpiId] = useState('');
+  const [upiAccountHolderName, setUpiAccountHolderName] = useState('');
+
+  // Mobile UPI fields
+  const [upiMobile, setUpiMobile] = useState('');
+  const [mobileRecipientName, setMobileRecipientName] = useState('');
+
+  // Bank Transfer fields
+  const [bankAccountHolderName, setBankAccountHolderName] = useState('');
+  const [bankName, setBankName] = useState('');
+  const [bankAccountNumber, setBankAccountNumber] = useState('');
+  const [confirmBankAccountNumber, setConfirmBankAccountNumber] = useState('');
+  const [bankIfscCode, setBankIfscCode] = useState('');
+
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [generatedPartner, setGeneratedPartner] = useState<{
@@ -52,6 +75,7 @@ export default function InfluencerProgramPage() {
     partnerType: string;
     influencerName?: string;
     couponCode: string;
+    paymentMethod?: string;
     emailDeliveryStatus: string;
   } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -74,12 +98,15 @@ export default function InfluencerProgramPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
+
     if (!termsAccepted) {
       setStatus('error');
       setErrorMessage('You must review and agree to the Referral Program Terms & Privacy Policy to proceed.');
       return;
     }
 
+    // Influencer validation
     if (partnerType === 'influencer') {
       if (!influencerName.trim()) {
         setStatus('error');
@@ -95,8 +122,88 @@ export default function InfluencerProgramPage() {
       }
     }
 
+    // Payment validation based on selected method
+    let paymentPayload: any = {
+      paymentMethod,
+    };
+
+    if (paymentMethod === 'upi') {
+      if (!upiId.trim()) {
+        setStatus('error');
+        setErrorMessage('Please enter your UPI ID.');
+        return;
+      }
+      const upiRegex = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/;
+      if (!upiRegex.test(upiId.trim())) {
+        setStatus('error');
+        setErrorMessage('Invalid UPI ID format (e.g. rahul@okaxis, yourname@upi).');
+        return;
+      }
+      const recipient = upiAccountHolderName.trim() || fullName.trim();
+      if (!recipient) {
+        setStatus('error');
+        setErrorMessage('UPI account holder name is required.');
+        return;
+      }
+      paymentPayload.upiId = upiId.trim();
+      paymentPayload.paymentRecipientName = recipient;
+    } else if (paymentMethod === 'mobile_upi') {
+      const cleanMobile = upiMobile.replace(/\D/g, '');
+      if (cleanMobile.length < 10) {
+        setStatus('error');
+        setErrorMessage('Please enter a valid 10-digit mobile number linked to UPI.');
+        return;
+      }
+      const recipient = mobileRecipientName.trim() || fullName.trim();
+      if (!recipient) {
+        setStatus('error');
+        setErrorMessage('Recipient/account holder name linked to mobile UPI is required.');
+        return;
+      }
+      paymentPayload.upiMobile = cleanMobile.slice(-10);
+      paymentPayload.paymentRecipientName = recipient;
+    } else if (paymentMethod === 'bank_transfer') {
+      const holder = bankAccountHolderName.trim() || fullName.trim();
+      if (!holder) {
+        setStatus('error');
+        setErrorMessage('Bank account holder name is required.');
+        return;
+      }
+      if (!bankName.trim()) {
+        setStatus('error');
+        setErrorMessage('Bank name is required.');
+        return;
+      }
+      const cleanAcc = bankAccountNumber.trim();
+      if (!cleanAcc || cleanAcc.length < 9 || cleanAcc.length > 20) {
+        setStatus('error');
+        setErrorMessage('Please enter a valid bank account number (9 to 20 digits).');
+        return;
+      }
+      if (cleanAcc !== confirmBankAccountNumber.trim()) {
+        setStatus('error');
+        setErrorMessage('Bank account number and confirmation account number do not match.');
+        return;
+      }
+      const cleanIfsc = bankIfscCode.trim().toUpperCase();
+      const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+      if (!ifscRegex.test(cleanIfsc)) {
+        setStatus('error');
+        setErrorMessage('Invalid IFSC code format (e.g. SBIN0001234, HDFC0000045).');
+        return;
+      }
+
+      paymentPayload.paymentRecipientName = holder;
+      paymentPayload.bankDetails = {
+        accountHolderName: holder,
+        bankName: bankName.trim(),
+        accountNumber: cleanAcc,
+        confirmAccountNumber: confirmBankAccountNumber.trim(),
+        ifscCode: cleanIfsc,
+      };
+    }
+
     setStatus('loading');
-    setErrorMessage('');
 
     const payload = {
       fullName: fullName.trim(),
@@ -104,6 +211,7 @@ export default function InfluencerProgramPage() {
       phone: phone.trim(),
       partnerType,
       termsAccepted: true,
+      ...paymentPayload,
       ...(partnerType === 'influencer' && {
         influencerName: influencerName.trim(),
         socialAccounts: socialAccounts.filter((acc) => acc.url.trim().length > 0),
@@ -148,102 +256,58 @@ export default function InfluencerProgramPage() {
       <section className="bg-[#0B0B0B] text-white py-20 sm:py-28 relative overflow-hidden border-b-4 border-[#FFD600]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#FFD600]/10 blur-[150px] rounded-full pointer-events-none -z-0" />
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFD600]/15 border border-[#FFD600]/40 text-[#FFD600] text-xs font-black uppercase tracking-widest backdrop-blur-md">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>AVM Smart Solutions Partner Program</span>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFD600]/15 border border-[#FFD600]/40 text-[#FFD600] text-xs font-black uppercase tracking-wider backdrop-blur-md">
+            <Sparkles className="w-4 h-4 text-[#FFD600]" />
+            <span>Open to Everyone & Creators</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-[1.1]">
-            Earn with <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFD600] via-amber-300 to-[#FFD600]">
-              AVM Smart Referral Program
-            </span>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-white">
+            Earn <span className="text-[#FFD600]">10% Commission</span> on Every <br className="hidden sm:inline" />
+            Successful Website Referral
           </h1>
 
-          <p className="text-slate-300 text-sm sm:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
-            Open to everyone — whether you are an individual wanting to refer friends and businesses or a creator with an active audience. Get your unique 6-character coupon code, give ₹1,000 savings, and earn verified commissions.
+          <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed font-medium">
+            Join the AVM Smart Solutions Referral Program. Receive your unique 6-character coupon code, share it with your network or audience, and receive prompt 10% payouts directly to your verified UPI or bank account.
           </p>
 
-          {/* Value proposition badges */}
-          <div className="pt-4 flex flex-wrap items-center justify-center gap-4 text-xs font-bold">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 border border-white/15 text-slate-200">
-              <Gift className="w-4 h-4 text-[#FFD600]" />
-              <span>₹1,000 Flat Savings for Customers</span>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto pt-4 text-left">
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Per Conversion</p>
+              <p className="text-xl font-black text-[#FFD600]">10% Commission</p>
+              <p className="text-[11px] text-slate-300 mt-0.5">Calculated on qualifying project amount</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 border border-white/15 text-slate-200">
-              <TrendingUp className="w-4 h-4 text-[#FFD600]" />
-              <span>Commissions on Qualifying Project Takeovers</span>
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Customer Discount</p>
+              <p className="text-xl font-black text-white">₹1,000 Off</p>
+              <p className="text-[11px] text-slate-300 mt-0.5">₹3,999 on standard website package</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 border border-white/15 text-slate-200">
-              <ShieldCheck className="w-4 h-4 text-[#FFD600]" />
-              <span>Instant 6-Character Unique Code</span>
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Coupon Code</p>
+              <p className="text-xl font-black text-[#FFD600]">6 Characters</p>
+              <p className="text-[11px] text-slate-300 mt-0.5">Derived from your name / channel</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Fast Payouts</p>
+              <p className="text-xl font-black text-white">UPI / Bank</p>
+              <p className="text-[11px] text-slate-300 mt-0.5">Direct to your preferred payment method</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Program How It Works Workflow Grid */}
-      <section className="py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto space-y-2 mb-12">
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900">How the Referral Program Works</h2>
-          <p className="text-slate-600 text-sm">Simple, transparent, and rewarding for both individuals and creators.</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-3 relative">
-            <span className="w-9 h-9 rounded-2xl bg-[#0B0B0B] text-[#FFD600] font-black text-sm flex items-center justify-center">
-              01
-            </span>
-            <h3 className="font-extrabold text-slate-900 text-base">Select Your Role</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Register as an Individual Partner with just basic contact details, or as an Influencer with your social channels.
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-3 relative">
-            <span className="w-9 h-9 rounded-2xl bg-[#0B0B0B] text-[#FFD600] font-black text-sm flex items-center justify-center">
-              02
-            </span>
-            <h3 className="font-extrabold text-slate-900 text-base">Get 6-Char Coupon</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Receive your personalized 6-character coupon code derived from your name immediately on screen and via email.
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-3 relative">
-            <span className="w-9 h-9 rounded-2xl bg-[#0B0B0B] text-[#FFD600] font-black text-sm flex items-center justify-center">
-              03
-            </span>
-            <h3 className="font-extrabold text-slate-900 text-base">Share ₹1,000 Savings</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Clients use your code in our contact form to get the ₹4,999 Website Package for only ₹3,999.
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-3 relative">
-            <span className="w-9 h-9 rounded-2xl bg-[#0B0B0B] text-[#FFD600] font-black text-sm flex items-center justify-center">
-              04
-            </span>
-            <h3 className="font-extrabold text-slate-900 text-base">Earn Commission</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              When AVM Smart officially takes over the confirmed project and payment is cleared, your commission is credited.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Registration Section */}
-      <section id="register" className="py-12 pb-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
-          
-          {/* Card Top Header */}
-          <div className="bg-[#0B0B0B] text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-[#FFD600]">
+      {/* Main Registration Form Section */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 max-w-4xl mx-auto">
+        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xl overflow-hidden">
+          {/* Header */}
+          <div className="p-6 sm:p-8 bg-slate-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-[#FFD600]">
             <div>
-              <h2 className="text-2xl font-black text-white">Join AVM Smart Referral Program</h2>
-              <p className="text-xs text-slate-300 mt-1">
-                Choose your registration type and get your unique 6-character coupon code immediately.
-              </p>
+              <span className="text-[10px] font-black uppercase text-[#FFD600] tracking-widest">
+                Partner Onboarding
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                Referral Partner & Payment Registration
+              </h2>
             </div>
             <Link
               href="/influencer-terms"
@@ -272,7 +336,7 @@ export default function InfluencerProgramPage() {
                     {generatedPartner.partnerType === 'influencer' && generatedPartner.influencerName
                       ? ` (${generatedPartner.influencerName})`
                       : ''}
-                    ! Your unique 6-character referral coupon code is active.
+                    ! Your unique 6-character referral coupon code is active and payment details are securely saved.
                   </p>
                 </div>
 
@@ -297,7 +361,7 @@ export default function InfluencerProgramPage() {
                     <p className="text-xs font-bold text-emerald-600">✓ 6-Character code copied to clipboard!</p>
                   )}
                   <p className="text-[11px] text-slate-500">
-                    When applied, customers see: <strong className="text-emerald-700">₹1,000 SAVED — COUPON APPLIED</strong>
+                    When applied, your referred clients receive verified discount attribution.
                   </p>
                 </div>
 
@@ -321,7 +385,7 @@ export default function InfluencerProgramPage() {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-8">
                 {status === 'error' && (
                   <div className="p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm rounded-xl flex items-center gap-2.5 font-medium">
                     <AlertCircle className="w-5 h-5 shrink-0" />
@@ -363,15 +427,15 @@ export default function InfluencerProgramPage() {
                   </div>
                   <p className="text-[11px] text-slate-500">
                     {partnerType === 'individual'
-                      ? '✓ Individual partners only need Full Name, Email, and Mobile Number.'
-                      : '✓ Influencers can link multiple social profiles and display their channel identity.'}
+                      ? '✓ Individual partners only need Basic Contact details and Payout info.'
+                      : '✓ Influencers can link social profiles and display their channel identity.'}
                   </p>
                 </div>
 
                 {/* 1. Common Contact Details */}
                 <div className="space-y-4 pt-2">
-                  <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">
-                    Basic Contact Information
+                  <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-2">
+                    1. Basic Contact Information
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
@@ -420,9 +484,9 @@ export default function InfluencerProgramPage() {
 
                 {/* 2. Influencer-Specific Fields */}
                 {partnerType === 'influencer' && (
-                  <div className="space-y-5 pt-4 border-t border-slate-200">
-                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">
-                      Influencer Channels & Profiles
+                  <div className="space-y-5 pt-2">
+                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-2">
+                      2. Influencer Channels & Profiles
                     </h3>
 
                     <div>
@@ -448,55 +512,56 @@ export default function InfluencerProgramPage() {
                         <button
                           type="button"
                           onClick={handleAddSocialAccount}
-                          className="inline-flex items-center gap-1 text-xs font-bold text-[#087FF5] hover:text-[#066FD6] cursor-pointer"
+                          className="text-xs font-extrabold text-[#087FF5] hover:text-[#066FD6] inline-flex items-center gap-1 cursor-pointer"
                         >
                           <Plus className="w-3.5 h-3.5" />
                           <span>Add Another Account</span>
                         </button>
                       </div>
 
-                      {socialAccounts.map((account, idx) => (
-                        <div key={idx} className="flex items-center gap-2">
-                          <select
-                            value={account.platform}
-                            onChange={(e) => handleUpdateSocialAccount(idx, 'platform', e.target.value)}
-                            className="w-36 px-3 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-[#087FF5]"
-                          >
-                            <option value="Instagram">Instagram</option>
-                            <option value="YouTube">YouTube</option>
-                            <option value="Facebook">Facebook</option>
-                            <option value="LinkedIn">LinkedIn</option>
-                            <option value="Twitter">Twitter / X</option>
-                            <option value="Other">Other</option>
-                          </select>
-
-                          <input
-                            type="url"
-                            required={idx === 0}
-                            value={account.url}
-                            onChange={(e) => handleUpdateSocialAccount(idx, 'url', e.target.value)}
-                            placeholder="https://..."
-                            className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 focus:bg-white focus:border-[#087FF5] outline-none transition-all"
-                          />
-
-                          {socialAccounts.length > 1 && (
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveSocialAccount(idx)}
-                              className="p-3 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
-                              title="Remove account entry"
+                      <div className="space-y-3">
+                        {socialAccounts.map((account, idx) => (
+                          <div key={idx} className="flex items-center gap-2">
+                            <select
+                              value={account.platform}
+                              onChange={(e) => handleUpdateSocialAccount(idx, 'platform', e.target.value)}
+                              className="w-36 px-3 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-slate-800 outline-none focus:border-[#087FF5]"
                             >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          )}
-                        </div>
-                      ))}
+                              <option value="Instagram">Instagram</option>
+                              <option value="YouTube">YouTube</option>
+                              <option value="Facebook">Facebook</option>
+                              <option value="LinkedIn">LinkedIn</option>
+                              <option value="Twitter / X">Twitter / X</option>
+                              <option value="Other">Other</option>
+                            </select>
+
+                            <input
+                              type="url"
+                              value={account.url}
+                              onChange={(e) => handleUpdateSocialAccount(idx, 'url', e.target.value)}
+                              placeholder={`https://${account.platform.toLowerCase()}.com/yourhandle`}
+                              className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 focus:bg-white focus:border-[#087FF5] outline-none transition-all"
+                            />
+
+                            {socialAccounts.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveSocialAccount(idx)}
+                                className="p-3 text-slate-400 hover:text-rose-500 rounded-xl transition-colors cursor-pointer"
+                                title="Remove Profile"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
-                          Audience / Follower Count (Optional)
+                          Audience / Follower Size (Optional)
                         </label>
                         <input
                           type="text"
@@ -524,23 +589,236 @@ export default function InfluencerProgramPage() {
                         </select>
                       </div>
                     </div>
-
-                    <div>
-                      <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
-                        Audience Details / Notes (Optional)
-                      </label>
-                      <textarea
-                        rows={2}
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        placeholder="Share any specific plans for promoting AVM Smart solutions..."
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:border-[#087FF5] outline-none transition-all resize-none"
-                      />
-                    </div>
                   </div>
                 )}
 
-                {/* 3. Terms Acceptance Checkbox */}
+                {/* 3. MANDATORY PAYMENT DETAILS SECTION */}
+                <div className="space-y-5 pt-2">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                      <CreditCard className="w-3.5 h-3.5 text-[#087FF5]" />
+                      <span>{partnerType === 'influencer' ? '3. Payment Details' : '2. Payment Details'}</span>
+                    </h3>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                      <Lock className="w-3 h-3" /> Encrypted & Secure
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                    Select how you would like to receive your 10% referral payouts. Your payment information is encrypted at rest and will only be used for commission transfers.
+                  </p>
+
+                  {/* Payment Method Selector Tabs */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod('upi')}
+                      className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex items-start gap-3 ${
+                        paymentMethod === 'upi'
+                          ? 'border-amber-400 bg-amber-50/60 ring-2 ring-amber-400/30'
+                          : 'border-slate-200 bg-slate-50 hover:bg-slate-100'
+                      }`}
+                    >
+                      <QrCode className={`w-5 h-5 shrink-0 mt-0.5 ${paymentMethod === 'upi' ? 'text-amber-600' : 'text-slate-400'}`} />
+                      <div>
+                        <span className="block text-xs font-black text-slate-900">UPI ID</span>
+                        <span className="block text-[11px] text-slate-500 mt-0.5">Google Pay, PhonePe, Paytm VPA</span>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod('mobile_upi')}
+                      className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex items-start gap-3 ${
+                        paymentMethod === 'mobile_upi'
+                          ? 'border-amber-400 bg-amber-50/60 ring-2 ring-amber-400/30'
+                          : 'border-slate-200 bg-slate-50 hover:bg-slate-100'
+                      }`}
+                    >
+                      <Smartphone className={`w-5 h-5 shrink-0 mt-0.5 ${paymentMethod === 'mobile_upi' ? 'text-amber-600' : 'text-slate-400'}`} />
+                      <div>
+                        <span className="block text-xs font-black text-slate-900">Mobile UPI Number</span>
+                        <span className="block text-[11px] text-slate-500 mt-0.5">UPI-linked phone number</span>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod('bank_transfer')}
+                      className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex items-start gap-3 ${
+                        paymentMethod === 'bank_transfer'
+                          ? 'border-amber-400 bg-amber-50/60 ring-2 ring-amber-400/30'
+                          : 'border-slate-200 bg-slate-50 hover:bg-slate-100'
+                      }`}
+                    >
+                      <Building className={`w-5 h-5 shrink-0 mt-0.5 ${paymentMethod === 'bank_transfer' ? 'text-amber-600' : 'text-slate-400'}`} />
+                      <div>
+                        <span className="block text-xs font-black text-slate-900">Bank Transfer</span>
+                        <span className="block text-[11px] text-slate-500 mt-0.5">NEFT / IMPS via IFSC</span>
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Dynamic Form: UPI ID */}
+                  {paymentMethod === 'upi' && (
+                    <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                            UPI ID *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={upiId}
+                            onChange={(e) => setUpiId(e.target.value)}
+                            placeholder="e.g. rahul@okaxis or 9876543210@paytm"
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-mono text-slate-900 focus:border-[#087FF5] outline-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                            UPI Account Holder Name *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={upiAccountHolderName}
+                            onChange={(e) => setUpiAccountHolderName(e.target.value)}
+                            placeholder="Account name registered with UPI"
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:border-[#087FF5] outline-none"
+                          />
+                        </div>
+                      </div>
+                      <p className="text-[11px] text-slate-500">
+                        Supports BHIM, Google Pay, PhonePe, Paytm, Amazon Pay, or any bank UPI handle.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Dynamic Form: Mobile UPI Number */}
+                  {paymentMethod === 'mobile_upi' && (
+                    <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                            Mobile Number Linked to UPI *
+                          </label>
+                          <input
+                            type="tel"
+                            required
+                            value={upiMobile}
+                            onChange={(e) => setUpiMobile(e.target.value)}
+                            placeholder="10-digit mobile number"
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-mono text-slate-900 focus:border-[#087FF5] outline-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                            Recipient / Account Holder Name *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={mobileRecipientName}
+                            onChange={(e) => setMobileRecipientName(e.target.value)}
+                            placeholder="Name on mobile UPI account"
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:border-[#087FF5] outline-none"
+                          />
+                        </div>
+                      </div>
+                      <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-[11px] text-amber-900 leading-relaxed font-medium">
+                        <strong>Important:</strong> Please ensure this mobile number is actively linked to a supported payment application (Google Pay, PhonePe, Paytm, or BHIM) to receive direct commission transfers.
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Dynamic Form: Bank Transfer */}
+                  {paymentMethod === 'bank_transfer' && (
+                    <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                            Account Holder Name *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={bankAccountHolderName}
+                            onChange={(e) => setBankAccountHolderName(e.target.value)}
+                            placeholder="Name as per bank passbook"
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:border-[#087FF5] outline-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                            Bank Name *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={bankName}
+                            onChange={(e) => setBankName(e.target.value)}
+                            placeholder="e.g. State Bank of India, HDFC Bank"
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:border-[#087FF5] outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                            Bank Account Number *
+                          </label>
+                          <input
+                            type="password"
+                            required
+                            value={bankAccountNumber}
+                            onChange={(e) => setBankAccountNumber(e.target.value)}
+                            placeholder="Enter 9 to 18-digit account number"
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-mono text-slate-900 focus:border-[#087FF5] outline-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                            Confirm Bank Account Number *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={confirmBankAccountNumber}
+                            onChange={(e) => setConfirmBankAccountNumber(e.target.value)}
+                            placeholder="Re-enter bank account number"
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-mono text-slate-900 focus:border-[#087FF5] outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                          IFSC Code *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={bankIfscCode}
+                          onChange={(e) => setBankIfscCode(e.target.value.toUpperCase())}
+                          placeholder="e.g. SBIN0001234 or HDFC0000045"
+                          className="w-full sm:w-1/2 px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-mono uppercase text-slate-900 focus:border-[#087FF5] outline-none"
+                        />
+                      </div>
+                      <p className="text-[11px] text-slate-400">
+                        Account numbers are encrypted with AES-256-GCM. We never share or reveal account numbers publicly.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* 4. Terms Acceptance Checkbox */}
                 <div className="p-4 bg-amber-50/70 border border-amber-200 rounded-2xl flex items-start gap-3">
                   <input
                     id="termsAccepted"
@@ -567,29 +845,25 @@ export default function InfluencerProgramPage() {
                     >
                       Privacy Policy
                     </Link>
-                    . I understand commissions are payable strictly upon client payment completion and official project takeover by AVM Smart Solutions.
+                    . I understand commissions are 10% of qualifying converted projects, payable strictly upon client payment completion and official project takeover.
                   </label>
                 </div>
 
-                {/* Submit CTA Button */}
+                {/* Submit Action */}
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="w-full py-4 bg-[#0B0B0B] hover:bg-slate-900 text-[#FFD600] font-black rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer text-sm"
+                  className="w-full py-4 bg-[#0B0B0B] hover:bg-slate-900 disabled:bg-slate-400 text-[#FFD600] font-black text-sm uppercase tracking-wider rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer border-2 border-[#FFD600]"
                 >
                   {status === 'loading' ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin text-[#FFD600]" />
-                      <span>Generating Exactly 6-Character Code...</span>
+                      <span>Generating 6-Character Coupon...</span>
                     </>
                   ) : (
                     <>
-                      <span>
-                        {partnerType === 'individual'
-                          ? 'Join as Individual Partner & Get 6-Char Code'
-                          : 'Join as Influencer & Get 6-Char Code'}
-                      </span>
-                      <ArrowRight className="w-4 h-4 text-[#FFD600]" />
+                      <span>Complete Registration & Get Coupon Code</span>
+                      <ArrowRight className="w-4 h-4" />
                     </>
                   )}
                 </button>

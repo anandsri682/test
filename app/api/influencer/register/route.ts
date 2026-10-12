@@ -4,6 +4,7 @@ import Influencer from '@/models/Influencer';
 import { sendInfluencerWelcomeEmail } from '@/lib/resend';
 import { getCorsHeaders, handleCorsPreflight } from '@/lib/auth';
 import { generateSixCharCouponCode } from '@/lib/couponGenerator';
+import { encryptSensitiveData } from '@/lib/encryption';
 
 export async function OPTIONS(req: Request) {
   return handleCorsPreflight(req);
@@ -12,8 +13,8 @@ export async function OPTIONS(req: Request) {
 /**
  * POST /api/influencer/register
  * Unified Referral Registration Endpoint for both:
- * 1. Individual Referral Partner (fullName, email, phone)
- * 2. Influencer (fullName, email, phone, influencerName, socialAccounts array, etc.)
+ * 1. Individual Referral Partner (fullName, email, phone, payment details)
+ * 2. Influencer (fullName, email, phone, influencerName, socialAccounts array, payment details)
  */
 export async function POST(req: Request) {
   const corsHeaders = getCorsHeaders(req);
@@ -31,9 +32,14 @@ export async function POST(req: Request) {
       category,
       message,
       termsAccepted,
+      paymentMethod = 'upi', // 'upi' | 'mobile_upi' | 'bank_transfer'
+      paymentRecipientName,
+      upiId,
+      upiMobile,
+      bankDetails,
     } = body;
 
-    // 1. Validate common fields
+    // 1. Validate common personal fields
     if (!fullName || !fullName.trim()) {
       return NextResponse.json(
         { success: false, error: 'Full name is required.' },
@@ -82,7 +88,118 @@ export async function POST(req: Request) {
       );
     }
 
-    // 2. Additional validation for Influencers only
+    // 2. Validate Payment Information for Both Partner Types
+    let cleanPaymentMethod: 'upi' | 'mobile_upi' | 'bank_transfer' = 'upi';
+    let cleanPaymentRecipientName = (paymentRecipientName || fullName).trim();
+    let cleanUpiId = '';
+    let cleanUpiMobile = '';
+    let cleanBankDetails: any = null;
+
+    if (paymentMethod === 'upi') {
+      cleanPaymentMethod = 'upi';
+      if (!upiId || !upiId.trim()) {
+        return NextResponse.json(
+          { success: false, error: 'UPI ID is required when selecting UPI payment.' },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+      const upiRegex = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/;
+      const trimmedUpi = upiId.trim();
+      if (!upiRegex.test(trimmedUpi)) {
+        return NextResponse.json(
+          { success: false, error: 'Invalid UPI ID format. Expected format: username@bank or mobile@upi (e.g. rahul@okaxis).' },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+      cleanUpiId = trimmedUpi;
+
+      if (!cleanPaymentRecipientName) {
+        return NextResponse.json(
+          { success: false, error: 'UPI account holder name is required.' },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+    } else if (paymentMethod === 'mobile_upi') {
+      cleanPaymentMethod = 'mobile_upi';
+      const rawMobile = upiMobile ? String(upiMobile).trim() : cleanedPhone;
+      const digitsOnly = rawMobile.replace(/\D/g, '');
+      if (digitsOnly.length < 10) {
+        return NextResponse.json(
+          { success: false, error: 'Please enter a valid 10-digit mobile number linked to UPI.' },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+      cleanUpiMobile = digitsOnly.slice(-10);
+
+      if (!cleanPaymentRecipientName) {
+        return NextResponse.json(
+          { success: false, error: 'Account holder / recipient name linked to the mobile number is required.' },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+    } else if (paymentMethod === 'bank_transfer') {
+      cleanPaymentMethod = 'bank_transfer';
+      if (!bankDetails) {
+        return NextResponse.json(
+          { success: false, error: 'Bank account transfer details are required.' },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+
+      const { accountHolderName, bankName, accountNumber, confirmAccountNumber, ifscCode } = bankDetails;
+
+      if (!accountHolderName || !accountHolderName.trim()) {
+        return NextResponse.json(
+          { success: false, error: 'Bank account holder name is required.' },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+
+      if (!bankName || !bankName.trim()) {
+        return NextResponse.json(
+          { success: false, error: 'Bank name is required.' },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+
+      const rawAccount = accountNumber ? String(accountNumber).trim() : '';
+      if (!rawAccount || rawAccount.length < 9 || rawAccount.length > 20) {
+        return NextResponse.json(
+          { success: false, error: 'Please provide a valid bank account number (9 to 20 digits).' },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+
+      if (confirmAccountNumber && String(confirmAccountNumber).trim() !== rawAccount) {
+        return NextResponse.json(
+          { success: false, error: 'Bank account number and confirmation account number do not match.' },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+
+      const rawIfsc = ifscCode ? String(ifscCode).trim().toUpperCase() : '';
+      const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+      if (!ifscRegex.test(rawIfsc)) {
+        return NextResponse.json(
+          { success: false, error: 'Invalid IFSC code format. Expected 11 alphanumeric characters (e.g. SBIN0001234).' },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+
+      cleanPaymentRecipientName = accountHolderName.trim();
+
+      // Encrypt sensitive bank account number at rest using AES-256-GCM
+      const encryptedAccount = encryptSensitiveData(rawAccount);
+
+      cleanBankDetails = {
+        accountHolderName: accountHolderName.trim(),
+        bankName: bankName.trim(),
+        accountNumber: encryptedAccount,
+        ifscCode: rawIfsc,
+      };
+    }
+
+    // 3. Additional validation for Influencers only
     let cleanSocialAccounts: { platform: string; url: string }[] = [];
     if (partnerType === 'influencer') {
       if (!influencerName || !influencerName.trim()) {
@@ -139,7 +256,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // 3. Connect to database
+    // 4. Connect to database
     const conn = await connectToDatabase();
     if (!conn) {
       return NextResponse.json(
@@ -148,7 +265,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 4. Duplicate Registration Checks
+    // 5. Duplicate Registration Checks
     const existingByEmail = await Influencer.findOne({ email: normalizedEmail });
     if (existingByEmail) {
       return NextResponse.json(
@@ -173,15 +290,15 @@ export async function POST(req: Request) {
       );
     }
 
-    // 5. Generate Exactly 6-Character Unique Coupon Code
-    // Source: Influencer account name for influencers; Full Name for individual partners
-    const sourceName = partnerType === 'influencer' && influencerName?.trim()
-      ? influencerName.trim()
-      : fullName.trim();
+    // 6. Generate Exactly 6-Character Unique Coupon Code
+    const sourceName =
+      partnerType === 'influencer' && influencerName?.trim()
+        ? influencerName.trim()
+        : fullName.trim();
 
     const couponCode = await generateSixCharCouponCode(sourceName);
 
-    // 6. Create Partner Record in MongoDB
+    // 7. Create Partner Record in MongoDB with Secure Payment Details
     const newPartner = await Influencer.create({
       fullName: fullName.trim(),
       email: normalizedEmail,
@@ -198,13 +315,20 @@ export async function POST(req: Request) {
       termsAcceptedAt: new Date(),
       termsVersion: '1.0',
       status: 'approved',
+      paymentMethod: cleanPaymentMethod,
+      paymentRecipientName: cleanPaymentRecipientName,
+      upiId: cleanUpiId,
+      upiMobile: cleanUpiMobile,
+      bankDetails: cleanBankDetails,
+      paymentDetailsUpdatedAt: new Date(),
+      paymentVerificationStatus: 'unverified',
       couponCode, // strictly 6 alphanumeric characters
       couponActive: true,
       couponCreatedAt: new Date(),
       emailDeliveryStatus: 'pending',
     });
 
-    // 7. Dispatch Resend Welcome Email
+    // 8. Dispatch Resend Welcome Email (Never includes sensitive banking credentials)
     let emailResult: any = { success: false, error: '' };
     try {
       emailResult = await sendInfluencerWelcomeEmail({
@@ -245,6 +369,7 @@ export async function POST(req: Request) {
           partnerType: newPartner.partnerType,
           influencerName: newPartner.influencerName,
           couponCode: newPartner.couponCode,
+          paymentMethod: newPartner.paymentMethod,
           emailDeliveryStatus: emailResult.success ? 'sent' : 'pending_or_failed',
         },
       },

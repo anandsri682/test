@@ -22,6 +22,7 @@ export interface IInfluencer extends Document {
   termsVersion?: string;
   status: 'approved' | 'pending' | 'rejected' | 'deactivated' | 'archived';
   paymentMethod?: 'upi' | 'mobile_upi' | 'bank_transfer' | 'none';
+  paymentRecipientName?: string;
   upiId?: string;
   upiMobile?: string;
   bankDetails?: {
@@ -30,6 +31,8 @@ export interface IInfluencer extends Document {
     accountNumber?: string;
     ifscCode?: string;
   };
+  paymentDetailsUpdatedAt?: Date;
+  paymentVerificationStatus?: 'unverified' | 'verified' | 'rejected';
   couponCode: string; // exactly 6 alphanumeric uppercase characters
   couponActive: boolean;
   couponCreatedAt?: Date;
@@ -86,6 +89,7 @@ const InfluencerSchema: Schema = new Schema(
       enum: ['upi', 'mobile_upi', 'bank_transfer', 'none'],
       default: 'none',
     },
+    paymentRecipientName: { type: String, trim: true, default: '' },
     upiId: { type: String, trim: true, default: '' },
     upiMobile: { type: String, trim: true, default: '' },
     bankDetails: {
@@ -93,6 +97,12 @@ const InfluencerSchema: Schema = new Schema(
       bankName: { type: String, trim: true, default: '' },
       accountNumber: { type: String, trim: true, default: '' },
       ifscCode: { type: String, trim: true, uppercase: true, default: '' },
+    },
+    paymentDetailsUpdatedAt: { type: Date },
+    paymentVerificationStatus: {
+      type: String,
+      enum: ['unverified', 'verified', 'rejected'],
+      default: 'unverified',
     },
     couponCode: {
       type: String,
