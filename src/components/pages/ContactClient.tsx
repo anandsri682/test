@@ -246,22 +246,18 @@ export default function ContactClient() {
 
                     {/* Feedback messages */}
                     {couponFeedback.status === 'valid' && (
-                      <div className="p-4 bg-emerald-50 border-2 border-emerald-400 rounded-2xl space-y-2 text-xs">
+                      <div className="p-3.5 bg-emerald-50 border border-emerald-300 rounded-2xl space-y-1 text-xs">
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
-                          <span className="text-emerald-950 font-black text-sm tracking-tight uppercase">
-                            ₹1,000 SAVED — COUPON APPLIED
+                          <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span className="text-emerald-950 font-black text-xs tracking-tight">
+                            Coupon applied successfully!
                           </span>
                         </div>
                         {couponFeedback.referrerDisplayName && (
-                          <div className="text-xs font-semibold text-emerald-800 pl-7">
+                          <div className="text-xs font-semibold text-emerald-800 pl-6">
                             Referred by: <span className="font-bold">{couponFeedback.referrerDisplayName}</span>
                           </div>
                         )}
-                        <div className="flex items-center gap-3 text-slate-700 pt-1.5 border-t border-emerald-200/80 pl-7 text-[11px]">
-                          <span>Regular Price: <span className="line-through text-slate-400">₹4,999</span></span>
-                          <span className="font-extrabold text-emerald-700 text-xs">Offer Price: ₹3,999</span>
-                        </div>
                       </div>
                     )}
 

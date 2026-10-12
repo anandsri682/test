@@ -206,7 +206,7 @@ export default function QuoteModal({ isOpen, onClose, defaultService }: QuoteMod
                   </span>
                   {couponFeedback.status === 'valid' && (
                     <span className="text-emerald-700 font-black text-[11px] bg-emerald-100 px-2 py-0.5 rounded-md flex items-center gap-1">
-                      <Check className="w-3 h-3" /> ₹1,000 Off Applied
+                      <Check className="w-3 h-3" /> Applied
                     </span>
                   )}
                 </div>
@@ -235,18 +235,14 @@ export default function QuoteModal({ isOpen, onClose, defaultService }: QuoteMod
                 </div>
                 {couponFeedback.status === 'valid' && (
                   <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl space-y-1">
-                    <div className="text-xs font-black text-emerald-900 tracking-wide uppercase">
-                      ₹1,000 SAVED — COUPON APPLIED
+                    <div className="text-xs font-black text-emerald-900 tracking-wide">
+                      Coupon applied successfully!
                     </div>
                     {couponFeedback.referrerDisplayName && (
                       <div className="text-[11px] text-emerald-800 font-semibold">
                         Referred by: <span className="font-bold">{couponFeedback.referrerDisplayName}</span>
                       </div>
                     )}
-                    <div className="text-[10px] text-slate-600 pt-1 border-t border-emerald-200/70 flex items-center gap-2">
-                      <span>Regular: <span className="line-through">₹4,999</span></span>
-                      <span className="font-bold text-emerald-700">Special Offer: ₹3,999</span>
-                    </div>
                   </div>
                 )}
                 {couponFeedback.status === 'invalid' && (

@@ -121,7 +121,7 @@ async function validateCouponCode(rawCode: string | null | undefined, corsHeader
       {
         valid: true,
         code: normalizedCode,
-        message: '₹1,000 SAVED — COUPON APPLIED',
+        message: 'Coupon applied successfully!',
         partnerType,
         referrerName: influencer.fullName,
         referrerDisplayName,

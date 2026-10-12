@@ -390,7 +390,7 @@ export default function ContactSection() {
                 </span>
                 {couponFeedback.status === 'valid' && (
                   <span className="text-[#13B89A] font-black text-[11px]">
-                    ✓ ₹1,000 Off Applied
+                    ✓ Applied
                   </span>
                 )}
               </div>
@@ -418,19 +418,15 @@ export default function ContactSection() {
                 </button>
               </div>
               {couponFeedback.status === 'valid' && (
-                <div className="p-3.5 bg-emerald-950/60 border border-emerald-500/80 rounded-xl space-y-1">
-                  <div className="text-xs font-black text-emerald-400 tracking-wide uppercase">
-                    ₹1,000 SAVED — COUPON APPLIED
+                <div className="p-3 bg-emerald-950/60 border border-emerald-500/80 rounded-xl space-y-1">
+                  <div className="text-xs font-black text-emerald-400 tracking-wide">
+                    Coupon applied successfully!
                   </div>
                   {couponFeedback.referrerDisplayName && (
                     <div className="text-[11px] text-emerald-200 font-semibold">
                       Referred by: <span className="font-bold text-white">{couponFeedback.referrerDisplayName}</span>
                     </div>
                   )}
-                  <div className="text-[10px] text-slate-300 pt-1 border-t border-emerald-900/60 flex items-center gap-3">
-                    <span>Regular: <span className="line-through text-slate-400">₹4,999</span></span>
-                    <span className="font-bold text-emerald-300">Discounted Price: ₹3,999</span>
-                  </div>
                 </div>
               )}
               {couponFeedback.status === 'invalid' && (

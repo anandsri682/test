@@ -361,3 +361,136 @@ export async function sendInfluencerWelcomeEmail(payload: InfluencerWelcomePaylo
   }
 }
 
+export interface CommissionNotificationPayload {
+  partnerName: string;
+  partnerEmail: string;
+  clientName: string;
+  projectName?: string;
+  finalProjectAmount: number;
+  commissionRate?: number;
+  commissionAmount: number;
+  commissionStatus?: string;
+}
+
+/**
+ * Sends exactly one commission notification email to the referral partner upon project conversion.
+ */
+export async function sendCommissionNotificationEmail(payload: CommissionNotificationPayload) {
+  const resend = getResendClient();
+  if (!resend) {
+    return { success: false, warning: 'RESEND_API_KEY is missing' };
+  }
+
+  const fromEmail = process.env.EMAIL_FROM || 'AVM Smart Solutions <no-reply@avmsmart.in>';
+  const {
+    partnerName,
+    partnerEmail,
+    clientName,
+    projectName = 'Custom Development Project',
+    finalProjectAmount,
+    commissionRate = 10,
+    commissionAmount,
+    commissionStatus = 'Pending Qualification',
+  } = payload;
+
+  console.log(`[Resend Commission Email]: Dispatching conversion alert to ${partnerEmail} for client ${clientName}`);
+
+  const formattedProjectAmount = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(finalProjectAmount);
+  const formattedCommission = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(commissionAmount);
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: fromEmail,
+      to: [partnerEmail],
+      subject: `AVM Smart — Your Referral Has Converted!`,
+      html: `
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #ffffff; color: #1e293b;">
+          <!-- Header Banner -->
+          <div style="background-color: #0B2A5B; padding: 24px; border-radius: 12px; text-align: center;">
+            <span style="background-color: #FFD600; color: #0B0B0B; font-size: 11px; font-weight: 900; padding: 4px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 8px;">
+              Referral Converted
+            </span>
+            <h2 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 800;">Congratulations, ${partnerName}!</h2>
+            <p style="color: #93c5fd; margin: 6px 0 0 0; font-size: 13px;">Your referred client has successfully signed up with AVM Smart Solutions.</p>
+          </div>
+
+          <!-- Body -->
+          <div style="padding: 24px 8px; font-size: 14px; line-height: 1.6;">
+            <p style="margin-top: 0; color: #334155;">Hello <strong>${partnerName}</strong>,</p>
+            <p style="color: #334155;">
+              Good news! Your referred client, <strong>${clientName}</strong>, has successfully converted their project with AVM Smart Solutions.
+            </p>
+
+            <!-- Project & Commission Details Table -->
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin: 20px 0;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                <tr>
+                  <td style="padding: 8px 0; color: #64748b; font-weight: 600; width: 160px;">Client:</td>
+                  <td style="padding: 8px 0; color: #0f172a; font-weight: 700;">${clientName}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #64748b; font-weight: 600;">Project:</td>
+                  <td style="padding: 8px 0; color: #0f172a; font-weight: 600;">${projectName}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #64748b; font-weight: 600;">Final Project Amount:</td>
+                  <td style="padding: 8px 0; color: #0f172a; font-weight: 700; font-size: 15px;">${formattedProjectAmount}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #64748b; font-weight: 600;">Commission Rate:</td>
+                  <td style="padding: 8px 0; color: #0f172a; font-weight: 700;">${commissionRate}%</td>
+                </tr>
+                <tr style="border-top: 1px solid #e2e8f0;">
+                  <td style="padding: 12px 0 8px 0; color: #166534; font-weight: 800; font-size: 15px;">Your Commission:</td>
+                  <td style="padding: 12px 0 8px 0; color: #166534; font-weight: 900; font-size: 18px;">${formattedCommission}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #64748b; font-weight: 600;">Commission Status:</td>
+                  <td style="padding: 8px 0; color: #087FF5; font-weight: 700;">${commissionStatus}</td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- Program Policy Note -->
+            <div style="background-color: #FEF3C7; border: 1px solid #FDE68A; border-radius: 12px; padding: 14px; margin-bottom: 24px;">
+              <p style="margin: 0; font-size: 12px; color: #92400E; line-height: 1.5;">
+                <strong>Payout Policy:</strong> Your commission will be processed according to the AVM Smart referral program terms, after the applicable project-takeover and customer-payment conditions are satisfied.
+              </p>
+            </div>
+
+            <p style="color: #334155; margin-bottom: 24px;">Thank you for referring customers to AVM Smart Solutions.</p>
+
+            <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #f1f5f9;">
+              <p style="margin: 0; font-weight: 700; color: #0B2A5B;">Warm regards,</p>
+              <p style="margin: 4px 0 0 0; font-weight: 800; color: #087FF5; font-size: 16px;">AVM Smart Solutions</p>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div style="background-color: #f8fafc; padding: 16px; text-align: center; border-radius: 12px; font-size: 12px; color: #94a3b8;">
+            © ${new Date().getFullYear()} AVM Smart Solutions. All rights reserved.
+          </div>
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error(`[Resend Commission Email Error]:`, error.message);
+      return { success: false, error: error.message };
+    }
+
+    if (!data) {
+      console.error(`[Resend Commission Email Error]: No data returned from Resend API`);
+      return { success: false, error: 'No data returned from Resend API' };
+    }
+
+    console.log(`[Resend Commission Email Success]: Email ID: ${data.id}`);
+    return { success: true, id: data.id };
+  } catch (error: unknown) {
+    const errObj = error as { message?: string };
+    console.error(`[Resend Commission Email Error]:`, errObj?.message || error);
+    return { success: false, error: errObj?.message || 'Failed to dispatch commission email' };
+  }
+}
+
+

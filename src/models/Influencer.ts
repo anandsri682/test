@@ -20,7 +20,16 @@ export interface IInfluencer extends Document {
   termsAccepted: boolean;
   termsAcceptedAt?: Date;
   termsVersion?: string;
-  status: 'approved' | 'pending' | 'rejected';
+  status: 'approved' | 'pending' | 'rejected' | 'deactivated' | 'archived';
+  paymentMethod?: 'upi' | 'mobile_upi' | 'bank_transfer' | 'none';
+  upiId?: string;
+  upiMobile?: string;
+  bankDetails?: {
+    accountHolderName?: string;
+    bankName?: string;
+    accountNumber?: string;
+    ifscCode?: string;
+  };
   couponCode: string; // exactly 6 alphanumeric uppercase characters
   couponActive: boolean;
   couponCreatedAt?: Date;
@@ -31,6 +40,8 @@ export interface IInfluencer extends Document {
   internalNotes?: string;
   approvedBy?: string;
   approvedAt?: Date;
+  archivedAt?: Date;
+  archivedBy?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -66,9 +77,22 @@ const InfluencerSchema: Schema = new Schema(
     termsVersion: { type: String, default: '1.0' },
     status: {
       type: String,
-      enum: ['approved', 'pending', 'rejected'],
+      enum: ['approved', 'pending', 'rejected', 'deactivated', 'archived'],
       default: 'approved',
       index: true,
+    },
+    paymentMethod: {
+      type: String,
+      enum: ['upi', 'mobile_upi', 'bank_transfer', 'none'],
+      default: 'none',
+    },
+    upiId: { type: String, trim: true, default: '' },
+    upiMobile: { type: String, trim: true, default: '' },
+    bankDetails: {
+      accountHolderName: { type: String, trim: true, default: '' },
+      bankName: { type: String, trim: true, default: '' },
+      accountNumber: { type: String, trim: true, default: '' },
+      ifscCode: { type: String, trim: true, uppercase: true, default: '' },
     },
     couponCode: {
       type: String,
@@ -94,6 +118,8 @@ const InfluencerSchema: Schema = new Schema(
     internalNotes: { type: String, default: '' },
     approvedBy: { type: String, default: 'system-auto' },
     approvedAt: { type: Date, default: Date.now },
+    archivedAt: { type: Date },
+    archivedBy: { type: String, default: '' },
   },
   {
     timestamps: true,

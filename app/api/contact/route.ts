@@ -227,7 +227,7 @@ export async function GET(req: Request) {
       );
     }
 
-    const contacts = await Contact.find({}).sort({ createdAt: -1 });
+    const contacts = await Contact.find({ isDeleted: { $ne: true } }).sort({ createdAt: -1 });
 
     return NextResponse.json(
       {
@@ -249,7 +249,7 @@ export async function GET(req: Request) {
 }
 
 /**
- * Admin-Protected DELETE Endpoint to remove a contact submission
+ * Admin-Protected DELETE Endpoint to remove a contact submission (with financial audit integrity)
  */
 export async function DELETE(req: Request) {
   const corsHeaders = getCorsHeaders(req);
@@ -281,13 +281,22 @@ export async function DELETE(req: Request) {
       );
     }
 
-    await Contact.findByIdAndDelete(id);
-    try {
-      await Lead.findByIdAndDelete(id);
-    } catch {}
+    const contactToArchive = await Contact.findById(id);
+    if (!contactToArchive) {
+      return NextResponse.json(
+        { success: false, error: 'Lead submission not found' },
+        { status: 404, headers: corsHeaders }
+      );
+    }
+
+    // Soft-delete to preserve accounting, reporting, and commission auditability
+    contactToArchive.isDeleted = true;
+    contactToArchive.deletedAt = new Date();
+    contactToArchive.deletedBy = authUser.email;
+    await contactToArchive.save();
 
     return NextResponse.json(
-      { success: true, message: 'Contact submission deleted successfully' },
+      { success: true, message: 'Contact submission archived and safely removed from active view' },
       { status: 200, headers: corsHeaders }
     );
   } catch (error: any) {

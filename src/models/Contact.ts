@@ -17,7 +17,18 @@ export interface IContact extends Document {
   discountAmount?: number;
   projectStatus?: 'Enquiry' | 'Project_Accepted' | 'In_Progress' | 'Completed' | 'Cancelled';
   paymentStatus?: 'Unpaid' | 'Partial' | 'Paid' | 'Refunded';
-  status: 'New' | 'Contacted' | 'Converted' | 'Archived';
+  status: 'New' | 'Contacted' | 'Converted' | 'Achieved' | 'Cancelled' | 'Archived';
+  finalProjectAmount?: number;
+  commissionRate?: number;
+  calculatedCommission?: number;
+  convertedAt?: Date;
+  convertedBy?: string;
+  conversionNotes?: string;
+  customerPaymentConfirmed?: boolean;
+  projectTakeoverConfirmed?: boolean;
+  isDeleted?: boolean;
+  deletedAt?: Date;
+  deletedBy?: string;
   createdAt: Date;
   updatedAt?: Date;
 }
@@ -50,7 +61,23 @@ const ContactSchema: Schema = new Schema(
       default: 'Unpaid',
       index: true,
     },
-    status: { type: String, enum: ['New', 'Contacted', 'Converted', 'Archived'], default: 'New', index: true },
+    status: {
+      type: String,
+      enum: ['New', 'Contacted', 'Converted', 'Achieved', 'Cancelled', 'Archived'],
+      default: 'New',
+      index: true,
+    },
+    finalProjectAmount: { type: Number },
+    commissionRate: { type: Number, default: 10 },
+    calculatedCommission: { type: Number },
+    convertedAt: { type: Date },
+    convertedBy: { type: String, trim: true },
+    conversionNotes: { type: String, trim: true, default: '' },
+    customerPaymentConfirmed: { type: Boolean, default: false },
+    projectTakeoverConfirmed: { type: Boolean, default: false },
+    isDeleted: { type: Boolean, default: false, index: true },
+    deletedAt: { type: Date },
+    deletedBy: { type: String, trim: true },
   },
   {
     timestamps: true,
