@@ -92,15 +92,33 @@ export function verifyAdminAuth(req: Request | NextRequest): AdminPayload | null
 }
 
 /**
- * Generates CORS headers for production domain and local development.
+ * Generates CORS headers for production domains (both avmsmart.in and www.avmsmart.in) and local development.
  */
 export function getCorsHeaders(req: Request) {
-  const origin = req.headers.get('origin') || 'https://www.avmsmart.in';
+  const origin = req.headers.get('origin');
+  const allowedOrigins = [
+    'https://avmsmart.in',
+    'https://www.avmsmart.in',
+    'http://localhost:3000',
+    'http://localhost:3005',
+    'http://localhost:5000',
+  ];
+
+  let allowOrigin = 'https://avmsmart.in';
+  if (origin) {
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.onrender.com') ||
+      origin.endsWith('.vercel.app')
+    ) {
+      allowOrigin = origin;
+    }
+  }
 
   return {
-    'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, Accept',
+    'Access-Control-Allow-Origin': allowOrigin,
+    'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS, PUT',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, Accept, X-CSRF-Token, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version',
     'Access-Control-Allow-Credentials': 'true',
   };
 }

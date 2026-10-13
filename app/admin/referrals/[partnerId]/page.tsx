@@ -162,10 +162,10 @@ export default function PartnerProfilePage({ params }: { params: Promise<{ partn
           <h2 className="text-lg font-black text-slate-900">Partner Profile Not Found</h2>
           <p className="text-xs text-slate-500">{error || 'Could not locate the requested referral profile.'}</p>
           <Link
-            href="/admin/leads"
+            href="/admin/influencers"
             className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B2A5B] text-white text-xs font-bold rounded-xl"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Lead Submissions
+            <ArrowLeft className="w-4 h-4" /> Back to Referral Partners
           </Link>
         </div>
       </AdminLayout>
@@ -181,11 +181,11 @@ export default function PartnerProfilePage({ params }: { params: Promise<{ partn
         {/* Navigation Breadcrumb & Back */}
         <div className="flex flex-wrap items-center justify-between gap-4">
           <Link
-            href="/admin/leads"
+            href="/admin/influencers"
             className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-[#087FF5] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to Leads</span>
+            <span>Back to Referral Partners</span>
           </Link>
 
           <div className="flex items-center gap-2">
