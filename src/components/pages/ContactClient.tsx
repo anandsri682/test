@@ -96,30 +96,30 @@ export default function ContactClient() {
   };
 
   return (
-    <div className="w-full bg-[#F4F7FA]">
-      <section className="bg-[#0B1528] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
-          <p className="text-xs font-black uppercase tracking-widest text-[#13B89A]">Let&apos;s start a conversation</p>
-          <h1 className="text-4xl sm:text-5xl font-black text-white">Contact Us</h1>
-          <p className="text-slate-300 text-sm max-w-xl mx-auto">
+    <div className="w-full overflow-hidden bg-gradient-to-b from-[#F7FAFF] via-white to-[#F1FAF8]">
+      <section className="relative isolate overflow-hidden border-b border-[#087FF5]/10 bg-gradient-to-br from-white via-[#F2F8FF] to-[#EAF9F5] py-16 sm:py-20">
+        <div className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#13B89A]/20 bg-white/90 px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0C9B84] shadow-sm"><span className="h-1.5 w-1.5 rounded-full bg-[#13B89A]" />Let&apos;s start a conversation</p>
+          <h1 className="text-4xl font-black tracking-[-0.04em] text-[#0B2A5B] sm:text-5xl lg:text-6xl">Let&apos;s Build Something <span className="bg-gradient-to-r from-[#087FF5] to-[#13A88F] bg-clip-text text-transparent">Great</span></h1>
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
             Get in touch with the AVM Smart Solutions engineering team.
           </p>
         </div>
       </section>
 
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <section className="relative py-12 sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-10">
             
             {/* Form Column */}
-            <div className="lg:col-span-7 bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-md">
-              <h2 className="text-2xl font-black text-slate-900 mb-2">Get In Touch</h2>
-              <p className="text-slate-600 text-sm mb-6">
-                Fill out the form and our team will respond within 24 hours.
-              </p>
+            <div className="relative overflow-hidden rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-[0_24px_70px_rgba(11,42,91,0.09)] sm:p-8 lg:col-span-7 lg:p-10">
+              <div className="mb-7 border-b border-slate-100 pb-5"><p className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#087FF5]">Contact form</p><h2 className="text-2xl font-extrabold tracking-tight text-[#0B2A5B] sm:text-3xl">Tell us about your project</h2>
+              <p className="mt-2 mb-0 text-sm leading-6 text-slate-600">
+                Fill out the details below and our team will get back to you.
+              </p></div>
 
               {status === 'success' ? (
-                <div className="p-8 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-3">
+                <div className="space-y-3 rounded-2xl border border-emerald-200 bg-gradient-to-b from-emerald-50 to-white p-6 text-center sm:p-8">
                   <CheckCircle className="w-12 h-12 text-[#13B89A] mx-auto" />
                   <h3 className="text-xl font-bold text-emerald-900">Enquiry Received Successfully!</h3>
                   <p className="text-sm text-emerald-700">
@@ -127,23 +127,23 @@ export default function ContactClient() {
                   </p>
                   <button
                     onClick={() => setStatus('idle')}
-                    className="px-6 py-2.5 bg-[#13B89A] text-white font-bold text-xs rounded-xl hover:bg-emerald-600 transition-colors"
+                    className="rounded-xl bg-gradient-to-r from-[#087FF5] to-[#13B89A] px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:shadow-md"
                   >
                     Send Another Message
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-5">
                   {status === 'error' && (
-                    <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-sm rounded-xl flex items-center gap-2 font-medium">
+                    <div className="flex items-start gap-2 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-medium text-rose-700">
                       <AlertCircle className="w-5 h-5 shrink-0" />
                       <span>{errorMessage}</span>
                     </div>
                   )}
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <div>
-                      <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                      <label className="mb-2 block text-sm font-semibold text-slate-700">
                         Full Name *
                       </label>
                       <input
@@ -151,13 +151,13 @@ export default function ContactClient() {
                         required
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:border-[#087FF5] focus:ring-2 focus:ring-[#087FF5]/20 outline-none transition-all"
+                        className="min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-[#087FF5] focus:ring-4 focus:ring-[#087FF5]/10"
                         placeholder="John Doe"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                      <label className="mb-2 block text-sm font-semibold text-slate-700">
                         Email Address *
                       </label>
                       <input
@@ -165,15 +165,15 @@ export default function ContactClient() {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:border-[#087FF5] focus:ring-2 focus:ring-[#087FF5]/20 outline-none transition-all"
+                        className="min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-[#087FF5] focus:ring-4 focus:ring-[#087FF5]/10"
                         placeholder="john@company.com"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <div>
-                      <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                      <label className="mb-2 block text-sm font-semibold text-slate-700">
                         Phone Number *
                       </label>
                       <input
@@ -181,19 +181,19 @@ export default function ContactClient() {
                         required
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:border-[#087FF5] focus:ring-2 focus:ring-[#087FF5]/20 outline-none transition-all"
+                        className="min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-[#087FF5] focus:ring-4 focus:ring-[#087FF5]/10"
                         placeholder="+91 89780 40537"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                      <label className="mb-2 block text-sm font-semibold text-slate-700">
                         Service Required *
                       </label>
                       <select
                         value={formData.service}
                         onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:border-[#087FF5] focus:ring-2 focus:ring-[#087FF5]/20 outline-none transition-all"
+                        className="min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-[#087FF5] focus:ring-4 focus:ring-[#087FF5]/10"
                       >
                         {SERVICES.map((s) => (
                           <option key={s.id} value={s.title}>
@@ -206,9 +206,9 @@ export default function ContactClient() {
                   </div>
 
                   {/* Optional Influencer Coupon Code Field */}
-                  <div className="bg-slate-50/80 p-4 rounded-2xl border border-slate-200/90 space-y-2">
+                  <div className="space-y-3 rounded-2xl border border-[#087FF5]/15 bg-gradient-to-br from-[#F5FAFF] to-[#F2FBF8] p-4 sm:p-5">
                     <div className="flex items-center justify-between">
-                      <label className="block text-xs font-black text-slate-700 uppercase tracking-wider">
+                      <label className="block text-sm font-semibold text-slate-700">
                         Influencer Coupon Code <span className="text-slate-400 font-normal lowercase">(optional)</span>
                       </label>
                       {couponFeedback.status === 'valid' && (
@@ -231,14 +231,14 @@ export default function ContactClient() {
                             }
                           }}
                           placeholder="Enter coupon code (e.g. RAHUL10)"
-                          className="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold uppercase tracking-wider text-slate-900 focus:border-[#087FF5] focus:ring-2 focus:ring-[#087FF5]/20 outline-none transition-all"
+                          className="min-h-12 w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm font-semibold uppercase tracking-wider text-slate-900 shadow-sm outline-none transition duration-200 placeholder:font-normal placeholder:normal-case placeholder:tracking-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-[#087FF5] focus:ring-4 focus:ring-[#087FF5]/10"
                         />
                       </div>
                       <button
                         type="button"
                         onClick={handleValidateCoupon}
                         disabled={couponValidating || !formData.couponCode.trim()}
-                        className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 disabled:bg-slate-300 text-white font-bold text-xs rounded-xl transition-colors shrink-0 flex items-center gap-1.5"
+                        className="inline-flex min-h-12 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#0B2A5B] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-[#123C78] disabled:cursor-not-allowed disabled:bg-slate-300"
                       >
                         {couponValidating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Apply'}
                       </button>
@@ -270,14 +270,14 @@ export default function ContactClient() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                    <label className="mb-2 block text-sm font-semibold text-slate-700">
                       Project Brief / Message <span className="text-slate-400 lowercase font-normal">(optional)</span>
                     </label>
                     <textarea
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:border-[#087FF5] focus:ring-2 focus:ring-[#087FF5]/20 outline-none transition-all resize-none"
+                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-900 shadow-sm outline-none transition duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-[#087FF5] focus:ring-4 focus:ring-[#087FF5]/10 resize-y"
                       placeholder="How can AVM Smart Solutions assist your project? (optional)..."
                     />
                   </div>
@@ -285,7 +285,7 @@ export default function ContactClient() {
                   <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="w-full py-4 bg-gradient-to-r from-[#087FF5] via-[#13B89A] to-[#FF6A00] bg-[length:200%_auto] hover:bg-right text-white font-black rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
+                    className="flex min-h-14 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#087FF5] to-[#13B89A] py-4 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(8,127,245,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(8,127,245,0.28)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#087FF5]/20 disabled:cursor-not-allowed disabled:opacity-70"
                   >
                     {status === 'loading' ? (
                       <Loader2 className="w-5 h-5 animate-spin" />
@@ -301,15 +301,15 @@ export default function ContactClient() {
             </div>
 
             {/* Info Cards Column */}
-            <div className="lg:col-span-5 space-y-6">
+            <div className="space-y-4 lg:col-span-5 lg:space-y-5">
               
               {/* Address Card */}
-              <div className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#087FF5]/10 text-[#087FF5] flex items-center justify-center shrink-0">
+              <div className="group flex items-start gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_8px_24px_rgba(11,42,91,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#087FF5]/25 hover:shadow-[0_14px_32px_rgba(11,42,91,0.08)] sm:p-6">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#087FF5]/10 bg-[#EAF4FF] text-[#087FF5]">
                   <MapPin className="w-6 h-6" />
                 </div>
                 <div className="space-y-2">
-                  <h4 className="font-black text-slate-900 text-sm">Official Registered Location</h4>
+                  <h4 className="text-sm font-bold text-[#0B2A5B]">Official Registered Location</h4>
                   <p className="text-xs text-slate-600 leading-relaxed font-medium">
                     AVM Smart Solutions<br />
                     Kurnool, Andhra Pradesh 518002, India
@@ -327,12 +327,12 @@ export default function ContactClient() {
               </div>
 
               {/* Phone Numbers Card */}
-              <div className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#FF6A00]/10 text-[#FF6A00] flex items-center justify-center shrink-0">
+              <div className="group flex items-start gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_8px_24px_rgba(11,42,91,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#087FF5]/25 hover:shadow-[0_14px_32px_rgba(11,42,91,0.08)] sm:p-6">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#13B89A]/15 bg-[#E8FBF6] text-[#0C9B84]">
                   <Phone className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-black text-slate-900 text-sm mb-2">Call Us Directly</h4>
+                  <h4 className="mb-2 text-sm font-bold text-[#0B2A5B]">Call Us Directly</h4>
                   <div className="flex flex-col gap-1.5">
                     {COMPANY_DETAILS.phones.map((p, i) => (
                       <a
@@ -340,7 +340,7 @@ export default function ContactClient() {
                         href={`tel:${p}`}
                         className="text-xs font-bold text-slate-700 hover:text-[#087FF5] transition-colors inline-flex items-center gap-1.5"
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF6A00]" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#13B89A]" />
                         <span>+91 {p}</span>
                       </a>
                     ))}
@@ -349,12 +349,12 @@ export default function ContactClient() {
               </div>
 
               {/* Email Card */}
-              <div className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#13B89A]/10 text-[#13B89A] flex items-center justify-center shrink-0">
+              <div className="group flex items-start gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_8px_24px_rgba(11,42,91,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#087FF5]/25 hover:shadow-[0_14px_32px_rgba(11,42,91,0.08)] sm:p-6">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#13B89A]/15 bg-[#E8FBF6] text-[#0C9B84]">
                   <Mail className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-black text-slate-900 text-sm mb-1">Official Email</h4>
+                  <h4 className="mb-1 text-sm font-bold text-[#0B2A5B]">Official Email</h4>
                   <a
                     href={`mailto:${COMPANY_DETAILS.email}`}
                     className="text-xs font-bold text-[#087FF5] hover:underline"
@@ -365,12 +365,12 @@ export default function ContactClient() {
               </div>
 
               {/* WhatsApp Card */}
-              <div className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#13B89A]/10 text-[#13B89A] flex items-center justify-center shrink-0">
+              <div className="group flex items-start gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_8px_24px_rgba(11,42,91,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#087FF5]/25 hover:shadow-[0_14px_32px_rgba(11,42,91,0.08)] sm:p-6">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#13B89A]/15 bg-[#E8FBF6] text-[#0C9B84]">
                   <MessageCircle className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-black text-slate-900 text-sm mb-1">WhatsApp Chat</h4>
+                  <h4 className="mb-1 text-sm font-bold text-[#0B2A5B]">WhatsApp Chat</h4>
                   <a
                     href={COMPANY_DETAILS.whatsappUrl}
                     target="_blank"
@@ -384,7 +384,7 @@ export default function ContactClient() {
               </div>
 
               {/* Embedded Location Map */}
-              <div className="rounded-3xl overflow-hidden shadow-md border border-slate-200 h-60 w-full">
+              <div className="h-60 w-full overflow-hidden rounded-2xl border border-slate-200 shadow-[0_12px_32px_rgba(11,42,91,0.08)]">
                 <iframe
                   title="AVM Smart Location Map"
                   src={COMPANY_DETAILS.googleMapsEmbed}

@@ -1,6 +1,7 @@
 import React from 'react';
 import Hero from '@/components/hero/Hero';
 import ServicesSection from '@/components/home/ServicesSection';
+import ProjectProcess from '@/components/ProjectProcess';
 import SolutionsSection from '@/components/home/SolutionsSection';
 import FeaturedDemosSection from '@/components/home/FeaturedDemosSection';
 import HomePricingSection from '@/components/home/HomePricingSection';
@@ -18,26 +19,26 @@ export default function HomePage() {
       {/* 2. Core Capabilities / Services Section */}
       <ServicesSection />
 
-      {/* 4. Live Product Demos Showcase */}
-      {/* <FeaturedDemosSection /> */}
+      {/* 3. From Concept to Scale: Our 6-Step Approach (Sticky Scroll Animation) */}
+      <ProjectProcess />
 
-      {/* 5. Service & Pricing Showcase */}
+      {/* 4. Service & Pricing Showcase */}
       <HomePricingSection />
 
-      {/* 6. Strategic Growth Partnership / Solutions Section */}
+      {/* 5. Strategic Growth Partnership / Solutions Section */}
       <SolutionsSection />
 
-      {/* 6.1 Influencer Partner Promotion Card */}
+      {/* 6. Influencer Partner Promotion Card */}
       <InfluencerPromoCard />
 
       {/* 7. Featured Work / Portfolio Section */}
       {/* <PortfolioSection /> */}
 
       {/* 8. Dynamic Customer Reviews Marquee Section */}
-      <ReviewsSection />
+      {/* <ReviewsSection /> */}
 
       {/* 9. Bottom CTA Banner */}
-      <CTASection />
+      {/* <CTASection /> */}
     </div>
   );
 }
